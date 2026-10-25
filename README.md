@@ -6,6 +6,8 @@
 
 项目地址：<https://github.com/MingoYung/dsh-awakening>。
 
+**素材说明：** 前段动效、排版、程序音效和播放器由本项目制作；约13.6秒起的角色影像及原声欢迎语引用自 [lxj5820/dsh-boot-animation](https://github.com/lxj5820/dsh-boot-animation) 的 `assets/videos/1.mp4`，不是本项目原创角色短片。该上游固定版本将视频列入 MIT 许可，本项目保留原作者版权与许可正文。完整来源、使用范围及版本见 [CREDITS.md](CREDITS.md)。
+
 ![4:3 窗口中的动画播放器预览](screenshots/preview-whale-4x3.png)
 
 上图为隔离播放器的比例适配预览；它不代表最早的 NEXT 桌面加载页已被替换。
