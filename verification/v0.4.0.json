@@ -1,0 +1,58 @@
+{
+  "version": "0.4.0",
+  "date": "2026-10-26",
+  "passed": true,
+  "automatedScope": "0.4.0 candidate, actual DSH loader in isolated VM plus headless Edge fixtures; no native DSH start/restart or installed profile mutations",
+  "cases": {
+    "mediaAndPlaybackLifecycle": 25,
+    "continuousArbitraryViewportChanges": 10,
+    "pixelExactAcceptedPreviewComparisons": 8,
+    "resourceCleanupExitPaths": 4,
+    "hostOptionalServiceRegistration": true,
+    "actualDSHLoaderLazyFactoryMaterializeApplyCleanup": true,
+    "settingsUI": true
+  },
+  "clientSha256": "35872ab83613c8312311eaffcb0bed58c3b764b6737c5fcb27df9e6f607492e6",
+  "naturalPlayback": {
+    "viewport": "1280x800",
+    "wallSeconds": 22.046299999952318,
+    "sourceFrames": {
+      "total": 660,
+      "dropped": 0,
+      "corrupted": 0
+    },
+    "canvasDraws": 621,
+    "compositionBuilds": 1,
+    "mediaElementCount": 1,
+    "volume": 0.8,
+    "muted": false,
+    "originalAACBitstreamPreserved": true
+  },
+  "sourceMediaSha256": "fac040bbdad7580cdd626403edd4aa34116c38070e5271c5315f710a40cf189c",
+  "cleanup": {
+    "paths": [
+      "Esc",
+      "plugin-dispose",
+      "media-error",
+      "canvas-fallback-Esc"
+    ],
+    "productMutationObservers": 0,
+    "resizeObservers": 0,
+    "animationFrames": 0,
+    "videoFrameCallbacks": 0,
+    "managedListeners": 0
+  },
+  "manualEvidence": {
+    "date": "2026-10-26",
+    "version": "0.4.0",
+    "source": "User feedback after the installed update and restart request",
+    "userFeedback": "没啥问题了，git也更新了吧？",
+    "status": "User confirmed no issues; this is human feedback, not an automated native DSH restart test."
+  },
+  "limits": [
+    "Automated checks used the extracted real DSH module loader and isolated headless browser fixtures; they did not start or restart the native DSH application.",
+    "Browser screenshots are isolated plugin Canvas previews.",
+    "The initial NEXT pre-Host loading page remains outside normal plugin injection and is unchanged.",
+    "Source character footage is reframed for the viewport; extreme narrow or wide windows cannot preserve every outer detail."
+  ]
+}

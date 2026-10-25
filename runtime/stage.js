@@ -1,181 +1,160 @@
-/* Native square-master layout. The 1920 x 1080 safe composition is preserved.
-   Ordinary desktop ratios need only CSS geometry. A small procedural field
-   exists only when a viewport extends beyond the square master itself. */
+/* The viewport is the output canvas. The approved master remains the single
+   media clock and audio source; resizing changes geometry, never playback.
+   If Canvas is unavailable, the native video takes over in full-cover mode. */
 (function (root) {
   'use strict';
   const mounts = new WeakMap();
-  const MASTER = 2560;
-  const SAFE = Object.freeze({ x: 320, y: 740, width: 1920, height: 1080 });
-  const BASE = '#000207';
-  const clamp = value => Math.max(0, Math.min(1, value));
-  const smooth = (a, b, value) => { const x = clamp((value - a) / (b - a)); return x * x * (3 - 2 * x); };
-  const random = value => { const x = Math.sin(value * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+  const FRAME_INTERVAL = 1000 / 30;
+  const MAX_DPR = 1.5;
+  const MAX_RASTER = 2560;
+  let nextCompositionId = 0;
 
   function mount({ video, container = video?.parentElement } = {}) {
     if (!video || !container || !video.parentNode) throw new TypeError('A mounted video and its stage container are required.');
     if (mounts.has(video)) return mounts.get(video);
     const surface = typeof container.getBoundingClientRect === 'function' ? container : container.host;
-    const surfaceBefore = surface?.style ? { overflow: surface.style.overflow, position: surface.style.position } : null;
-    const surfaceApplied = {};
-    if (surface?.style) {
-      surface.style.overflow = 'hidden'; surfaceApplied.overflow = surface.style.overflow;
-      if (root.getComputedStyle(surface).position === 'static') {
-        surface.style.position = 'relative'; surfaceApplied.position = surface.style.position;
-      }
-    }
-    const properties = ['position', 'width', 'height', 'left', 'top', 'right', 'bottom', 'maxWidth', 'maxHeight', 'objectFit', 'background', 'maskImage'];
+    const properties = ['position', 'width', 'height', 'left', 'top', 'right', 'bottom', 'maxWidth', 'maxHeight', 'objectFit', 'background', 'opacity', 'zIndex', 'pointerEvents'];
     const before = Object.fromEntries(properties.map(key => [key, video.style[key]]));
     const applied = {};
+    const surfaceBefore = surface?.style?.position;
+    let surfaceApplied = null;
+    if (surface?.style && root.getComputedStyle(surface).position === 'static') {
+      surface.style.position = 'relative';
+      surfaceApplied = surface.style.position;
+    }
     function style(key, value) { video.style[key] = value; applied[key] = video.style[key]; }
-    let disposed = false, geometry = null, coveredByMaster = true;
-    let canvas = null, context = null, stars = null, rasterScale = 1;
-    let videoCallback = 0, animationCallback = 0, lastDraw = -Infinity;
-    let drawn = 0, failures = 0, fallbackFailed = false;
+    style('position', 'absolute'); style('left', '0px'); style('top', '0px');
+    style('right', '0px'); style('bottom', '0px'); style('width', '100%'); style('height', '100%');
+    style('maxWidth', 'none'); style('maxHeight', 'none'); style('objectFit', 'cover');
+    style('background', '#000207'); style('zIndex', '1'); style('pointerEvents', 'none');
 
-    function stopFrames() {
-      if (videoCallback && typeof video.cancelVideoFrameCallback === 'function') video.cancelVideoFrameCallback(videoCallback);
-      if (animationCallback) root.cancelAnimationFrame(animationCallback);
-      videoCallback = 0; animationCallback = 0;
+    let disposed = false, canvas = null, composition = null, frame = 0;
+    let drawn = 0, failures = 0, compositionBuilds = 0, lastPaint = -Infinity;
+    let pending = true, geometry = null, lastLayout = null, lastTime = 0;
+    let fallbackActive = false, fallbackReason = null;
+    const compositionId = `responsive-${++nextCompositionId}`;
+
+    function stopFrame() {
+      if (frame) root.cancelAnimationFrame(frame);
+      frame = 0;
     }
 
-    function removeFallback() {
-      stopFrames();
-      canvas?.remove(); canvas = null; context = null; stars = null;
+    function fallback(error) {
+      if (fallbackActive || disposed) return;
+      failures++;
+      fallbackActive = true;
+      fallbackReason = error instanceof Error ? error.message : String(error);
+      pending = false;
+      stopFrame();
+      canvas?.remove(); canvas = null; composition = null;
+      style('opacity', '1');
+      console.warn('[dsh-awakening] Adaptive Canvas unavailable; using native video.', error);
     }
 
-    function ensureFallback() {
-      if (canvas || fallbackFailed) return;
-      try {
-        canvas = document.createElement('canvas');
-        canvas.dataset.dshAwakeningBackdrop = 'native';
-        canvas.setAttribute('aria-hidden', 'true');
-        canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;background:#000207;';
-        context = canvas.getContext('2d', { alpha: false });
-        if (!context) throw new Error('Procedural background canvas unavailable.');
-        video.parentNode.insertBefore(canvas, video);
-        // Same seed and world coordinates as the offline square master.
-        stars = Array.from({ length: 760 }, (_, i) => ({
-          x: -2240 + random(i + 201) * 6400,
-          y: -2240 + random(i + 793) * 5560,
-          size: .65 + random(i + 1881) * .9,
-          alpha: .11 + random(i + 7151) * .25,
-          phase: random(i + 10717) * Math.PI * 2,
-          drift: .9 + random(i + 2371) * 2.0,
-        }));
-      } catch (_) {
-        failures++; fallbackFailed = true;
-        canvas?.remove(); canvas = null; context = null; stars = null;
-      }
-    }
-
-    function draw(force = false) {
-      if (disposed || coveredByMaster || !canvas || !context || !geometry || fallbackFailed) return;
-      const now = performance.now();
-      if (!force && now - lastDraw < 1000 / 24 - 1) return;
-      lastDraw = now;
-      const { viewport, safeArea, scale } = geometry;
-      const t = Number.isFinite(video.currentTime) ? Math.max(0, Math.min(22, video.currentTime)) : 0;
-      const world = { x: -safeArea.x / scale, y: -safeArea.y / scale, width: viewport.width / scale, height: viewport.height / scale };
-      try {
-        context.setTransform(scale * rasterScale, 0, 0, scale * rasterScale, safeArea.x * rasterScale, safeArea.y * rasterScale);
-        context.globalAlpha = 1; context.globalCompositeOperation = 'source-over'; context.shadowBlur = 0;
-        context.fillStyle = BASE; context.fillRect(world.x, world.y, world.width, world.height);
-        const atmosphere = (1 - smooth(11.5, 13.6, t)) * .31;
-        if (atmosphere > 0) {
-          const gradient = context.createRadialGradient(960, 440, 40, 960, 490, 890);
-          gradient.addColorStop(0, `rgba(23,47,90,${atmosphere})`); gradient.addColorStop(1, 'rgba(23,47,90,0)');
-          context.fillStyle = gradient; context.fillRect(world.x, world.y, world.width, world.height);
-        }
-        const entrance = smooth(.15, 1.8, t), exit = 1 - smooth(21.7, 22, t);
-        context.save(); context.beginPath(); context.rect(-8192, -8192, 16384, 16384);
-        context.rect(0, 0, SAFE.width, SAFE.height); context.clip('evenodd');
-        const gradient = context.createRadialGradient(960, 600, 500, 960, 600, 1940);
-        gradient.addColorStop(0, 'rgba(16,31,61,0)');
-        gradient.addColorStop(.48, `rgba(16,31,61,${.075 * entrance * exit})`);
-        gradient.addColorStop(1, 'rgba(16,31,61,0)');
-        context.fillStyle = gradient; context.fillRect(world.x, world.y, world.width, world.height);
-        for (let i = 0; i < stars.length; i++) {
-          const star = stars[i];
-          const x = star.x + Math.sin(t * .07 + star.phase) * star.drift;
-          const y = star.y + Math.cos(t * .05 + star.phase) * star.drift;
-          if (x < world.x - 4 || x > world.x + world.width + 4 || y < world.y - 4 || y > world.y + world.height + 4) continue;
-          const distance = Math.max(-x, x - SAFE.width, -y, y - SAFE.height, 0);
-          const edge = smooth(8, 115, distance), twinkle = .72 + .28 * Math.sin(t * .8 + star.phase) ** 2;
-          const alpha = star.alpha * entrance * exit * edge * twinkle;
-          if (alpha < .002) continue;
-          context.beginPath(); context.arc(x, y, star.size, 0, Math.PI * 2);
-          context.fillStyle = `rgba(130,166,224,${alpha})`; context.fill();
-          if (i % 41 === 0 && alpha > .12) {
-            context.strokeStyle = `rgba(158,193,246,${alpha * .35})`; context.lineWidth = .6;
-            context.beginPath(); context.moveTo(x - 3.2, y); context.lineTo(x + 3.2, y);
-            context.moveTo(x, y - 3.2); context.lineTo(x, y + 3.2); context.stroke();
-          }
-        }
-        context.restore(); drawn++;
-      } catch (_) {
-        failures++; fallbackFailed = true; stopFrames();
-      }
+    function measure() {
+      const rect = surface?.getBoundingClientRect();
+      // The early overlay is deliberately constructed before it is attached.
+      // Its first real ResizeObserver notification replaces this initial size.
+      const width = Math.max(1, rect?.width || root.innerWidth || 1);
+      const height = Math.max(1, rect?.height || root.innerHeight || 1);
+      const dpr = Math.max(.01, Math.min(Number(root.devicePixelRatio) || 1, MAX_DPR, MAX_RASTER / width, MAX_RASTER / height));
+      geometry = {
+        viewport: { width, height },
+        raster: { width: Math.max(1, Math.round(width * dpr)), height: Math.max(1, Math.round(height * dpr)), dpr },
+      };
     }
 
     function schedule() {
-      if (disposed || coveredByMaster || fallbackFailed || !canvas || videoCallback || animationCallback || video.paused || video.ended) return;
-      if (typeof video.requestVideoFrameCallback === 'function') {
-        videoCallback = video.requestVideoFrameCallback(() => { videoCallback = 0; draw(); schedule(); });
-      } else {
-        animationCallback = root.requestAnimationFrame(() => { animationCallback = 0; draw(); schedule(); });
-      }
+      if (disposed || fallbackActive || frame || document.hidden || !canvas || !composition) return;
+      if (!pending && (video.paused || video.ended)) return;
+      frame = root.requestAnimationFrame(paint);
     }
 
-    function resize() {
-      if (disposed) return;
-      const rect = surface?.getBoundingClientRect();
-      const width = Math.max(1, rect?.width || root.innerWidth || 1), height = Math.max(1, rect?.height || root.innerHeight || 1);
-      const scale = Math.min(width / SAFE.width, height / SAFE.height);
-      const size = MASTER * scale, left = (width - size) / 2, top = (height - size) / 2;
-      const safeArea = { x: left + SAFE.x * scale, y: top + SAFE.y * scale, width: SAFE.width * scale, height: SAFE.height * scale };
-      coveredByMaster = left <= .5 && top <= .5 && left + size >= width - .5 && top + size >= height - .5;
-      geometry = { viewport: { width, height }, scale, master: { x: left, y: top, width: size, height: size }, safeArea, intrinsicSafeArea: { ...SAFE }, coveredByMaster };
-      style('position', 'absolute'); style('right', 'auto'); style('bottom', 'auto'); style('width', `${size}px`); style('height', `${size}px`);
-      style('left', `${left}px`); style('top', `${top}px`); style('maxWidth', 'none'); style('maxHeight', 'none');
-      style('objectFit', 'contain'); style('background', 'transparent'); style('maskImage', 'none');
-      if (coveredByMaster) {
-        removeFallback();
-      } else {
-        ensureFallback();
-        if (canvas) {
-          rasterScale = Math.min(root.devicePixelRatio || 1, 1.5, 512 / width, 512 / height);
-          canvas.width = Math.max(1, Math.round(width * rasterScale)); canvas.height = Math.max(1, Math.round(height * rasterScale));
-          draw(true); schedule();
+    function paint(now) {
+      frame = 0;
+      if (disposed || fallbackActive || document.hidden || !canvas || !composition) return;
+      if (now - lastPaint >= FRAME_INTERVAL - .1) {
+        try {
+          const time = Number(video.currentTime);
+          lastTime = Number.isFinite(time) ? Math.max(0, Math.min(22, time)) : 0;
+          const raster = geometry.raster;
+          // render() is synchronous and reads currentTime. renderAt() is an
+          // offline seeking helper and is never used by the live stage.
+          composition.render(lastTime, raster.width, raster.height);
+          lastLayout = composition.lastLayout;
+          lastPaint = now;
+          drawn++;
+          pending = false;
+          style('opacity', '0');
+        } catch (error) {
+          fallback(error);
+          return;
         }
       }
+      schedule();
     }
 
-    function wake() { draw(true); schedule(); }
-    function pause() { stopFrames(); draw(true); }
-    const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(resize) : null;
+    function refresh() {
+      if (disposed) return;
+      measure();
+      pending = true;
+      schedule();
+    }
+    function wake() { if (!disposed) { pending = true; schedule(); } }
+    function visibility() {
+      if (document.hidden) stopFrame();
+      else refresh();
+    }
+
+    try {
+      canvas = document.createElement('canvas');
+      canvas.dataset.dshAwakeningStage = 'responsive';
+      canvas.setAttribute('aria-hidden', 'true');
+      canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;background:#000207;';
+      if (!canvas.getContext('2d', { alpha: false })) throw new Error('The adaptive Canvas 2D context is unavailable.');
+      const Composition = root.DSHPortraitTrackStudy?.PortraitTrackStudy;
+      if (typeof Composition !== 'function') throw new Error('The adaptive scene modules are unavailable.');
+      composition = new Composition(canvas, video);
+      composition.focusStart = 500;
+      if (!composition.renderer?.ctx) throw new Error('The source composition Canvas 2D context is unavailable.');
+      compositionBuilds++;
+      video.parentNode.insertBefore(canvas, video.nextSibling);
+    } catch (error) {
+      fallback(error);
+    }
+
+    const observer = typeof root.ResizeObserver === 'function' ? new root.ResizeObserver(refresh) : null;
     if (surface) observer?.observe(surface);
-    root.addEventListener('resize', resize);
-    video.addEventListener('loadedmetadata', resize); video.addEventListener('loadeddata', resize);
-    video.addEventListener('playing', wake); video.addEventListener('seeked', wake);
-    video.addEventListener('pause', pause); video.addEventListener('ended', pause);
+    root.addEventListener('resize', refresh);
+    document.addEventListener('visibilitychange', visibility);
+    const videoEvents = ['loadedmetadata', 'loadeddata', 'playing', 'play', 'pause', 'seeked', 'ended'];
+    for (const event of videoEvents) video.addEventListener(event, wake);
     const api = {
-      refresh: resize,
-      diagnostics: () => ({ disposed, drawn, failures, coveredByMaster, fallbackActive: !!canvas, fallbackFailed,
-        geometry, fallbackRaster: canvas ? { width: canvas.width, height: canvas.height, dpr: rasterScale } : null,
+      refresh,
+      diagnostics: () => ({
+        disposed, drawn, failures, compositionBuilds, compositionId,
+        fallbackActive, fallbackFailed: fallbackActive, fallbackReason,
+        hidden: document.hidden, framePending: !!frame, pending,
+        lastTime, lastLayout, geometry,
+        viewport: geometry?.viewport ?? null, raster: geometry?.raster ?? null,
         source: { width: video.videoWidth || 0, height: video.videoHeight || 0 },
       }),
       dispose() {
         if (disposed) return;
-        disposed = true; removeFallback(); observer?.disconnect(); root.removeEventListener('resize', resize);
-        video.removeEventListener('loadedmetadata', resize); video.removeEventListener('loadeddata', resize);
-        video.removeEventListener('playing', wake); video.removeEventListener('seeked', wake);
-        video.removeEventListener('pause', pause); video.removeEventListener('ended', pause);
+        disposed = true;
+        stopFrame(); observer?.disconnect();
+        root.removeEventListener('resize', refresh);
+        document.removeEventListener('visibilitychange', visibility);
+        for (const event of videoEvents) video.removeEventListener(event, wake);
+        canvas?.remove(); canvas = null; composition = null;
         for (const key of properties) if (video.style[key] === applied[key]) video.style[key] = before[key];
-        if (surfaceBefore) for (const key of Object.keys(surfaceApplied)) if (surface.style[key] === surfaceApplied[key]) surface.style[key] = surfaceBefore[key];
+        if (surfaceApplied !== null && surface.style.position === surfaceApplied) surface.style.position = surfaceBefore;
         mounts.delete(video);
       },
     };
-    mounts.set(video, api); resize(); return api;
+    mounts.set(video, api);
+    refresh();
+    return api;
   }
   root.DSHAwakeningStage = { mount };
 })(window);

@@ -49,6 +49,8 @@ const CSS = `
 .dsh-awakening-settings .awa-feedback{min-height:22px;margin-top:12px;font-size:12px;line-height:1.7;color:var(--dsw-alias-label-secondary,#80858e)}
 .dsh-awakening-settings .awa-error{color:var(--dsw-alias-status-error,#c94d52)}
 .dsh-awakening-settings .awa-info{font-size:12px;line-height:1.8;padding:10px 12px;margin-bottom:12px;background:var(--dsw-alias-bg-layer-1,rgba(127,127,127,.06));border-radius:8px;color:var(--dsw-alias-label-secondary,#80858e)}
+.dsh-awakening-settings .awa-attribution{margin-top:12px;line-height:1.8}
+.dsh-awakening-settings .awa-attribution a{color:var(--dsw-alias-brand-primary,#8baaff);text-underline-offset:3px}
 @media(max-width:560px){.dsh-awakening-settings .awa-row{gap:14px}.dsh-awakening-settings .awa-header{gap:12px}.dsh-awakening-settings .awa-volume input{max-width:none}.dsh-awakening-settings select{min-width:116px}.dsh-awakening-settings .awa-footer{align-items:flex-start}.dsh-awakening-settings .awa-footer p{flex-basis:100%}}
 @media(prefers-reduced-motion:reduce){.dsh-awakening-settings .awa-switch::before{transition:none}}
 `
@@ -266,9 +268,10 @@ function createSettingsPanel(form) {
       </details>
 
       <footer className="awa-footer">
-        <p className="awa-muted">窗口自适应：中央画面完整保留，背景向边缘延展。<br />保持 22 秒节奏与原声口型。播放中按 Esc 或点击“跳过”退出。</p>
+        <p className="awa-muted">按窗口实际宽高调整构图，横竖切换不重播。<br />保持 22 秒节奏与原声口型。播放中按 Esc 或点击“跳过”退出。</p>
         <button type="button" disabled={disabled} onClick={reset}>恢复默认</button>
       </footer>
+      <p className="awa-attribution awa-muted">尾段角色影像与原声：dsh-boot-animation · MIT。<br /><a href="https://github.com/MingoYung/dsh-awakening/blob/main/CREDITS.md" target="_blank" rel="noreferrer">素材来源、作者与许可 ↗</a></p>
       <div className={`awa-feedback${error ? ' awa-error' : ''}`} role={error ? 'alert' : 'status'} aria-live="polite">
         {error || (pending ? '正在保存…' : notice)}
       </div>

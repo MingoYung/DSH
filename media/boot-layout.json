@@ -1,28 +1,24 @@
 {
-  "version": 1,
-  "width": 2560,
-  "height": 2560,
+  "version": 2,
+  "kind": "responsive-canvas",
   "durationSeconds": 22,
-  "fps": 30,
-  "safeArea": {
-    "x": 320,
-    "y": 740,
+  "sourceVideo": {
     "width": 1920,
-    "height": 1080
+    "height": 1080,
+    "fps": 30,
+    "role": "Single media clock, sound and approved welcome frames"
   },
-  "coveredAspectRatio": {
-    "min": 0.75,
-    "max": 2.3703703703703702
+  "canvas": {
+    "size": "Actual client area, recomputed on resize",
+    "maxDpr": 1.5,
+    "maxRasterDimension": 2560,
+    "maxFramesPerSecond": 30
   },
-  "outside": "Native atmosphere and sparse stars, rendered offline.",
-  "tailEdgeBlend": {
-    "kind": "alpha only, no blur",
-    "start": 13.6,
-    "end": 14.45,
-    "top": 16,
-    "left": 48,
-    "right": 48,
-    "bottom": 96
+  "fixedAspectVariants": false,
+  "portrait": {
+    "intro": "Medium shot preserving logo and kinetic text",
+    "bridge": "Follow left light stream then return to face",
+    "welcome": "Full-frame focal close-up"
   },
-  "audio": "Exact approved v3 AAC bitstream."
+  "rightStreamDirection": "Top down until fully formed; completed path and tail unchanged"
 }
