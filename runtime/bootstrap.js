@@ -12,8 +12,8 @@
  root.__DSH_AWAKENING_INSTALL__=function install(options={}){
   if(root.__DSH_AWAKENING_PLUGIN__){if(options.settings)root.__DSH_AWAKENING_PLUGIN__.configure(options.settings);return root.__DSH_AWAKENING_PLUGIN__;}
   let settings=normalise(options.settings??DEFAULTS),active=null,disposed=false;
-  const source=options.sourceUrl||'/dsh-awakening/media/boot.mp4?v=0.2.0';
-  const api={version:'0.2.0',lastResult:null,configure,preview:settings=>play(normalise(settings||currentSettings()),true),dismiss:()=>active?.finish('skip'),dispose,diagnostics:()=>active?.diagnostics()??{active:false,lastResult:api.lastResult}};
+  const source=options.sourceUrl||'/dsh-awakening/media/boot.mp4?v=0.3.0';
+  const api={version:'0.3.0',lastResult:null,configure,preview:settings=>play(normalise(settings||currentSettings()),true),dismiss:()=>active?.finish('skip'),dispose,diagnostics:()=>active?.diagnostics()??{active:false,lastResult:api.lastResult}};
   function currentSettings(){return settings;}
   function configure(next){settings=normalise(next);if(active){active.video.volume=settings.volume/100;active.video.muted=!settings.sound;}}
   function dispose(){if(disposed)return;disposed=true;active?.finish('dispose',true);if(root.__DSH_AWAKENING_PLUGIN__===api)delete root.__DSH_AWAKENING_PLUGIN__;}

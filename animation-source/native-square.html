@@ -1,0 +1,15 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>鲸启 · 原生扩展画布原型</title>
+<style>html,body{margin:0;background:#000207;color:#b8c9e8}canvas{display:block}#viewport{display:none}video{position:fixed;left:-4px;top:-4px;width:1px;height:1px;opacity:0;pointer-events:none}</style></head><body>
+<canvas id="square" width="2560" height="2560"></canvas><canvas id="viewport"></canvas>
+<video id="master" playsinline preload="auto" muted src="video/approved-v3-master.mp4"></video>
+<script src="assets/brand.js"></script><script src="animation.js"></script><script src="morph.js"></script><script src="native-square.js"></script>
+<script>
+const nativeStage = new NativeDSHAwakening.NativeStage({canvas:document.getElementById('square'),video:document.getElementById('master')});
+window.nativeStage = nativeStage;
+window.renderAt = time => nativeStage.renderAt(time);
+window.renderViewport = async (width,height,time) => {
+  document.getElementById('square').style.display='none';document.getElementById('viewport').style.display='block';
+  return nativeStage.renderViewport(width,height,time,document.getElementById('viewport'));
+};
+window.renderAt(6.7);
+</script></body></html>

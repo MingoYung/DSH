@@ -1,0 +1,34 @@
+{
+  "version": "0.3.0",
+  "date": "2026-10-25",
+  "passed": true,
+  "media": {
+    "width": 2560,
+    "height": 2560,
+    "fps": 30,
+    "durationSeconds": 22,
+    "sha256": "d71dba861bb97101f8ce2fb6692bd6ded78790165812001503ebdf0ebe7ecfe7",
+    "audioExactApprovedAAC": true
+  },
+  "checks": {
+    "runtimeAndMediaRegressionCases": 25,
+    "actualDSHModuleLoader": true,
+    "settingsUI": true,
+    "hostServiceAvailability": true,
+    "centralSafeArea": true,
+    "commonDesktopRatiosNoCanvasOrFrameCallback": true,
+    "runtimeVideoSampling": 0,
+    "runtimeBlurCalls": 0,
+    "fallbackCleanup": true
+  },
+  "manualEvidence": {
+    "previousVersion": "0.1.1",
+    "userConfirmed": "Real restart, 80% settings persisted, full animation and voiced welcome normal.",
+    "v030InstalledRestart": "Awaiting user feedback; not claimed by automated tests."
+  },
+  "scope": [
+    "Browser screenshots are isolated player previews.",
+    "The initial NEXT pre-Host default page remains a known limitation.",
+    "Playback performance is a short sample, not a full startup benchmark."
+  ]
+}

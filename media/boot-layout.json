@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "width": 2560,
+  "height": 2560,
+  "durationSeconds": 22,
+  "fps": 30,
+  "safeArea": {
+    "x": 320,
+    "y": 740,
+    "width": 1920,
+    "height": 1080
+  },
+  "coveredAspectRatio": {
+    "min": 0.75,
+    "max": 2.3703703703703702
+  },
+  "outside": "Native atmosphere and sparse stars, rendered offline.",
+  "tailEdgeBlend": {
+    "kind": "alpha only, no blur",
+    "start": 13.6,
+    "end": 14.45,
+    "top": 16,
+    "left": 48,
+    "right": 48,
+    "bottom": 96
+  },
+  "audio": "Exact approved v3 AAC bitstream."
+}

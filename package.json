@@ -1,6 +1,6 @@
 {
   "name": "dsh-awakening",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "鲸启启动动画：DSH 官方鲸鱼主题、22 秒完整动画与原声欢迎语，支持独立设置与预览。",
   "type": "module",
   "main": "lib/index.js",
@@ -19,18 +19,22 @@
     "README.md",
     "CREDITS.md",
     "COMPATIBILITY.md",
+    "CHANGELOG.md",
+    "preview.html",
+    "screenshots.json",
+    "screenshots",
     "LICENSE",
     "licenses"
   ],
   "license": "MIT",
   "author": "MingoYung",
-  "homepage": "https://github.com/MingoYung/DSH#readme",
+  "homepage": "https://github.com/MingoYung/dsh-awakening#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MingoYung/DSH.git"
+    "url": "git+https://github.com/MingoYung/dsh-awakening.git"
   },
   "bugs": {
-    "url": "https://github.com/MingoYung/DSH/issues"
+    "url": "https://github.com/MingoYung/dsh-awakening/issues"
   },
   "keywords": ["dsh-plugin", "dsh", "startup-animation", "deepseek-harness"],
   "peerDependencies": {

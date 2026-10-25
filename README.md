@@ -4,7 +4,7 @@
 
 基础验证环境：Windows DSH NEXT 2.0.19-next / DSH 内核 0.2.1-rc.2。这是社区兼容插件，不表示官方发布或背书。
 
-项目地址：<https://github.com/MingoYung/DSH>。
+项目地址：<https://github.com/MingoYung/dsh-awakening>。
 
 ![4:3 窗口中的动画播放器预览](screenshots/preview-whale-4x3.png)
 
@@ -43,9 +43,11 @@ DSH 设置 → 鲸启启动动画。
 
 ## 画面适配
 
-中央视频完整等比显示，鲸鱼、文字和人物不裁切、不拉伸。其他比例的窗口由同一视频帧的边缘色场补全背景，不增加第二段视频或音频时钟。窗口大小变化时重新计算，退出后停止绘制并释放观察器。
+0.3.0 使用 **2560×2560 方形母版**，中央1920×1080为安全构图区。四周是从源动画新绘制的气氛背景与稀疏星光，不是对视频边缘做模糊、镜像或拉伸。运行时以安全区计算缩放，按窗口比例只截取外围多余背景。
 
-这相当于给中央安全构图增加可延展的背景舞台，无需把整部视频编码成大尺寸方形。扩展区域是氛围背景，不是生成新的人物身体或场景；极窄窗口保留完整横构图时，主体会相应缩小。
+16:9、16:10、4:3、21:9和3:4由方形母版直接铺满，仍只播放一个视频。9:16和32:9等超出母版范围的比例使用原生绘制星光兜底，不采样、糊化原视频。
+
+尾段原素材的画外人体并不存在，因此仅对最外周边缘做透明度融合，让原片接入新背景；脸、口型和中央构图保留，欢迎语AAC音轨直接复制。扩展背景没有被模糊，也没有生成额外的人物身体。
 
 ## NEXT 首屏兼容边界
 
@@ -53,12 +55,15 @@ DSH 设置 → 鲸启启动动画。
 
 要让动画与 Host 同时启动，需要 NEXT 提供初始文档及静态媒体入口。本插件不修改安装包。核对过程和适配建议见 [COMPATIBILITY.md](COMPATIBILITY.md)。
 
+公开Stable桌面实现先启动内核再创建主窗口，NEXT则并行；这能解释不同录屏的首个可见画面不同。用户参考录屏确实包含点击图标启动，但无法仅凭图像确定其桌面版本。
+
 ## 源码
 
 - `lib/index.js`：Host 配置、设置持久化注册、首帧注入与媒体路由。
 - `lib/media.js`：受限的单文件 Range 读取。
 - `runtime/bootstrap.js`：早期播放与清理控制器。
 - `runtime/stage.js`：同帧背景延展与窗口适配。
+- `media/boot-layout.json`：方形母版和中央安全区规格。
 - `src/client.jsx`：设置页面。
 - `src/entry.jsx`：设置与运行时桥接。
 - `lib/client.js`：预构建的客户端模块。
@@ -74,5 +79,7 @@ npm pack --ignore-scripts
 ```
 
 请使用 `scripts/build.mjs`：它在 esbuild 输出外包装 DSH `window.__ModuleLoader__.load` 注册工厂。裸 CommonJS 不能作为 DSH 客户端脚本直接执行。
+
+打开 `preview.html` 可查看方形母版在不同比例中的实际取景。源码仓库还包含 `animation-source/native-square.html` 和离线导出器 `animation-source/tools/render_square.mjs`；重建视频需额外安装 Playwright 及 FFmpeg，运行 `node animation-source/tools/render_square.mjs`。可用 `BROWSER_EXECUTABLE` 指定已有浏览器、`FFMPEG` 指定可执行文件路径。安装插件无需这些开发工具。
 
 代码采用 MIT；DSH 鲸鱼几何与角色片段分别保留原作者及 MIT 许可，见 [CREDITS.md](CREDITS.md) 和 `licenses/`。
