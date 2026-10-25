@@ -1,0 +1,33 @@
+{
+  "version": "0.2.0",
+  "date": "2026-10-25",
+  "environment": "Windows / DSH NEXT 2.0.19-next / DSH 0.2.1-rc.2",
+  "automated": {
+    "runtimeAndMediaCases": 25,
+    "passed": true,
+    "actualDSHModuleLoader": true,
+    "hostLateServiceRegistration": true,
+    "settingsUI": true,
+    "aspectRatios": [
+      "16:9",
+      "16:10",
+      "4:3",
+      "21:9",
+      "9:16",
+      "1:1"
+    ],
+    "singleVideo": true,
+    "originalMediaSHA256": "fac040bbdad7580cdd626403edd4aa34116c38070e5271c5315f710a40cf189c",
+    "stageCleanup": true
+  },
+  "manualPreviousVersion": {
+    "version": "0.1.1",
+    "evidence": "User confirmed a real restart, settings persisted at 80%, full animation and voiced welcome played normally."
+  },
+  "limits": [
+    "0.2.0 screenshots are isolated player previews, not screenshots of the DSH settings UI.",
+    "Automated preview completion seeks to the end to trigger the native ended event.",
+    "The earliest NEXT pre-Host loading card is not replaced.",
+    "0.2.0 real installed restart must be reported separately."
+  ]
+}

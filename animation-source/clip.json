@@ -1,0 +1,21 @@
+{
+  "id": "dsh-awakening",
+  "title": "鲸启 / DSH Awakening",
+  "version": "0.4.0",
+  "durationSeconds": 22,
+  "aspectRatio": "16:9",
+  "brand": "assets/brand.js",
+  "entry": "animation.js",
+  "motionExtension": "morph.js",
+  "preservedMotionAfterSeconds": 11.05,
+  "embed": "embed.js",
+  "preview": "index.html",
+  "poster": "poster.png",
+  "audio": "audio/awakening-master.wav",
+  "characterVideo": "video/character-reveal.mp4",
+  "characterStartSeconds": 13.6,
+  "preservesOriginalCharacterAudio": true,
+  "requiresNetwork": false,
+  "dshHostAdapterIncluded": false,
+  "credits": "CREDITS.md"
+}

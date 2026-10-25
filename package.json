@@ -1,0 +1,62 @@
+{
+  "name": "dsh-awakening",
+  "version": "0.2.0",
+  "description": "鲸启启动动画：DSH 官方鲸鱼主题、22 秒完整动画与原声欢迎语，支持独立设置与预览。",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "src",
+    "scripts",
+    "runtime",
+    "media",
+    "cordis.patch.yml",
+    "README.md",
+    "CREDITS.md",
+    "COMPATIBILITY.md",
+    "LICENSE",
+    "licenses"
+  ],
+  "license": "MIT",
+  "author": "MingoYung",
+  "homepage": "https://github.com/MingoYung/DSH#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MingoYung/DSH.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MingoYung/DSH/issues"
+  },
+  "keywords": ["dsh-plugin", "dsh", "startup-animation", "deepseek-harness"],
+  "peerDependencies": {
+    "@deepseek-ai/schemastery": "^3.18.5"
+  },
+  "engines": {
+    "node": ">=22.12.0",
+    "dsh": ">=0.2.1-rc.2"
+  },
+  "dsh": {
+    "manifestVersion": 1,
+    "bundle": {
+      "patch": "cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-slots",
+        "@deepseek-ai/dsh-client-ui-settings"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.12"
+  }
+}

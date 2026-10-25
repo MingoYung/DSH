@@ -1,0 +1,9 @@
+- insert:
+    - id: dsh-awakening
+      name: dsh-awakening
+      config:
+        enabled: true
+        sound: true
+        volume: 85
+        frequency: startup
+        timeoutSeconds: 45
