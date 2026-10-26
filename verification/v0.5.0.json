@@ -1,0 +1,129 @@
+{
+  "version": "0.5.0",
+  "date": "2026-10-26",
+  "passed": true,
+  "supportedNativeTarget": "Explicit opt-in for the verified Windows DSH NEXT 2.0.19-next EXE/archive build; normal plugin mode remains Host-injected.",
+  "automatedEvidence": {
+    "baseStateAndProtocolChecks": {
+      "asar": 10,
+      "engine": 21,
+      "host-api": 28,
+      "ui": 12,
+      "worker": 10
+    },
+    "scope": "Original ASAR/installer/PowerShell/UI flow checks plus targeted repair checks below. The original environment-based HTTP setup was superseded by actual host policy tests.",
+    "targetedRepairChecks": {
+      "total": 58,
+      "nativeContract": 15,
+      "HTTPWithRealNativePolicy": 28,
+      "packagedDefaultSettings": 10,
+      "previousManagedUpgrade": 1,
+      "UIReasonsAndLabels": 4
+    },
+    "actualDSHModuleLoader": true,
+    "animationFilesByteExactToV040": 10,
+    "defaultExternalLauncher": {
+      "passed": true,
+      "scope": "Production default launcher and two-stage PowerShell path, invoked from the real DSH EXE as Node. Only synthetic small ASAR and fake process flag/GUI write target are used; real DSH GUI/Host/installation untouched.",
+      "parentExitedBeforeApply": true,
+      "parentExitedMs": 1009,
+      "workerSurvivedParent": true,
+      "appliedAfterFakeExit": true,
+      "originalBackupPreserved": true,
+      "runAsNodeCleared": true
+    },
+    "packagedProbeScope": "Actual DSH EXE run as an isolated Node process; synthetic profile, no user GUI restart performed by QA."
+  },
+  "manualEvidence": {
+    "date": "2026-10-26",
+    "localDesktop": "DSH NEXT 2.0.19-next",
+    "liveSettings": "User confirmed installed status, visible native restore button and direct startup animation.",
+    "buttonCycle": {
+      "restoreCompletedAutomatically": true,
+      "installCompletedAutomatically": true,
+      "finalAnimationAndSoundNormal": true,
+      "userFeedback": "两次都自动完成，最后动画和声音正常"
+    },
+    "filesystemAndJobEvidence": "Latest rollback and install jobs are complete; the final archive matches the reviewed managed hash, the original backup is intact, and no installer worker remains."
+  },
+  "nativeArchives": {
+    "originalSha256": "204e1dcc32ff6a9b661200b7ab97bda1cbd449904e2eddb71c9309cf767e06b5",
+    "managedSha256": "81ce16548abef77d9d108076fe7493852f8baee4b337105999ef715d09245170"
+  },
+  "files": {
+    "package.json": {
+      "bytes": 1666,
+      "sha256": "8fffe4d3990bfd5afe397cd59d6909a972d66d794225ac923e73ccc2fbf37d7b",
+      "note": "Only the published verification directory was added to the package file list after source QA; packed contents are checked separately."
+    },
+    "lib/client.js": {
+      "bytes": 127465,
+      "sha256": "536135d9b6005db6c63a08521078d13f2cd4e622f6a62bb9b213c31a37c9c3c0"
+    },
+    "lib/index.js": {
+      "bytes": 3414,
+      "sha256": "cfe1e5c0a81764167de80319c8879481a8555e4df3ecbba9f3e2c3a746ec8813"
+    },
+    "lib/native-api.js": {
+      "bytes": 12867,
+      "sha256": "0a9d5a60b36dbde0075664c81e2157ff062ea7f410e3e7caa5bddbe9002c98a0"
+    },
+    "src/client.jsx": {
+      "bytes": 16915,
+      "sha256": "83d9c086448b5a699a3f66ed640670b33a19e4b06d6f7947c35734bb510b656a"
+    },
+    "src/native-settings.jsx": {
+      "bytes": 12757,
+      "sha256": "9577e476d7d54a8ff5341cf32e86aeaea83f9024bc48a6241d440e842b029e68"
+    },
+    "tools/native-install/engine.mjs": {
+      "bytes": 16299,
+      "sha256": "4dfa049bd2c5e167a888a6e9c0e12168611539d4e7d6959b21e181f0275987be"
+    },
+    "tools/native-install/index.mjs": {
+      "bytes": 333,
+      "sha256": "7a1dea763cf210e37a3d60462efd69a7219eeedeb6e75742306b885750478e74"
+    },
+    "tools/native-install/asar.mjs": {
+      "bytes": 5454,
+      "sha256": "d6ec760916a183026e3f9cf6f183ce3c6610064f032648761136df70c0ada21b"
+    },
+    "tools/native-install/worker.ps1": {
+      "bytes": 8308,
+      "sha256": "3cf728a5cae719175a9315116f77faf32bce86ed25f79ebd2ffc29cc51afd432"
+    },
+    "tools/native-install/launcher.ps1": {
+      "bytes": 908,
+      "sha256": "28c3051a1a800286ee7de45c6be7c916a826e30baffb49ee0182dcdffc421aa1"
+    },
+    "tools/native-install/cli.mjs": {
+      "bytes": 982,
+      "sha256": "ae6d7d9ef55a86ac695c8593029cbe5014470654904b011bbc8037e0dee57f39"
+    },
+    "tools/native-install/Install-FirstScreen.ps1": {
+      "bytes": 4784,
+      "sha256": "aebc15f9b8bd2b2a911a82b535ec5b21690217f7546773b3ee6ea6351c35a789"
+    },
+    "tools/native-install/policy.json": {
+      "bytes": 1885,
+      "sha256": "95fd34ad88e60c72c4fe56252e4f8a86b3c667c0c838008dae2b07eee47ac59d"
+    },
+    "tools/native-install/payload/main.js": {
+      "bytes": 210688,
+      "sha256": "08aab540b1a84f75b2a2eff923baf0fcf2a3a04f41f08c734720a02cfeee0826"
+    },
+    "tools/native-install/payload/web-document.js": {
+      "bytes": 9930,
+      "sha256": "85149010062607f61441666fcfeb3618f30dfca41378ebc2f20f6a70f65d2b5f"
+    },
+    "tools/native-install/payload/native-boot-carrier.mjs": {
+      "bytes": 15550,
+      "sha256": "096ce8a1380429f805574e5546fe1e67a30fe635ba349486f151ed33657ecfae"
+    }
+  },
+  "limits": [
+    "Only the verified native desktop build is supported by the optional installer; unknown builds are refused.",
+    "Isolated screenshots are previews, not native DSH startup screenshots.",
+    "Saved animation defaults, native compatibility installation, and archive restore are separate operations."
+  ]
+}

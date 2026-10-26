@@ -1,6 +1,6 @@
 {
   "name": "dsh-awakening",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "鲸启启动动画：DSH 官方鲸鱼主题、22 秒完整动画与原声欢迎语，支持独立设置与预览。",
   "type": "module",
   "main": "lib/index.js",
@@ -24,7 +24,9 @@
     "screenshots.json",
     "screenshots",
     "LICENSE",
-    "licenses"
+    "licenses",
+    "tools/native-install",
+    "verification"
   ],
   "license": "MIT",
   "author": "MingoYung",

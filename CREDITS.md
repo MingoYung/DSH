@@ -26,3 +26,9 @@
 - 许可及版权正文：[licenses/deepseek-harness-MIT.txt](licenses/deepseek-harness-MIT.txt)。
 
 本项目是社区兼容插件，不表示 DeepSeek 或 DSH 官方发布、合作或背书。`dsh-550c-boot` 提供了统一主题与文字叙事的参考思路；本项目没有采用其电影影像。
+
+## 可选首屏兼容安装器
+
+- 桌面接线与随包的定点替换JavaScript基于 [Anywhere Labs DSH Desktop](https://github.com/anywhere-labs/dsh-desktop) 的NEXT 2.0.19-next已发布构建，Copyright (c) 2026 Anywhere Labs，MIT。保留许可正文：[licenses/dsh-desktop-MIT.txt](licenses/dsh-desktop-MIT.txt)。本项目修改了初始页面接线，并增加受限原生载体；没有附带DSH EXE或完整ASAR安装包。
+- ASAR头部Pickle编码与完整性计算使用 [electron/asar](https://github.com/electron/asar) `@electron/asar@4.0.1` 的对应实现，Copyright (c) 2014 GitHub Inc.，MIT。相关代码与完整许可保存在 [tools/native-install/vendor/](tools/native-install/vendor/)。
+- 安装/恢复状态机、版本校验、独立退出等待与设置入口由本项目制作。工具只在用户明确确认后修改受支持的本机桌面资源，不能把该能力描述为所有DSH环境天然具备的普通插件首屏接口。

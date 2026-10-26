@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "desktopVersion": "2.0.19-next",
+  "exeSha256": "2c12759a3c3f24f2e6776dae4e511cf5984b227f5e4322fd826fea647bf503b6",
+  "originalSha256": "204e1dcc32ff6a9b661200b7ab97bda1cbd449904e2eddb71c9309cf767e06b5",
+  "legacySha256": "f9bb18dc0e0bc62f15de021a4ad7a058785be9be9e6781651451f1381fb35e6a",
+  "patchedSha256": "81ce16548abef77d9d108076fe7493852f8baee4b337105999ef715d09245170",
+  "files": {
+    "lib/main.js": "08aab540b1a84f75b2a2eff923baf0fcf2a3a04f41f08c734720a02cfeee0826",
+    "lib/web-document.js": "85149010062607f61441666fcfeb3618f30dfca41378ebc2f20f6a70f65d2b5f",
+    "lib/native-boot-carrier.mjs": "096ce8a1380429f805574e5546fe1e67a30fe635ba349486f151ed33657ecfae"
+  },
+  "runtimeFiles": {
+    "runtime/scene/brand.js": "9133132dba57f3eed887768752e41015b4286293f6f8b794cb1d49ce25a39475",
+    "runtime/scene/animation.js": "b5e82bfec9bfe00ff05bea5085c7eca3bca345d074eb7f671981d483333a11fb",
+    "runtime/scene/morph.js": "c7468a9682a5a8c4918812e31ebb6b225543723a6e9c25e147ad60dd3ee29bd1",
+    "runtime/scene/desktop-composition.js": "b5d757f4aec5c178082b033eaa368e3a8f60fd2a2545e88136bcaa8b6881f37c",
+    "runtime/scene/responsive-composition.js": "5761c5f0bcc697af6217f439354ee35839391d83a4de2dfe633ebb3700685923",
+    "runtime/scene/portrait-camera.js": "f4498e68661e1a8cd5d03071dab9bd39e676e230f64f61f0ddfb849087da3c0b",
+    "runtime/stage.js": "c75dca9e845d7334617d753d071238954add00edf5555959aee2598b4efcded7",
+    "runtime/bootstrap.js": "754ae16c954fb2cc906b2e0b579fe65a9f43b56b3863cf599c404701c3dc0b25",
+    "media/boot.mp4": "fac040bbdad7580cdd626403edd4aa34116c38070e5271c5315f710a40cf189c",
+    "media/poster.png": "f32dedb8187a78c1beb82f9f2350b422b7e8b65bbf0ca62600e1af56902a43b0"
+  },
+  "packageVersions": [
+    "0.4.0",
+    "0.5.0"
+  ],
+  "previousManagedSha256s": [
+    "3a17430a4534a4754a3ee9d1f189dc83feac268355ee9925ab7b6cd55866229a"
+  ]
+}

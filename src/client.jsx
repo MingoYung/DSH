@@ -1,4 +1,5 @@
 import React from 'react'
+import { NativeBootPanel } from './native-settings.jsx'
 
 export const name = 'dsh-awakening'
 export const inject = ['slots', 'configForms']
@@ -177,7 +178,7 @@ function createSettingsPanel(form) {
       timeoutEditing.current = false
       const accepted = await commit(
         () => form.mutate(Object.entries(DEFAULTS).map(([field, value]) => ({ op: 'set', path: [field], value }))),
-        '已恢复默认：每次启动播放、声音开启、音量 85%、等待上限 45 秒。',
+        '已恢复动画设置：每次启动播放、声音开启、音量 85%、等待上限 45 秒；首屏兼容安装状态不变。',
       )
       if (accepted && mounted.current) {
         setVolumeDraft(DEFAULTS.volume)
@@ -210,7 +211,7 @@ function createSettingsPanel(form) {
       <div className="awa-row">
         <div className="awa-copy">
           <label className="awa-heading" htmlFor="awa-enabled">开启启动动画</label>
-          <p className="awa-muted">插件接管加载画面后播放鲸启；关闭后直接进入工作界面。</p>
+          <p className="awa-muted">启动时播放鲸启；关闭后按 DSH 默认方式启动。</p>
         </div>
         <input className="awa-switch" id="awa-enabled" type="checkbox" role="switch" checked={values.enabled} disabled={disabled} onChange={event => write('enabled', event.target.checked)} />
       </div>
@@ -248,6 +249,8 @@ function createSettingsPanel(form) {
         <output htmlFor="awa-volume">{volumeDraft}%</output>
       </div>
 
+      <NativeBootPanel disabled={!editable || pending || previewing} />
+
       <details>
         <summary>高级设置</summary>
         <div className="awa-row">
@@ -269,7 +272,7 @@ function createSettingsPanel(form) {
 
       <footer className="awa-footer">
         <p className="awa-muted">按窗口实际宽高调整构图，横竖切换不重播。<br />保持 22 秒节奏与原声口型。播放中按 Esc 或点击“跳过”退出。</p>
-        <button type="button" disabled={disabled} onClick={reset}>恢复默认</button>
+        <button type="button" disabled={disabled} onClick={reset}>恢复动画设置</button>
       </footer>
       <p className="awa-attribution awa-muted">尾段角色影像与原声：dsh-boot-animation · MIT。<br /><a href="https://github.com/MingoYung/dsh-awakening/blob/main/CREDITS.md" target="_blank" rel="noreferrer">素材来源、作者与许可 ↗</a></p>
       <div className={`awa-feedback${error ? ' awa-error' : ''}`} role={error ? 'alert' : 'status'} aria-live="polite">
