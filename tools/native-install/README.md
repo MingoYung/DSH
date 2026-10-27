@@ -11,6 +11,13 @@ and no force-stop operation.
 No npm, Python, network access or separate Node installation is needed. The
 manual entry uses DSH's bundled Node runtime:
 
+Version 0.6 upgrades the 0.5 carrier once. The new carrier reads the saved
+animation selection and verified local MP4/WebM on each startup; changing
+the selected video does not rewrite the application archive. User videos
+remain data, never executable author code. The bundled built-in animation
+still uses its reviewed responsive Canvas. An invalid custom entry skips the
+early carrier and leaves the normal Host fallback available.
+
 ```powershell
 & .\Install-FirstScreen.ps1
 & .\Install-FirstScreen.ps1 -Action Inspect

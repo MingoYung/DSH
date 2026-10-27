@@ -7,3 +7,5 @@
         volume: 85
         frequency: startup
         timeoutSeconds: 45
+        animationId: builtin:awakening
+        videoFit: cover

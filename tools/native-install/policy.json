@@ -4,29 +4,29 @@
   "exeSha256": "2c12759a3c3f24f2e6776dae4e511cf5984b227f5e4322fd826fea647bf503b6",
   "originalSha256": "204e1dcc32ff6a9b661200b7ab97bda1cbd449904e2eddb71c9309cf767e06b5",
   "legacySha256": "f9bb18dc0e0bc62f15de021a4ad7a058785be9be9e6781651451f1381fb35e6a",
-  "patchedSha256": "81ce16548abef77d9d108076fe7493852f8baee4b337105999ef715d09245170",
+  "patchedSha256": "f3caf0dbb42a3c79b9c83bcbbab4929ed40a3c07d999c2643071c51a98b822d3",
   "files": {
-    "lib/main.js": "08aab540b1a84f75b2a2eff923baf0fcf2a3a04f41f08c734720a02cfeee0826",
-    "lib/web-document.js": "85149010062607f61441666fcfeb3618f30dfca41378ebc2f20f6a70f65d2b5f",
-    "lib/native-boot-carrier.mjs": "096ce8a1380429f805574e5546fe1e67a30fe635ba349486f151ed33657ecfae"
+    "lib/main.js": "11510899b06942d62f9fd55cc68356b994e88602501baaf112b75c7d83d7e292",
+    "lib/web-document.js": "4dffeb61cda19903b61cc6aed240760ce234529d7b1da460a0e584bb74ed6c0b",
+    "lib/native-boot-carrier.mjs": "308acfffd9c2f5c2cdd8bc5834b415b0c45606c0e0c85406b10ceea2d2f18886"
   },
   "runtimeFiles": {
     "runtime/scene/brand.js": "9133132dba57f3eed887768752e41015b4286293f6f8b794cb1d49ce25a39475",
-    "runtime/scene/animation.js": "b5e82bfec9bfe00ff05bea5085c7eca3bca345d074eb7f671981d483333a11fb",
-    "runtime/scene/morph.js": "c7468a9682a5a8c4918812e31ebb6b225543723a6e9c25e147ad60dd3ee29bd1",
-    "runtime/scene/desktop-composition.js": "b5d757f4aec5c178082b033eaa368e3a8f60fd2a2545e88136bcaa8b6881f37c",
-    "runtime/scene/responsive-composition.js": "5761c5f0bcc697af6217f439354ee35839391d83a4de2dfe633ebb3700685923",
-    "runtime/scene/portrait-camera.js": "f4498e68661e1a8cd5d03071dab9bd39e676e230f64f61f0ddfb849087da3c0b",
-    "runtime/stage.js": "c75dca9e845d7334617d753d071238954add00edf5555959aee2598b4efcded7",
-    "runtime/bootstrap.js": "754ae16c954fb2cc906b2e0b579fe65a9f43b56b3863cf599c404701c3dc0b25",
+    "runtime/scene/animation.js": "61a55db356ce2f89e30ce1e098a66c1e1f61bc88699c617a81564e6a97c4e038",
+    "runtime/scene/morph.js": "923240333c95301d9a6f90bd72e8aca28d87b944c3f63f91138825c9b8971434",
+    "runtime/scene/desktop-composition.js": "145c4c50098b6c551bd624c34009669bb9292ec7f1d468d587afa2ef10a0e4fa",
+    "runtime/scene/responsive-composition.js": "391f25bdafd44620d5b061ffb2b8fb19b8adf80c0085f8bcc6ef68a792255ec3",
+    "runtime/scene/portrait-camera.js": "153ec0432d12c76de19bfea462352784b003b9888717c0df8d4dbc8c71c23fa4",
+    "runtime/stage.js": "dcb2d68a276ada26fcfe9573c435e245df42d9a37f6b4e3188ad2b7728391e17",
+    "runtime/bootstrap.js": "d6bb3f3bb37f347394e39d29c22ead0a1ddd932a3f340146e1fd4bbd54528a01",
     "media/boot.mp4": "fac040bbdad7580cdd626403edd4aa34116c38070e5271c5315f710a40cf189c",
     "media/poster.png": "f32dedb8187a78c1beb82f9f2350b422b7e8b65bbf0ca62600e1af56902a43b0"
   },
   "packageVersions": [
-    "0.4.0",
-    "0.5.0"
+    "0.6.0"
   ],
   "previousManagedSha256s": [
-    "3a17430a4534a4754a3ee9d1f189dc83feac268355ee9925ab7b6cd55866229a"
+    "3a17430a4534a4754a3ee9d1f189dc83feac268355ee9925ab7b6cd55866229a",
+    "81ce16548abef77d9d108076fe7493852f8baee4b337105999ef715d09245170"
   ]
 }

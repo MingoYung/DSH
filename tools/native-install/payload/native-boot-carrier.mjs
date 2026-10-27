@@ -1,32 +1,34 @@
 /* Local DSH NEXT 2.0.19-next compatibility layer, explicitly enabled by its
  * installation. No Host requests or credentials are used before Host startup.
- * Only the reviewed dsh-awakening 0.4.0 bytes may run in the initial document. */
+ * Only the reviewed dsh-awakening runtime bytes may run in the initial document.
+ * Creator media is data only: an explicitly selected, local, hash-checked video. */
 import {readFile,realpath,stat,lstat,mkdir,writeFile,rename,readdir,rm} from 'node:fs/promises';
 import {resolve,join,isAbsolute,sep,relative,dirname} from 'node:path';
 import {createHash,randomUUID} from 'node:crypto';
 import {parseDocument} from 'yaml';
 
-const ID='dsh-awakening',VERSION='0.4.0';
-// Package 0.5 adds installer/settings code; its ten animated runtime assets
-// remain byte-identical to the reviewed 0.4 runtime pinned below.
-const PACKAGE_VERSIONS=new Set(['0.4.0','0.5.0']);
-const DEFAULTS={enabled:true,sound:true,volume:85,frequency:'startup',timeoutSeconds:45};
+const ID='dsh-awakening',VERSION='0.6.0';
+const PACKAGE_VERSIONS=new Set(['0.6.0']);
+const DEFAULTS={enabled:true,sound:true,volume:85,frequency:'startup',timeoutSeconds:45,animationId:'builtin:awakening',videoFit:'cover'};
 const KEYS=Object.keys(DEFAULTS);
 const SCRIPT_FILES=['runtime/scene/brand.js','runtime/scene/animation.js','runtime/scene/morph.js','runtime/scene/desktop-composition.js','runtime/scene/responsive-composition.js','runtime/scene/portrait-camera.js','runtime/stage.js','runtime/bootstrap.js'];
 const MEDIA={'boot.mp4':['media/boot.mp4','video/mp4'],'poster.png':['media/poster.png','image/png']};
 const INTEGRITY=Object.freeze({
- 'runtime/scene/brand.js':'9133132dba57f3eed887768752e41015b4286293f6f8b794cb1d49ce25a39475',
- 'runtime/scene/animation.js':'b5e82bfec9bfe00ff05bea5085c7eca3bca345d074eb7f671981d483333a11fb',
- 'runtime/scene/morph.js':'c7468a9682a5a8c4918812e31ebb6b225543723a6e9c25e147ad60dd3ee29bd1',
- 'runtime/scene/desktop-composition.js':'b5d757f4aec5c178082b033eaa368e3a8f60fd2a2545e88136bcaa8b6881f37c',
- 'runtime/scene/responsive-composition.js':'5761c5f0bcc697af6217f439354ee35839391d83a4de2dfe633ebb3700685923',
- 'runtime/scene/portrait-camera.js':'f4498e68661e1a8cd5d03071dab9bd39e676e230f64f61f0ddfb849087da3c0b',
- 'runtime/stage.js':'c75dca9e845d7334617d753d071238954add00edf5555959aee2598b4efcded7',
- 'runtime/bootstrap.js':'754ae16c954fb2cc906b2e0b579fe65a9f43b56b3863cf599c404701c3dc0b25',
- 'media/boot.mp4':'fac040bbdad7580cdd626403edd4aa34116c38070e5271c5315f710a40cf189c',
- 'media/poster.png':'f32dedb8187a78c1beb82f9f2350b422b7e8b65bbf0ca62600e1af56902a43b0'
+ "runtime/scene/brand.js":"9133132dba57f3eed887768752e41015b4286293f6f8b794cb1d49ce25a39475",
+ "runtime/scene/animation.js":"61a55db356ce2f89e30ce1e098a66c1e1f61bc88699c617a81564e6a97c4e038",
+ "runtime/scene/morph.js":"923240333c95301d9a6f90bd72e8aca28d87b944c3f63f91138825c9b8971434",
+ "runtime/scene/desktop-composition.js":"145c4c50098b6c551bd624c34009669bb9292ec7f1d468d587afa2ef10a0e4fa",
+ "runtime/scene/responsive-composition.js":"391f25bdafd44620d5b061ffb2b8fb19b8adf80c0085f8bcc6ef68a792255ec3",
+ "runtime/scene/portrait-camera.js":"153ec0432d12c76de19bfea462352784b003b9888717c0df8d4dbc8c71c23fa4",
+ "runtime/stage.js":"dcb2d68a276ada26fcfe9573c435e245df42d9a37f6b4e3188ad2b7728391e17",
+ "runtime/bootstrap.js":"d6bb3f3bb37f347394e39d29c22ead0a1ddd932a3f340146e1fd4bbd54528a01",
+ "media/boot.mp4":"fac040bbdad7580cdd626403edd4aa34116c38070e5271c5315f710a40cf189c",
+ "media/poster.png":"f32dedb8187a78c1beb82f9f2350b422b7e8b65bbf0ca62600e1af56902a43b0"
 });
 const FILES=Object.keys(INTEGRITY),REVISION=/^[a-f0-9]{24}$/;
+const MAX_VIDEO_BYTES=120*1024*1024,MAX_LIBRARY_BYTES=1024*1024;
+const SHA256=/^[a-f0-9]{64}$/,VIDEO_ID=/^video:[a-f0-9]{24}$/;
+const LICENSES=new Set(['local-only','MIT','CC-BY-4.0','CC0-1.0','CC-BY-SA-4.0']);
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
 const plain=v=>!!v&&typeof v==='object'&&!Array.isArray(v);
 const owns=(o,k)=>Object.hasOwn(o,k);
@@ -38,7 +40,7 @@ async function bounded(file,limit,missing=false){
  try{const info=await lstat(file);if(!info.isFile()||info.isSymbolicLink()||info.size>limit)throw new Error('invalid-file');const data=await readFile(file);if(data.length>limit)throw new Error('invalid-file');return data;}
  catch(error){if(missing&&error.code==='ENOENT')return null;throw error;}
 }
-function validateSettings(settings){return typeof settings.enabled==='boolean'&&typeof settings.sound==='boolean'&&Number.isInteger(settings.volume)&&settings.volume>=0&&settings.volume<=100&&['startup','daily'].includes(settings.frequency)&&Number.isInteger(settings.timeoutSeconds)&&settings.timeoutSeconds>=25&&settings.timeoutSeconds<=60;}
+function validateSettings(settings){return typeof settings.enabled==='boolean'&&typeof settings.sound==='boolean'&&Number.isInteger(settings.volume)&&settings.volume>=0&&settings.volume<=100&&['startup','daily'].includes(settings.frequency)&&Number.isInteger(settings.timeoutSeconds)&&settings.timeoutSeconds>=25&&settings.timeoutSeconds<=60&&(settings.animationId==='builtin:awakening'||VIDEO_ID.test(settings.animationId))&&['cover','contain'].includes(settings.videoFit);}
 function ownNested(value,depth=0){
  if(depth>40)throw new Error('patch-too-deep');
  if(!value||typeof value!=='object')return false;
@@ -121,6 +123,26 @@ async function packageBytes(packageRoot){
  }
  return bytes;
 }
+function label(value){return typeof value==='string'&&value.trim().length>0&&value.length<=80&&!/[\u0000-\u001f\u007f]/.test(value);}
+function videoEntry(value){
+ return plain(value)&&SHA256.test(value.sha256)&&value.id==='video:'+value.sha256.slice(0,24)&&['mp4','webm'].includes(value.format)&&value.file===value.sha256+'.'+value.format&&Number.isSafeInteger(value.bytes)&&value.bytes>=12&&value.bytes<=MAX_VIDEO_BYTES&&Number.isFinite(value.durationSeconds)&&value.durationSeconds>=1&&value.durationSeconds<=45&&label(value.title)&&label(value.author)&&LICENSES.has(value.license);
+}
+function videoHeader(bytes,format){return format==='mp4'?bytes.length>=12&&bytes.toString('ascii',4,8)==='ftyp':format==='webm'&&bytes.length>=4&&bytes[0]===0x1a&&bytes[1]===0x45&&bytes[2]===0xdf&&bytes[3]===0xa3;}
+/** Never load a creator script, evaluate metadata, or fetch a remote asset here. */
+async function selectedVideo(selected){
+ if(selected.settings.animationId==='builtin:awakening')return null;
+ const library=join(selected.home,'awakening-library'),info=await lstat(library);
+ if(!info.isDirectory()||info.isSymbolicLink()||await realpath(library)!==library)throw new Error('invalid-library-directory');
+ const manifest=JSON.parse((await bounded(join(library,'manifest.json'),MAX_LIBRARY_BYTES)).toString('utf8'));
+ if(!plain(manifest)||manifest.schemaVersion!==1||!Array.isArray(manifest.animations)||manifest.animations.length>128)throw new Error('invalid-library-manifest');
+ const entries=manifest.animations,ids=new Set();
+ for(const entry of entries){if(!videoEntry(entry)||ids.has(entry.id))throw new Error('invalid-library-entry');ids.add(entry.id);}
+ const entry=entries.find(value=>value.id===selected.settings.animationId);
+ if(!entry)throw new Error('selected-video-missing');
+ const target=join(library,entry.file),payload=await bounded(target,MAX_VIDEO_BYTES);
+ if(payload.length!==entry.bytes||sha(payload)!==entry.sha256||!videoHeader(payload,entry.format))throw new Error('selected-video-invalid');
+ return{entry,payload,file:'media/selected.'+entry.format,route:'selected.'+entry.format,mime:entry.format==='mp4'?'video/mp4':'video/webm'};
+}
 async function realDirectory(parent,name){
  const target=join(parent,name);
  try{await mkdir(target,{mode:0o700});}catch(error){if(error.code!=='EEXIST')throw error;}
@@ -128,14 +150,14 @@ async function realDirectory(parent,name){
  if(!info.isDirectory()||info.isSymbolicLink()||await realpath(target)!==target)throw new Error('cache-directory-link');
  return target;
 }
-async function verifiedCache(directory){
+async function verifiedCache(directory,integrity){
  const info=await lstat(directory);
  if(!info.isDirectory()||info.isSymbolicLink()||await realpath(directory)!==directory)throw new Error('invalid-cache');
  const actual=new Map();
- for(const file of FILES){
+ for(const file of Object.keys(integrity)){
   const target=await realpath(join(directory,file));if(!within(directory,target))throw new Error('cache-outside-root');
-  const bytes=await bounded(target,file.endsWith('.mp4')?20*1024*1024:file.endsWith('.png')?4*1024*1024:512*1024);
-  if(sha(bytes)!==INTEGRITY[file])throw new Error('cached-integrity-mismatch');
+  const bytes=await bounded(target,/\.(mp4|webm)$/.test(file)?MAX_VIDEO_BYTES:file.endsWith('.png')?4*1024*1024:512*1024);
+  if(sha(bytes)!==integrity[file])throw new Error('cached-integrity-mismatch');
   actual.set(file,bytes);
  }
  return actual;
@@ -145,12 +167,12 @@ async function safeRemoveRevision(root,name){
  const directory=join(root,name);
  const info=await lstat(directory);if(!info.isDirectory()||info.isSymbolicLink()||await realpath(directory)!==directory)return;
  // This cache has a fixed, known tree. Unknown files/links are never removed.
- const known=new Set([...FILES,'manifest.json']);
+ const known=new Set([...FILES,'media/selected.mp4','media/selected.webm','manifest.json']);
  async function check(dir,prefix=''){
   for(const entry of await readdir(dir,{withFileTypes:true})){
    const rel=prefix+entry.name,target=join(dir,entry.name);
    if(entry.isSymbolicLink())return false;
-   if(entry.isDirectory()){if(!FILES.some(file=>file.startsWith(rel+'/'))||!await check(target,rel+'/'))return false;}
+   if(entry.isDirectory()){if(![...known].some(file=>file.startsWith(rel+'/'))||!await check(target,rel+'/'))return false;}
    else if(!entry.isFile()||!known.has(rel))return false;
   }
   return true;
@@ -163,7 +185,7 @@ async function cleanCache(root,protectedRevisions){
  entries.sort((a,b)=>b.mtime-a.mtime);
  for(const row of entries.slice(2))await safeRemoveRevision(root,row.name);
 }
-async function cache(selection,bytes,revision,activeRevisions){
+async function cache(selection,bytes,integrity,revision,activeRevisions){
  let cacheRoot=await realDirectory(selection.home,'desktop-startup');cacheRoot=await realDirectory(cacheRoot,'awakening');
  const directory=join(cacheRoot,revision);
  let exists=true;try{await lstat(directory);}catch(error){if(error.code==='ENOENT')exists=false;else throw error;}
@@ -171,12 +193,12 @@ async function cache(selection,bytes,revision,activeRevisions){
   const temporary=join(cacheRoot,'.pending-'+randomUUID());await mkdir(temporary,{mode:0o700});
   try{
    for(const [file,payload]of bytes){const target=join(temporary,file);await mkdir(dirname(target),{recursive:true,mode:0o700});await writeFile(target,payload,{flag:'wx',mode:0o600});}
-   await writeFile(join(temporary,'manifest.json'),JSON.stringify({schema:1,version:VERSION,revision,profile:selection.profile,integrity:INTEGRITY}),{flag:'wx',mode:0o600});
-   await verifiedCache(temporary);
-   try{await rename(temporary,directory);}catch(error){if(!['EEXIST','ENOTEMPTY','EPERM'].includes(error.code))throw error;await verifiedCache(directory);await rm(temporary,{recursive:true});}
+   await writeFile(join(temporary,'manifest.json'),JSON.stringify({schema:2,version:VERSION,revision,profile:selection.profile,integrity}),{flag:'wx',mode:0o600});
+   await verifiedCache(temporary,integrity);
+   try{await rename(temporary,directory);}catch(error){if(!['EEXIST','ENOTEMPTY','EPERM'].includes(error.code))throw error;await verifiedCache(directory,integrity);await rm(temporary,{recursive:true});}
   }catch(error){try{if(await realpath(temporary)===temporary)await rm(temporary,{recursive:true});}catch{}throw error;}
  }
- const cached=await verifiedCache(directory);
+ const cached=await verifiedCache(directory,integrity);
  try{await cleanCache(cacheRoot,new Set([revision,...activeRevisions]));}catch{/* cache retention must not block boot */}
  return {directory,bytes:cached};
 }
@@ -185,18 +207,21 @@ async function cache(selection,bytes,revision,activeRevisions){
 export async function loadCarrier(context,{onWarning=()=>{},activeRevisions=[]}={}){
  if(!validContext(context))return null;
  try{
-  const selected=await selection(context),source=await packageBytes(selected.packageRoot);
-  const revision=sha(JSON.stringify([VERSION,selected.profile,selected.settings,INTEGRITY])).slice(0,24);
-  const cached=await cache(selected,source,revision,activeRevisions);
+  const selected=await selection(context),source=await packageBytes(selected.packageRoot),video=await selectedVideo(selected);
+  const integrity={...INTEGRITY},media={...MEDIA};
+  if(video){source.set(video.file,video.payload);integrity[video.file]=video.entry.sha256;media[video.route]=[video.file,video.mime];}
+  const revision=sha(JSON.stringify([VERSION,selected.profile,selected.settings,integrity])).slice(0,24);
+  const cached=await cache(selected,source,integrity,revision,activeRevisions);
   const prefix='/assets/dsh-awakening-native/'+revision+'/';
-  const options={settings:selected.settings,sourceUrl:prefix+'boot.mp4',posterUrl:prefix+'poster.png',autostart:true};
+  const animation=video?{id:video.entry.id,title:video.entry.title,kind:'video',durationSeconds:video.entry.durationSeconds,sourceUrl:prefix+video.route,fit:selected.settings.videoFit}:{id:'builtin:awakening',title:'鲸启 · Awakening',kind:'adaptive',durationSeconds:22,sourceUrl:prefix+'boot.mp4',posterUrl:prefix+'poster.png',fit:'cover'};
+  const options={version:VERSION,settings:selected.settings,animation,sourceUrl:animation.sourceUrl,...animation.posterUrl?{posterUrl:animation.posterUrl}:{},autostart:true};
   const code=SCRIPT_FILES.map(file=>cached.bytes.get(file).toString('utf8')).join('\n')+'\nwindow.__DSH_AWAKENING_INSTALL__('+inlineJSON(options)+');';
   const assets=new Map();
-  for(const [file]of Object.values(MEDIA)){
+  for(const [file]of Object.values(media)){
    const path=join(cached.directory,file),info=await stat(path);
    assets.set(file,{file:path,size:info.size,mtimeMs:info.mtimeMs,bytes:cached.bytes.get(file)});
   }
-  return {revision,profile:selected.profile,prefix,head:'<script data-dsh-native-boot="'+revision+'">'+scriptText(code)+'</script>',assets,sourceSettings:{...selected.settings},cacheDirectory:cached.directory};
+  return {revision,profile:selected.profile,prefix,head:'<script data-dsh-native-boot="'+revision+'">'+scriptText(code)+'</script>',assets,media,sourceSettings:{...selected.settings},cacheDirectory:cached.directory};
  }catch{try{onWarning('native-boot-skipped');}catch{}return null;}
 }
 function rangeOf(text,size){if(!text)return null;const m=/^bytes=(\d*)-(\d*)$/.exec(text.trim());if(!m||(!m[1]&&!m[2]))return false;let start,end;if(!m[1]){const n=Number(m[2]);if(!Number.isSafeInteger(n)||n<=0)return false;start=Math.max(0,size-n);end=size-1;}else{start=Number(m[1]);end=m[2]?Number(m[2]):size-1;}if(!Number.isSafeInteger(start)||!Number.isSafeInteger(end)||start<0||start>=size||end<start)return false;return {start,end:Math.min(end,size-1)};}
@@ -204,9 +229,10 @@ function rangeOf(text,size){if(!text)return null;const m=/^bytes=(\d*)-(\d*)$/.e
 export async function serveCarrierAsset(request,carrier){
  if(!carrier)return null;
  const url=new URL(request.url),name=url.pathname.startsWith(carrier.prefix)?url.pathname.slice(carrier.prefix.length):null;
- if(!name||!Object.hasOwn(MEDIA,name))return null;
+ const media=carrier.media??MEDIA;
+ if(!name||!Object.hasOwn(media,name))return null;
  if(!['GET','HEAD'].includes(request.method))return new Response(null,{status:405,headers:{allow:'GET, HEAD'}});
- const [file,mime]=MEDIA[name],asset=carrier.assets.get(file);
+ const [file,mime]=media[name],asset=carrier.assets.get(file);
  try{
   const current=await lstat(asset.file);if(!current.isFile()||current.isSymbolicLink()||current.size!==asset.size||current.mtimeMs!==asset.mtimeMs)return new Response(null,{status:410});
   const range=rangeOf(request.headers.get('range'),asset.size);if(range===false)return new Response(null,{status:416,headers:{'content-range':'bytes */'+asset.size}});

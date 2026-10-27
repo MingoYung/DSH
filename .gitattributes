@@ -1,0 +1,5 @@
+# The optional native carrier verifies these files byte for byte.
+# Keep source clones identical to Release tarballs on Windows too.
+runtime/** -text
+tools/native-install/payload/** -text
+media/** -text

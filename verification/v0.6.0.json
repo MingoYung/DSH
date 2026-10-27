@@ -1,0 +1,68 @@
+{
+  "version": "0.6.0",
+  "checkedAt": "2026-10-27T09:06:17.419995+00:00",
+  "automatedPassed": true,
+  "scope": "Isolated actual HTTP/storage, real headless Chromium decoding and settings, offline native-carrier/installer fixtures; this is not a claim of 0.6 human live-DSH acceptance.",
+  "checks": {
+    "backendAssertions": 43,
+    "uiCases": 16,
+    "playbackCases": 9,
+    "realHttpUiCases": 13,
+    "nativeStructureCases": 36,
+    "nativeCarrierCases": 14,
+    "nativeLifecycleCases": 6,
+    "cancelAndContractPassed": true,
+    "hostInjectionRoutes": 11,
+    "registeredLazyClient": true,
+    "publicCatalogFetched": true
+  },
+  "native": {
+    "desktopVersion": "2.0.19-next",
+    "targetAsarSha256": "f3caf0dbb42a3c79b9c83bcbbab4929ed40a3c07d999c2643071c51a98b822d3",
+    "originalAsarSha256": "204e1dcc32ff6a9b661200b7ab97bda1cbd449904e2eddb71c9309cf767e06b5",
+    "helperSha256": "308acfffd9c2f5c2cdd8bc5834b415b0c45606c0e0c85406b10ceea2d2f18886",
+    "runtimeFiles": {
+      "runtime/scene/brand.js": "9133132dba57f3eed887768752e41015b4286293f6f8b794cb1d49ce25a39475",
+      "runtime/scene/animation.js": "61a55db356ce2f89e30ce1e098a66c1e1f61bc88699c617a81564e6a97c4e038",
+      "runtime/scene/morph.js": "923240333c95301d9a6f90bd72e8aca28d87b944c3f63f91138825c9b8971434",
+      "runtime/scene/desktop-composition.js": "145c4c50098b6c551bd624c34009669bb9292ec7f1d468d587afa2ef10a0e4fa",
+      "runtime/scene/responsive-composition.js": "391f25bdafd44620d5b061ffb2b8fb19b8adf80c0085f8bcc6ef68a792255ec3",
+      "runtime/scene/portrait-camera.js": "153ec0432d12c76de19bfea462352784b003b9888717c0df8d4dbc8c71c23fa4",
+      "runtime/stage.js": "dcb2d68a276ada26fcfe9573c435e245df42d9a37f6b4e3188ad2b7728391e17",
+      "runtime/bootstrap.js": "d6bb3f3bb37f347394e39d29c22ead0a1ddd932a3f340146e1fd4bbd54528a01",
+      "media/boot.mp4": "fac040bbdad7580cdd626403edd4aa34116c38070e5271c5315f710a40cf189c",
+      "media/poster.png": "f32dedb8187a78c1beb82f9f2350b422b7e8b65bbf0ca62600e1af56902a43b0"
+    },
+    "previousManagedSha256s": [
+      "3a17430a4534a4754a3ee9d1f189dc83feac268355ee9925ab7b6cd55866229a",
+      "81ce16548abef77d9d108076fe7493852f8baee4b337105999ef715d09245170"
+    ],
+    "realInstalledUpdated": false
+  },
+  "library": {
+    "repository": "https://github.com/MingoYung/dsh-awakening-library",
+    "commit": "c88ea7199bf27cec74e5718ee25ed5a185631514",
+    "initialEntries": 1,
+    "startupNetwork": false,
+    "contentKinds": [
+      "built-in adaptive animation",
+      "MP4/WebM video"
+    ],
+    "localImportPublicUpload": false
+  },
+  "manualEvidence": {
+    "version": "0.6.0",
+    "liveDshAccepted": false,
+    "pending": "Install and verify live settings, import/select/preview and first-screen playback."
+  },
+  "sha256": {
+    "package.json": "e77f69aa4d64dad319d44f59db1b45d11904e476ef0b3fd16cf2edfcc9d70dff",
+    "lib/index.js": "a4ebaca348339f4a6ce418d4906a52ea895268c615077971e634e67de23682e6",
+    "lib/client.js": "12060dbbccea6185c74af778dce9aec3eaeab370aebd7e51206476eac2290028",
+    "lib/animation-library.mjs": "950ab9d11eeeb48e0c8ca1bbf0e409c1590c228120415ff43d16c583dba50c44",
+    "src/client.jsx": "21a58557afa565b9da83b835e440d55d540b237b54c996a8b7e145a98327a0e7",
+    "src/library-settings.jsx": "9ec6a2bb9649d47342e83191aba8a6d8c66df8236787ccd41a9074f1a4eadaff",
+    "runtime/bootstrap.js": "d6bb3f3bb37f347394e39d29c22ead0a1ddd932a3f340146e1fd4bbd54528a01",
+    "tools/native-install/policy.json": "2f34baaee720e392d108ee238efae92ab6745989b9805fb8c843acaed178aeb7"
+  }
+}

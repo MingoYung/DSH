@@ -1,5 +1,6 @@
 import React from 'react'
 import { NativeBootPanel } from './native-settings.jsx'
+import { AnimationLibraryPanel, BUILTIN_ANIMATION } from './library-settings.jsx'
 
 export const name = 'dsh-awakening'
 export const inject = ['slots', 'configForms']
@@ -11,6 +12,8 @@ const DEFAULTS = Object.freeze({
   volume: 85,
   frequency: 'startup',
   timeoutSeconds: 45,
+  animationId: 'builtin:awakening',
+  videoFit: 'cover',
 })
 
 const CSS = `
@@ -64,6 +67,8 @@ function resolveValues(value) {
     volume: Number.isInteger(input.volume) && input.volume >= 0 && input.volume <= 100 ? input.volume : DEFAULTS.volume,
     frequency: input.frequency === 'daily' ? 'daily' : DEFAULTS.frequency,
     timeoutSeconds: Number.isInteger(input.timeoutSeconds) && input.timeoutSeconds >= 25 && input.timeoutSeconds <= 60 ? input.timeoutSeconds : DEFAULTS.timeoutSeconds,
+    animationId: typeof input.animationId === 'string' && /^(builtin:awakening|video:[a-f0-9]{24})$/.test(input.animationId) ? input.animationId : DEFAULTS.animationId,
+    videoFit: input.videoFit === 'contain' ? 'contain' : DEFAULTS.videoFit,
   }
 }
 
@@ -79,6 +84,8 @@ function createSettingsPanel(form) {
     const [error, setError] = React.useState('')
     const [notice, setNotice] = React.useState('')
     const [previewing, setPreviewing] = React.useState(false)
+    const [libraryBusy, setLibraryBusy] = React.useState(false)
+    const [selectedAnimation, setSelectedAnimation] = React.useState(BUILTIN_ANIMATION)
     const [volumeDraft, setVolumeDraft] = React.useState(values.volume)
     const [timeoutDraft, setTimeoutDraft] = React.useState(String(values.timeoutSeconds))
     const busy = React.useRef(false)
@@ -99,7 +106,7 @@ function createSettingsPanel(form) {
 
     const ready = snapshot.status === 'ready' && snapshot.value !== undefined
     const editable = ready && snapshot.writable === true
-    const disabled = !editable || pending
+    const disabled = !editable || pending || libraryBusy || previewing
 
     async function commit(operation, successText = '已保存，下次启动按新设置播放。') {
       if (busy.current || !editable) return false
@@ -153,8 +160,13 @@ function createSettingsPanel(form) {
       }
     }
 
-    async function preview() {
+    async function preview(animation) {
       if (previewing || busy.current || !ready) return
+      const descriptor = animation?.sourceUrl ? animation : selectedAnimation
+      if (!descriptor || (animation?.sourceUrl ? false : descriptor.id !== resolveValues(form.getSnapshot().value).animationId)) {
+        setError('当前动画尚未读取或文件已不可用，请重新读取本地动画后选择一部作品。')
+        return
+      }
       setError('')
       const bridge = window.__DSH_AWAKENING_PLUGIN__
       if (typeof bridge?.preview !== 'function') {
@@ -164,7 +176,8 @@ function createSettingsPanel(form) {
       setPreviewing(true)
       setNotice('预览可随时按 Esc 退出。')
       try {
-        await bridge.preview({ ...resolveValues(form.getSnapshot().value) })
+        const result = await bridge.preview({ ...resolveValues(form.getSnapshot().value) }, descriptor)
+        if (mounted.current && ['media-error', 'animation-unavailable'].includes(result?.reason)) setError('视频未能正常播放。请确认格式可用，或重新下载这部作品。')
       } catch (caught) {
         if (mounted.current) setError(`预览未能启动：${caught instanceof Error ? caught.message : '请重新打开 DSH 后再试。'}`)
       } finally {
@@ -178,7 +191,7 @@ function createSettingsPanel(form) {
       timeoutEditing.current = false
       const accepted = await commit(
         () => form.mutate(Object.entries(DEFAULTS).map(([field, value]) => ({ op: 'set', path: [field], value }))),
-        '已恢复动画设置：每次启动播放、声音开启、音量 85%、等待上限 45 秒；首屏兼容安装状态不变。',
+        '已恢复动画设置并选用内置鲸启：每次启动播放、声音开启、音量 85%、等待上限 45 秒；本地作品和首屏兼容安装状态保留。',
       )
       if (accepted && mounted.current) {
         setVolumeDraft(DEFAULTS.volume)
@@ -199,19 +212,24 @@ function createSettingsPanel(form) {
       <header className="awa-header">
         <div>
           <h2>鲸启</h2>
-          <p className="awa-muted">DSH Awakening · 完整动画 22 秒</p>
+          <p className="awa-muted">DSH Awakening · {selectedAnimation?.id === values.animationId ? `${selectedAnimation.title} · ${Number(selectedAnimation.durationSeconds).toFixed(Number.isInteger(selectedAnimation.durationSeconds) ? 0 : 1)} 秒` : '读取当前作品中…'}</p>
         </div>
-        <button type="button" className="awa-primary" disabled={!ready || pending || previewing} onClick={preview}>
+        <button type="button" className="awa-primary" disabled={!ready || pending || previewing || libraryBusy} onClick={() => preview()}>
           {previewing ? '预览中…' : '完整预览'}
         </button>
       </header>
 
       {loadingCopy && <p className="awa-info" role="status">{loadingCopy}</p>}
 
+      <AnimationLibraryPanel selectedId={values.animationId} fit={values.videoFit}
+        disabled={!ready || pending} readOnly={!editable} previewing={previewing}
+        onSelect={id => write('animationId', id)} onFit={fit => write('videoFit', fit)} onPreview={preview}
+        onSelectionChange={setSelectedAnimation} onBusyChange={setLibraryBusy} />
+
       <div className="awa-row">
         <div className="awa-copy">
           <label className="awa-heading" htmlFor="awa-enabled">开启启动动画</label>
-          <p className="awa-muted">启动时播放鲸启；关闭后按 DSH 默认方式启动。</p>
+          <p className="awa-muted">启动时播放当前选用的动画；关闭后按 DSH 默认方式启动。</p>
         </div>
         <input className="awa-switch" id="awa-enabled" type="checkbox" role="switch" checked={values.enabled} disabled={disabled} onChange={event => write('enabled', event.target.checked)} />
       </div>
@@ -230,7 +248,7 @@ function createSettingsPanel(form) {
       <div className="awa-row">
         <div className="awa-copy">
           <label className="awa-heading" htmlFor="awa-sound">播放声音</label>
-          <p className="awa-muted">包含界面音效与角色原声欢迎语，音量统一调节。</p>
+          <p className="awa-muted">播放作品自带的音轨；内置鲸启包含音效和原声欢迎语。</p>
         </div>
         <input className="awa-switch" id="awa-sound" type="checkbox" role="switch" checked={values.sound} disabled={disabled} onChange={event => write('sound', event.target.checked)} />
       </div>
@@ -249,14 +267,14 @@ function createSettingsPanel(form) {
         <output htmlFor="awa-volume">{volumeDraft}%</output>
       </div>
 
-      <NativeBootPanel disabled={!editable || pending || previewing} />
+      <NativeBootPanel disabled={!editable || pending || previewing || libraryBusy} />
 
       <details>
         <summary>高级设置</summary>
         <div className="awa-row">
           <div className="awa-copy">
             <label className="awa-heading" htmlFor="awa-timeout">启动等待上限</label>
-            <p className="awa-muted">DSH 迟迟未就绪时，超过上限自动退出动画，显示底层界面。</p>
+            <p className="awa-muted">DSH 迟迟未就绪时自动让出界面。实际上限至少容纳作品长度及 3 秒缓冲，最长 60 秒。</p>
           </div>
           <div className="awa-number">
             <input id="awa-timeout" type="number" min="25" max="60" step="1" value={timeoutDraft} disabled={disabled}
@@ -271,10 +289,10 @@ function createSettingsPanel(form) {
       </details>
 
       <footer className="awa-footer">
-        <p className="awa-muted">按窗口实际宽高调整构图，横竖切换不重播。<br />保持 22 秒节奏与原声口型。播放中按 Esc 或点击“跳过”退出。</p>
+        <p className="awa-muted">内置鲸启按窗口绘制，普通视频按所选显示方式播放。<br />切换窗口大小不重播。播放中按 Esc 或点击“跳过”退出。</p>
         <button type="button" disabled={disabled} onClick={reset}>恢复动画设置</button>
       </footer>
-      <p className="awa-attribution awa-muted">尾段角色影像与原声：dsh-boot-animation · MIT。<br /><a href="https://github.com/MingoYung/dsh-awakening/blob/main/CREDITS.md" target="_blank" rel="noreferrer">素材来源、作者与许可 ↗</a></p>
+      {values.animationId === BUILTIN_ANIMATION.id && <p className="awa-attribution awa-muted">内置鲸启尾段角色影像与原声：dsh-boot-animation · MIT。<br /><a href="https://github.com/MingoYung/dsh-awakening/blob/main/CREDITS.md" target="_blank" rel="noreferrer">素材来源、作者与许可 ↗</a></p>}
       <div className={`awa-feedback${error ? ' awa-error' : ''}`} role={error ? 'alert' : 'status'} aria-live="polite">
         {error || (pending ? '正在保存…' : notice)}
       </div>
