@@ -1,6 +1,7 @@
 import React from 'react'
 import { NativeBootPanel } from './native-settings.jsx'
 import { AnimationLibraryPanel, BUILTIN_ANIMATION } from './library-settings.jsx'
+import { Icon, SettingsTabs, SETTINGS_CSS, useThemeContrast } from './settings-ui.jsx'
 
 export const name = 'dsh-awakening'
 export const inject = ['slots', 'configForms']
@@ -16,48 +17,7 @@ const DEFAULTS = Object.freeze({
   videoFit: 'cover',
 })
 
-const CSS = `
-.dsh-awakening-settings{font-family:inherit;color:var(--dsw-alias-label-primary,inherit);width:100%;max-width:760px;line-height:1.6}
-.dsh-awakening-settings *{box-sizing:border-box}
-.dsh-awakening-settings h2{font-size:20px;font-weight:600;line-height:1.4;margin:0 0 5px;letter-spacing:.03em}
-.dsh-awakening-settings p{margin:0}
-.dsh-awakening-settings .awa-muted{color:var(--dsw-alias-label-secondary,#80858e);font-size:12px}
-.dsh-awakening-settings .awa-header{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:24px;flex-wrap:wrap}
-.dsh-awakening-settings .awa-heading{font-size:13px;font-weight:500;line-height:1.6}
-.dsh-awakening-settings .awa-row{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px 0;border-top:1px solid var(--dsw-alias-border-l2,rgba(127,127,127,.18))}
-.dsh-awakening-settings .awa-copy{flex:1;min-width:0}
-.dsh-awakening-settings .awa-copy .awa-muted{margin-top:4px}
-.dsh-awakening-settings button,.dsh-awakening-settings select,.dsh-awakening-settings input{font-family:inherit}
-.dsh-awakening-settings button{font-size:12px;line-height:1.5;min-height:34px;padding:7px 14px;border:1px solid var(--dsw-alias-border-l2,rgba(127,127,127,.3));border-radius:8px;background:var(--dsw-alias-bg-layer-1,transparent);color:var(--dsw-alias-label-primary,inherit);cursor:pointer;white-space:nowrap}
-.dsh-awakening-settings button:hover:not(:disabled){background:var(--dsw-alias-interactive-bg-hover,rgba(127,127,127,.12))}
-.dsh-awakening-settings .awa-primary{background:var(--dsw-alias-brand-primary,#4d6bfe);border-color:transparent;color:#fff}
-.dsh-awakening-settings .awa-primary:hover:not(:disabled){background:var(--dsw-alias-brand-primary,#4d6bfe);filter:brightness(1.08)}
-.dsh-awakening-settings button:disabled,.dsh-awakening-settings input:disabled,.dsh-awakening-settings select:disabled{cursor:default;opacity:.5}
-.dsh-awakening-settings button:focus-visible,.dsh-awakening-settings input:focus-visible,.dsh-awakening-settings select:focus-visible,.dsh-awakening-settings summary:focus-visible{outline:2px solid var(--dsw-alias-brand-primary,#4d6bfe);outline-offset:3px}
-.dsh-awakening-settings select,.dsh-awakening-settings input[type=number]{font-size:12px;line-height:1.5;min-height:34px;border:1px solid var(--dsw-alias-border-l2,rgba(127,127,127,.3));border-radius:8px;background:var(--dsw-alias-bg-base,transparent);color:var(--dsw-alias-label-primary,inherit);padding:6px 10px}
-.dsh-awakening-settings select{min-width:132px}
-.dsh-awakening-settings input[type=number]{width:82px;font-variant-numeric:tabular-nums}
-.dsh-awakening-settings .awa-switch{appearance:none;-webkit-appearance:none;width:34px;height:21px;position:relative;display:block;flex:0 0 auto;margin:0;background:var(--dsw-alias-interactive-bg-hover,rgba(127,127,127,.3));border:1px solid var(--dsw-alias-border-l2,rgba(127,127,127,.2));border-radius:20px;cursor:pointer}
-.dsh-awakening-settings .awa-switch::before{content:'';position:absolute;width:15px;height:15px;top:2px;left:2px;background:#fff;border-radius:50%;box-shadow:0 1px 3px #0002;transition:transform .15s ease}
-.dsh-awakening-settings .awa-switch:checked{background:var(--dsw-alias-brand-primary,#4d6bfe);border-color:transparent}
-.dsh-awakening-settings .awa-switch:checked::before{transform:translateX(13px)}
-.dsh-awakening-settings .awa-volume{display:flex;align-items:center;gap:12px;margin:0 0 18px 0;padding:2px 0 0 0}
-.dsh-awakening-settings .awa-volume input{width:100%;max-width:320px;accent-color:var(--dsw-alias-brand-primary,#4d6bfe);height:4px;margin:0}
-.dsh-awakening-settings .awa-volume label{font-size:12px;min-width:31px;color:var(--dsw-alias-label-secondary,#80858e)}
-.dsh-awakening-settings .awa-volume output{font-size:12px;min-width:38px;text-align:right;font-variant-numeric:tabular-nums;color:var(--dsw-alias-label-secondary,#80858e)}
-.dsh-awakening-settings details{border-top:1px solid var(--dsw-alias-border-l2,rgba(127,127,127,.18));margin-top:2px}
-.dsh-awakening-settings summary{font-size:12px;color:var(--dsw-alias-label-secondary,#80858e);padding:15px 0;cursor:pointer;list-style-position:inside}
-.dsh-awakening-settings details .awa-row{border-top:0;padding:4px 0 18px}
-.dsh-awakening-settings .awa-number{display:flex;align-items:center;gap:7px;white-space:nowrap;font-size:12px;color:var(--dsw-alias-label-secondary,#80858e)}
-.dsh-awakening-settings .awa-footer{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-top:10px;padding-top:18px;border-top:1px solid var(--dsw-alias-border-l2,rgba(127,127,127,.18));flex-wrap:wrap}
-.dsh-awakening-settings .awa-feedback{min-height:22px;margin-top:12px;font-size:12px;line-height:1.7;color:var(--dsw-alias-label-secondary,#80858e)}
-.dsh-awakening-settings .awa-error{color:var(--dsw-alias-status-error,#c94d52)}
-.dsh-awakening-settings .awa-info{font-size:12px;line-height:1.8;padding:10px 12px;margin-bottom:12px;background:var(--dsw-alias-bg-layer-1,rgba(127,127,127,.06));border-radius:8px;color:var(--dsw-alias-label-secondary,#80858e)}
-.dsh-awakening-settings .awa-attribution{margin-top:12px;line-height:1.8}
-.dsh-awakening-settings .awa-attribution a{color:var(--dsw-alias-brand-primary,#8baaff);text-underline-offset:3px}
-@media(max-width:560px){.dsh-awakening-settings .awa-row{gap:14px}.dsh-awakening-settings .awa-header{gap:12px}.dsh-awakening-settings .awa-volume input{max-width:none}.dsh-awakening-settings select{min-width:116px}.dsh-awakening-settings .awa-footer{align-items:flex-start}.dsh-awakening-settings .awa-footer p{flex-basis:100%}}
-@media(prefers-reduced-motion:reduce){.dsh-awakening-settings .awa-switch::before{transition:none}}
-`
+const TABS = [{ value: 'current', label: '当前动画', icon: 'play' }, { value: 'library', label: '动画库', icon: 'library' }, { value: 'settings', label: '播放设置', icon: 'settings' }]
 
 function resolveValues(value) {
   const input = value && typeof value === 'object' ? value : {}
@@ -86,16 +46,25 @@ function createSettingsPanel(form) {
     const [previewing, setPreviewing] = React.useState(false)
     const [libraryBusy, setLibraryBusy] = React.useState(false)
     const [selectedAnimation, setSelectedAnimation] = React.useState(BUILTIN_ANIMATION)
+    const [tab, setTab] = React.useState('current')
+    const prefix = React.useId()
+    const panelRef = React.useRef(null)
+    useThemeContrast(panelRef)
     const [volumeDraft, setVolumeDraft] = React.useState(values.volume)
     const [timeoutDraft, setTimeoutDraft] = React.useState(String(values.timeoutSeconds))
     const busy = React.useRef(false)
     const mounted = React.useRef(true)
     const volumeEditing = React.useRef(false)
     const timeoutEditing = React.useRef(false)
+    const previewFocusFrame = React.useRef(0)
 
     React.useEffect(() => {
       mounted.current = true
-      return () => { mounted.current = false }
+      return () => {
+        mounted.current = false
+        if (previewFocusFrame.current) cancelAnimationFrame(previewFocusFrame.current)
+        previewFocusFrame.current = 0
+      }
     }, [])
     React.useEffect(() => {
       if (!volumeEditing.current) setVolumeDraft(values.volume)
@@ -108,7 +77,7 @@ function createSettingsPanel(form) {
     const editable = ready && snapshot.writable === true
     const disabled = !editable || pending || libraryBusy || previewing
 
-    async function commit(operation, successText = '已保存，下次启动按新设置播放。') {
+    async function commit(operation, successText = '已保存，下次启动生效。') {
       if (busy.current || !editable) return false
       busy.current = true
       setPending(true)
@@ -173,15 +142,29 @@ function createSettingsPanel(form) {
         setNotice('预览桥接尚未加载。请重新打开 DSH 后再试；这不会改动当前播放设置。')
         return
       }
+      const previewTrigger = document.activeElement
+      if (previewFocusFrame.current) cancelAnimationFrame(previewFocusFrame.current)
+      previewFocusFrame.current = 0
       setPreviewing(true)
       setNotice('预览可随时按 Esc 退出。')
       try {
         const result = await bridge.preview({ ...resolveValues(form.getSnapshot().value) }, descriptor)
-        if (mounted.current && ['media-error', 'animation-unavailable'].includes(result?.reason)) setError('视频未能正常播放。请确认格式可用，或重新下载这部作品。')
+        if (mounted.current) {
+          if (['media-error', 'animation-unavailable'].includes(result?.reason)) setError('视频未能正常播放。请确认格式可用，或重新下载这部作品。')
+          else setNotice(result?.reason === 'complete' ? '预览结束。' : '已退出预览。')
+        }
       } catch (caught) {
         if (mounted.current) setError(`预览未能启动：${caught instanceof Error ? caught.message : '请重新打开 DSH 后再试。'}`)
       } finally {
-        if (mounted.current) setPreviewing(false)
+        if (mounted.current) {
+          setPreviewing(false)
+          // The runtime removes its overlay before this parent enables the
+          // triggering button. Restore keyboard focus after React commits it.
+          previewFocusFrame.current = requestAnimationFrame(() => {
+            previewFocusFrame.current = 0
+            if (mounted.current && previewTrigger?.isConnected && !previewTrigger.disabled && typeof previewTrigger.focus === 'function') previewTrigger.focus({ preventScroll: true })
+          })
+        }
       }
     }
 
@@ -191,7 +174,7 @@ function createSettingsPanel(form) {
       timeoutEditing.current = false
       const accepted = await commit(
         () => form.mutate(Object.entries(DEFAULTS).map(([field, value]) => ({ op: 'set', path: [field], value }))),
-        '已恢复动画设置并选用内置鲸启：每次启动播放、声音开启、音量 85%、等待上限 45 秒；本地作品和首屏兼容安装状态保留。',
+        '已重置播放设置，已添加的动画和首屏兼容层保留。',
       )
       if (accepted && mounted.current) {
         setVolumeDraft(DEFAULTS.volume)
@@ -207,95 +190,96 @@ function createSettingsPanel(form) {
           ? '当前连接的宿主设置只读，可以查看设置与预览动画。'
           : ''
 
-    return <section className="dsh-awakening-settings" aria-label="鲸启启动动画设置">
-      <style>{CSS}</style>
-      <header className="awa-header">
-        <div>
-          <h2>鲸启</h2>
-          <p className="awa-muted">DSH Awakening · {selectedAnimation?.id === values.animationId ? `${selectedAnimation.title} · ${Number(selectedAnimation.durationSeconds).toFixed(Number.isInteger(selectedAnimation.durationSeconds) ? 0 : 1)} 秒` : '读取当前作品中…'}</p>
-        </div>
-        <button type="button" className="awa-primary" disabled={!ready || pending || previewing || libraryBusy} onClick={() => preview()}>
-          {previewing ? '预览中…' : '完整预览'}
-        </button>
+    const navigationDisabled = pending || previewing || libraryBusy
+    const frequencyText = values.frequency === 'daily' ? '每日首次播放' : '每次启动播放'
+    const soundText = values.sound ? `声音 ${values.volume}%` : '声音已关闭'
+
+    return <section ref={panelRef} className="dsh-awakening-settings" aria-label="鲸启启动动画设置">
+      <style>{SETTINGS_CSS}</style>
+      <header className="awa-head">
+        <div><h2>鲸启</h2><p className="awa-muted">管理开机动画与播放方式</p></div>
+        <label className="awa-enable" htmlFor="awa-enabled">
+          <span>{values.enabled ? '已开启' : '已关闭'}</span>
+          <input className="awa-switch" id="awa-enabled" type="checkbox" role="switch" aria-label="开启启动动画" checked={values.enabled} disabled={disabled} onChange={event => write('enabled', event.target.checked)} />
+        </label>
       </header>
 
-      {loadingCopy && <p className="awa-info" role="status">{loadingCopy}</p>}
+      <SettingsTabs items={TABS} value={tab} onChange={setTab} disabled={navigationDisabled} prefix={prefix} />
+      {loadingCopy && <p className="awa-notice" role="status" style={{ marginBottom: 14 }}>{loadingCopy}</p>}
 
-      <AnimationLibraryPanel selectedId={values.animationId} fit={values.videoFit}
-        disabled={!ready || pending} readOnly={!editable} previewing={previewing}
-        onSelect={id => write('animationId', id)} onFit={fit => write('videoFit', fit)} onPreview={preview}
-        onSelectionChange={setSelectedAnimation} onBusyChange={setLibraryBusy} />
+      {TABS.filter(item => item.value !== tab).map(item => <div key={item.value} hidden id={`${prefix}-panel-${item.value}`} role="tabpanel" aria-labelledby={`${prefix}-tab-${item.value}`} />)}
+      <div className="awa-page" id={`${prefix}-panel-${tab}`} role="tabpanel" aria-labelledby={`${prefix}-tab-${tab}`}>
+        <AnimationLibraryPanel selectedId={values.animationId} fit={values.videoFit}
+          disabled={!ready || pending} readOnly={!editable} previewing={previewing} view={tab}
+          onSelect={id => write('animationId', id)} onPreview={preview}
+          onSelectionChange={setSelectedAnimation} onBusyChange={setLibraryBusy}
+          onOpenLibrary={() => setTab('library')} onOpenSettings={() => setTab('settings')} />
 
-      <div className="awa-row">
-        <div className="awa-copy">
-          <label className="awa-heading" htmlFor="awa-enabled">开启启动动画</label>
-          <p className="awa-muted">启动时播放当前选用的动画；关闭后按 DSH 默认方式启动。</p>
-        </div>
-        <input className="awa-switch" id="awa-enabled" type="checkbox" role="switch" checked={values.enabled} disabled={disabled} onChange={event => write('enabled', event.target.checked)} />
+        {tab === 'current' && <button type="button" className="awa-summary-link" disabled={navigationDisabled} onClick={() => setTab('settings')}>
+          <span className="awa-summary-copy"><Icon name="settings" /><span>{values.enabled ? frequencyText : '启动动画已关闭'} · {soundText}</span></span>
+          <Icon name="chevronRight" size={15} />
+        </button>}
+
+        {tab === 'settings' && <div className="awa-page">
+          <section className="awa-settings-group" aria-labelledby={`${prefix}-playback-title`}>
+            <h3 id={`${prefix}-playback-title`}>播放方式</h3>
+            <div className="awa-row">
+              <div className="awa-copy"><label className="awa-heading" htmlFor="awa-frequency">播放频率</label><p className="awa-muted">预览不受频率限制。</p></div>
+              <select id="awa-frequency" value={values.frequency} disabled={disabled} onChange={event => write('frequency', event.target.value)}>
+                <option value="startup">每次启动</option><option value="daily">每日首次</option>
+              </select>
+            </div>
+            <div className="awa-row awa-row--fit">
+              <div className="awa-copy"><p className="awa-heading" id={`${prefix}-fit-label`}>视频显示</p><p className="awa-muted">用于导入和社区视频；内置鲸启保持动态构图。</p></div>
+              <div className="awa-choice" role="group" aria-labelledby={`${prefix}-fit-label`}>
+                <button type="button" aria-pressed={values.videoFit === 'cover'} disabled={disabled} onClick={() => write('videoFit', 'cover')}>填满窗口</button>
+                <button type="button" aria-pressed={values.videoFit === 'contain'} disabled={disabled} onClick={() => write('videoFit', 'contain')}>完整画面</button>
+              </div>
+            </div>
+          </section>
+
+          <section className="awa-settings-group" aria-labelledby={`${prefix}-audio-title`}>
+            <h3 id={`${prefix}-audio-title`}>声音</h3>
+            <div className="awa-row" style={{ borderBottom: 0 }}>
+              <div className="awa-copy"><label className="awa-heading" htmlFor="awa-sound">播放作品音轨</label><p className="awa-muted">内置鲸启含音效和原声欢迎语。</p></div>
+              <input className="awa-switch" id="awa-sound" type="checkbox" role="switch" checked={values.sound} disabled={disabled} onChange={event => write('sound', event.target.checked)} />
+            </div>
+            <div className="awa-volume">
+              <label className="awa-volume-label" htmlFor="awa-volume">音量</label>
+              <input id="awa-volume" type="range" min="0" max="100" step="1" value={volumeDraft}
+                disabled={disabled || !values.sound} aria-valuetext={`${volumeDraft}%`}
+                onPointerDown={() => { volumeEditing.current = true }}
+                onChange={event => { volumeEditing.current = true; setVolumeDraft(Number(event.target.value)) }}
+                onPointerUp={event => commitVolume(event.currentTarget.value)}
+                onKeyUp={event => { if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'PageUp', 'PageDown'].includes(event.key)) commitVolume(event.currentTarget.value) }}
+                onBlur={event => commitVolume(event.currentTarget.value)} />
+              <output htmlFor="awa-volume">{volumeDraft}%</output>
+            </div>
+          </section>
+
+          <details className="awa-disclosure">
+            <summary><span>首屏播放</span><Icon name="chevronDown" size={16} /></summary>
+            <div className="awa-disclosure-body"><NativeBootPanel disabled={disabled} /></div>
+          </details>
+          <details className="awa-disclosure" style={{ marginTop: 0 }}>
+            <summary><span>高级设置</span><Icon name="chevronDown" size={16} /></summary>
+            <div className="awa-disclosure-body">
+              <div className="awa-row">
+                <div className="awa-copy"><label className="awa-heading" htmlFor="awa-timeout">启动等待上限</label><p className="awa-muted">至少容纳作品长度与 3 秒缓冲，最长 60 秒。</p></div>
+                <div className="awa-number"><input id="awa-timeout" type="number" min="25" max="60" step="1" value={timeoutDraft} disabled={disabled}
+                  onFocus={() => { timeoutEditing.current = true }} onChange={event => setTimeoutDraft(event.target.value)}
+                  onBlur={event => commitTimeout(event.currentTarget.value)} onKeyDown={event => { if (event.key === 'Enter') event.currentTarget.blur() }} /><span>秒</span></div>
+              </div>
+              <div className="awa-reset"><div><p className="awa-heading">恢复播放默认值</p><p className="awa-muted">切回内置鲸启，保留动画库和首屏兼容层。</p></div><button type="button" className="awa-btn" disabled={disabled} onClick={reset}>重置播放设置</button></div>
+            </div>
+          </details>
+          <details className="awa-disclosure" style={{ marginTop: 0 }}>
+            <summary><span>关于与素材署名</span><Icon name="chevronDown" size={16} /></summary>
+            <div className="awa-disclosure-body"><p className="awa-muted">鲸启是 DSH 社区插件。内置作品的角色影像与原声来自 dsh-boot-animation，保留上游 MIT 许可。</p><p className="awa-muted" style={{ marginTop: 8 }}><a href="https://github.com/MingoYung/dsh-awakening/blob/main/CREDITS.md" target="_blank" rel="noreferrer">查看完整素材来源与许可</a></p></div>
+          </details>
+        </div>}
       </div>
-
-      <div className="awa-row">
-        <div className="awa-copy">
-          <label className="awa-heading" htmlFor="awa-frequency">播放频率</label>
-          <p className="awa-muted">每日首次按这台设备的本地日期计算，手动预览不受限制。</p>
-        </div>
-        <select id="awa-frequency" value={values.frequency} disabled={disabled} onChange={event => write('frequency', event.target.value)}>
-          <option value="startup">每次启动</option>
-          <option value="daily">每日首次</option>
-        </select>
-      </div>
-
-      <div className="awa-row">
-        <div className="awa-copy">
-          <label className="awa-heading" htmlFor="awa-sound">播放声音</label>
-          <p className="awa-muted">播放作品自带的音轨；内置鲸启包含音效和原声欢迎语。</p>
-        </div>
-        <input className="awa-switch" id="awa-sound" type="checkbox" role="switch" checked={values.sound} disabled={disabled} onChange={event => write('sound', event.target.checked)} />
-      </div>
-
-      <div className="awa-volume">
-        <label htmlFor="awa-volume">音量</label>
-        <input
-          id="awa-volume" type="range" min="0" max="100" step="1" value={volumeDraft}
-          disabled={disabled || !values.sound} aria-valuetext={`${volumeDraft}%`}
-          onPointerDown={() => { volumeEditing.current = true }}
-          onChange={event => { volumeEditing.current = true; setVolumeDraft(Number(event.target.value)) }}
-          onPointerUp={event => commitVolume(event.currentTarget.value)}
-          onKeyUp={event => { if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End', 'PageUp', 'PageDown'].includes(event.key)) commitVolume(event.currentTarget.value) }}
-          onBlur={event => commitVolume(event.currentTarget.value)}
-        />
-        <output htmlFor="awa-volume">{volumeDraft}%</output>
-      </div>
-
-      <NativeBootPanel disabled={!editable || pending || previewing || libraryBusy} />
-
-      <details>
-        <summary>高级设置</summary>
-        <div className="awa-row">
-          <div className="awa-copy">
-            <label className="awa-heading" htmlFor="awa-timeout">启动等待上限</label>
-            <p className="awa-muted">DSH 迟迟未就绪时自动让出界面。实际上限至少容纳作品长度及 3 秒缓冲，最长 60 秒。</p>
-          </div>
-          <div className="awa-number">
-            <input id="awa-timeout" type="number" min="25" max="60" step="1" value={timeoutDraft} disabled={disabled}
-              onFocus={() => { timeoutEditing.current = true }}
-              onChange={event => setTimeoutDraft(event.target.value)}
-              onBlur={event => commitTimeout(event.currentTarget.value)}
-              onKeyDown={event => { if (event.key === 'Enter') event.currentTarget.blur() }}
-            />
-            <span>秒</span>
-          </div>
-        </div>
-      </details>
-
-      <footer className="awa-footer">
-        <p className="awa-muted">内置鲸启按窗口绘制，普通视频按所选显示方式播放。<br />切换窗口大小不重播。播放中按 Esc 或点击“跳过”退出。</p>
-        <button type="button" disabled={disabled} onClick={reset}>恢复动画设置</button>
-      </footer>
-      {values.animationId === BUILTIN_ANIMATION.id && <p className="awa-attribution awa-muted">内置鲸启尾段角色影像与原声：dsh-boot-animation · MIT。<br /><a href="https://github.com/MingoYung/dsh-awakening/blob/main/CREDITS.md" target="_blank" rel="noreferrer">素材来源、作者与许可 ↗</a></p>}
-      <div className={`awa-feedback${error ? ' awa-error' : ''}`} role={error ? 'alert' : 'status'} aria-live="polite">
-        {error || (pending ? '正在保存…' : notice)}
-      </div>
+      {(error || pending || notice) && <div className={`awa-feedback awa-notice${error ? ' is-error' : ''}`} role={error ? 'alert' : 'status'} aria-live="polite">{error || (pending ? '正在保存…' : notice)}</div>}
     </section>
   }
 }

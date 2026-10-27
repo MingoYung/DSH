@@ -5,15 +5,15 @@ const ACTIVE = new Set(['preparing', 'worker-ready', 'waiting-exit', 'installing
 const JOB_ID = /^[a-z0-9][a-z0-9_-]{7,100}$/i
 const DOCS = 'https://github.com/MingoYung/dsh-awakening/blob/main/COMPATIBILITY.md'
 const CSS = `
-.dsh-awakening-settings .awa-native{margin:18px 0 12px;padding:16px;border:1px solid var(--dsw-alias-border-l2,rgba(127,127,127,.18));border-radius:12px}
-.dsh-awakening-settings .awa-native-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:7px}
-.dsh-awakening-settings .awa-native h3{font-size:13px;line-height:1.6;font-weight:600;margin:0}
-.dsh-awakening-settings .awa-native-badge{font-size:11px;line-height:1.6;padding:2px 8px;border-radius:12px;white-space:nowrap;background:var(--dsw-alias-bg-layer-1,rgba(127,127,127,.08));color:var(--dsw-alias-label-secondary,#80858e)}
+.dsh-awakening-settings .awa-native{margin:0;padding:0 0 10px;min-width:0}
+.dsh-awakening-settings .awa-native-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px}
+.dsh-awakening-settings .awa-native h3{font-size:12px;line-height:1.5;font-weight:500;color:var(--awa-muted)}
+.dsh-awakening-settings .awa-native-badge{font-size:11px;line-height:1.5;padding:3px 8px;border-radius:6px;white-space:nowrap;background:var(--awa-surface);color:var(--awa-muted)}
 .dsh-awakening-settings .awa-native-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px}
-.dsh-awakening-settings .awa-native a{font-size:12px;color:var(--dsw-alias-brand-primary,#8baaff);text-underline-offset:3px}
-.dsh-awakening-settings .awa-native-confirm{margin-top:12px;padding-top:12px;border-top:1px solid var(--dsw-alias-border-l2,rgba(127,127,127,.18))}
-.dsh-awakening-settings .awa-native-feedback{min-height:0;margin-top:8px;font-size:12px;line-height:1.8;color:var(--dsw-alias-label-secondary,#80858e)}
-.dsh-awakening-settings .awa-native-feedback.awa-error{color:var(--dsw-alias-status-error,#c94d52)}
+.dsh-awakening-settings .awa-native a{font-size:12px;color:var(--awa-accent);text-underline-offset:3px}
+.dsh-awakening-settings .awa-native-confirm{margin-top:12px;padding:12px;border-radius:8px;background:var(--awa-surface)}
+.dsh-awakening-settings .awa-native-feedback{min-height:0;margin-top:8px;font-size:12px;line-height:1.65;color:var(--awa-muted)}
+.dsh-awakening-settings .awa-native-feedback.awa-error{color:var(--awa-error)}
 `
 
 function desktopBridge() { return typeof window.desktopNext?.command === 'function' ? window.desktopNext : null }

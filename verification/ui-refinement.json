@@ -1,0 +1,33 @@
+{
+  "revision": "ui-refinement-1",
+  "baseVersion": "0.6.0",
+  "checkedAt": "2026-10-27T13:49:12.865136+00:00",
+  "scope": "Built client and isolated real-browser/HTTP UI tests. configForms persistence and outbound GitHub data are fixtures; human feedback confirms only live UI loading.",
+  "automated": {
+    "passed": true,
+    "realHttpBrowserGroups": 23,
+    "offlineGroups": 2,
+    "browserErrors": [],
+    "screenshotInspection": true,
+    "widths": [
+      390,
+      560,
+      760
+    ],
+    "lightDarkAndReducedMotion": true,
+    "minTestedPrimaryTextContrast": 5.79
+  },
+  "human": {
+    "liveUiLoaded": true,
+    "quote": "已看到新界面，先体验一下",
+    "usabilityAccepted": null,
+    "customAnimationNativeSoundAccepted": null
+  },
+  "native": {
+    "runtimeAndPayloadPinsUnchanged": true,
+    "targetAsarSha256": "f3caf0dbb42a3c79b9c83bcbbab4929ed40a3c07d999c2643071c51a98b822d3",
+    "appArchiveChangedByUiPatch": false
+  },
+  "builtClientSha256": "483fb898657656b2234227c42c5d8758a27f3f7ca4a272e34ff54a3c64193543",
+  "releaseAssetsReplaced": false
+}
