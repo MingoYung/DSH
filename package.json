@@ -1,6 +1,6 @@
 {
   "name": "dsh-awakening",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "鲸启启动动画：可更换作品、本地导入与社区动画库，支持预览、声音设置和可选首屏兼容。",
   "type": "module",
   "main": "lib/index.js",

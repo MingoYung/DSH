@@ -1,0 +1,90 @@
+{
+  "version": "0.6.1",
+  "checkedAt": "2026-10-28T03:20:23.317706+00:00",
+  "automatedPassed": true,
+  "scope": "Final registered client in a real isolated browser and actual local HTTP/storage; controlled remote catalog/assets and ConfigForms fixtures. Native carrier uses real MP4/WebM and exact archive bytes in isolation, with synthetic worker authorization. No production DSH/profile changes in this release run.",
+  "checks": {
+    "finalCompiledClientUiGroups": 23,
+    "offlineGroups": 2,
+    "backendAssertions": 43,
+    "realHttpCancelAndTimeoutGroups": 8,
+    "focusNegativeControl": {
+      "oldRestoresFocus": false,
+      "newRestoresFocus": true
+    },
+    "nativeStructuralCases": 37,
+    "nativeCarrierCases": 14,
+    "nativeUpgradeRestoreCases": 10,
+    "clientReproducibleFromSource": true,
+    "registeredLazyFactory": true,
+    "pinnedRuntimeAndPayloadFiles": 13,
+    "declaredScreenshots": 6,
+    "browserErrors": [],
+    "noInstallLifecycle": true
+  },
+  "native": {
+    "desktopVersion": "2.0.19-next",
+    "allowedPackageVersions": [
+      "0.6.0",
+      "0.6.1"
+    ],
+    "exeSha256": "2c12759a3c3f24f2e6776dae4e511cf5984b227f5e4322fd826fea647bf503b6",
+    "targetAsarSha256": "3c67135af1a8385f8f9dd170b6b0b08f1953dfcb8427ff99734863d94946892b",
+    "originalAsarSha256": "204e1dcc32ff6a9b661200b7ab97bda1cbd449904e2eddb71c9309cf767e06b5",
+    "helperSha256": "9e743c80e52a77d596e5951b8647a8a05e16780ebdb1f204ee72b160285dcd7d",
+    "previousManagedSha256s": [
+      "3a17430a4534a4754a3ee9d1f189dc83feac268355ee9925ab7b6cd55866229a",
+      "81ce16548abef77d9d108076fe7493852f8baee4b337105999ef715d09245170",
+      "f3caf0dbb42a3c79b9c83bcbbab4929ed40a3c07d999c2643071c51a98b822d3"
+    ],
+    "runtimeFilesUnchangedFrom060": {
+      "runtime/scene/brand.js": "9133132dba57f3eed887768752e41015b4286293f6f8b794cb1d49ce25a39475",
+      "runtime/scene/animation.js": "61a55db356ce2f89e30ce1e098a66c1e1f61bc88699c617a81564e6a97c4e038",
+      "runtime/scene/morph.js": "923240333c95301d9a6f90bd72e8aca28d87b944c3f63f91138825c9b8971434",
+      "runtime/scene/desktop-composition.js": "145c4c50098b6c551bd624c34009669bb9292ec7f1d468d587afa2ef10a0e4fa",
+      "runtime/scene/responsive-composition.js": "391f25bdafd44620d5b061ffb2b8fb19b8adf80c0085f8bcc6ef68a792255ec3",
+      "runtime/scene/portrait-camera.js": "153ec0432d12c76de19bfea462352784b003b9888717c0df8d4dbc8c71c23fa4",
+      "runtime/stage.js": "dcb2d68a276ada26fcfe9573c435e245df42d9a37f6b4e3188ad2b7728391e17",
+      "runtime/bootstrap.js": "d6bb3f3bb37f347394e39d29c22ead0a1ddd932a3f340146e1fd4bbd54528a01",
+      "media/boot.mp4": "fac040bbdad7580cdd626403edd4aa34116c38070e5271c5315f710a40cf189c",
+      "media/poster.png": "f32dedb8187a78c1beb82f9f2350b422b7e8b65bbf0ca62600e1af56902a43b0"
+    },
+    "explicitUpdateAndRestartRequiredFrom050Or060": true,
+    "productionInstallationModified": false
+  },
+  "library": {
+    "repository": "https://github.com/MingoYung/dsh-awakening-library",
+    "publicCatalogHttpStatus": 200,
+    "publicCatalogSha256": "9ae022951312652a59c2a0238570e970725e0f791a0f8037b17b1633e909a0c2",
+    "initialEntries": 1,
+    "startupNetwork": false,
+    "privateImportsUploaded": false,
+    "creatorCodeExecuted": false
+  },
+  "humanEvidence": {
+    "previousNativeInstallRestoreCycleAcceptedVersion": "0.5.0",
+    "previousRefinedUiLoaded": true,
+    "previousRefinedUiQuote": "已看到新界面，先体验一下",
+    "new061NativeDesktopCyclePerformed": false,
+    "customAnimationNativeSoundAccepted": null
+  },
+  "limits": [
+    "ConfigForms persistence is an isolated fixture using the production UI contract.",
+    "Outbound catalog and asset requests are controlled fixtures.",
+    "Audio verification checks unmuted, advancing single-video state; no claim of human hearing or new native desktop acceptance.",
+    "Clipboard copying is isolated to a stub; template save uses real browser download."
+  ],
+  "sha256": {
+    "package.json": "4a8caef0fceb60adb008231f0bcc075a819d54d86bc3c522803e581553716385",
+    "package-lock.json": "6bbae8d12f97eb26cb9b0fd05ef060cdd12d25a1c450e7837b705b2e4789e81b",
+    "lib/index.js": "bd037eee9b657ce985175d9730a3082242505191516b2efa3171f3e0a01ca1c7",
+    "lib/client.js": "c23652a3d1d39a3dd568e0f49ed4b3430b509c95a71af1ebe90153f9e2d70cf7",
+    "lib/animation-library.mjs": "238066ab5e7ba030022cf29ece4581fb0f7f84f40a7ed9f5a5f1ccb710c1505e",
+    "src/client.jsx": "211f6bc90b9dff1cc67731e998b0765c7c3bec5be1d810899c1ffc326a3e97cc",
+    "scripts/build.mjs": "d36b01922205fe2aa6627a05cb4fef7e25b76eabf323d74010d637701dc604e3",
+    "tools/native-install/policy.json": "e63f53df962875d2e7af8683e4462fede90af5f2d379ef2f792e6cfe0deb9484",
+    "tools/native-install/payload/native-boot-carrier.mjs": "9e743c80e52a77d596e5951b8647a8a05e16780ebdb1f204ee72b160285dcd7d",
+    "CREDITS.md": "06e0a3dc70a1fc09e40482de20125d1ddaeaf006b49f83052e7beed5b8f89309",
+    "LICENSE": "ed4e745abb91e86e0c8a2ec4c2343dc19652918ed7313ff5b6dc0c65cdd5e665"
+  }
+}

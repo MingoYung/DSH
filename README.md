@@ -4,7 +4,7 @@
 
 项目地址：<https://github.com/MingoYung/dsh-awakening>。这是社区兼容插件，不表示官方发布或背书。
 
-**开发进度：** 当前 `main` 已包含新的三页设置界面与插件内动画库；`v0.6.0` Release 保留此前的预发布快照。界面已在实机加载，使用体验及新作品首屏播放仍在收集反馈，验证范围见 [UI精修记录](verification/ui-refinement.json)。
+**当前正式版：[v0.6.1](https://github.com/MingoYung/dsh-awakening/releases/tag/v0.6.1)。** 包含动画切换、本地导入、插件内社区动画库与三页设置界面。可下载预构建 [安装包](https://github.com/MingoYung/dsh-awakening/releases/download/v0.6.1/dsh-awakening-0.6.1.tgz)，不需要本机构建。验证范围见 [v0.6.1记录](verification/v0.6.1.json)；此前 `v0.6.0` 预发布快照保留。
 
 **素材说明：** 前段动效、排版、程序音效和播放器由本项目制作；约13.6秒起的角色影像及原声欢迎语引用自 [lxj5820/dsh-boot-animation](https://github.com/lxj5820/dsh-boot-animation) 的 `assets/videos/1.mp4`，不是本项目原创角色短片。该上游固定版本将视频列入 MIT 许可，本项目保留原作者版权与许可正文。完整来源、范围及版本见 [CREDITS.md](CREDITS.md)。
 
@@ -51,7 +51,7 @@ dsh plugin add /absolute/path/to/dsh-awakening
 
 设置页也提供恢复默认首屏的入口。取消退出、准备失败、版本不匹配或校验失败时，工具保留当前应用包并给出结果；不会强杀DSH进程。无需npm、额外Node或在线下载运行依赖。
 
-从0.5.0升级到0.6.0后，已装的首屏兼容层需要通过设置中的“更新并重启”升级一次，才会读取新动画选择。升级完成后，更换作品只需选用并下次正常启动，不会为每次换片重写ASAR。
+从0.5.0或0.6.0升级到0.6.1后，已装的首屏兼容层需要通过设置中的“更新并重启”升级一次，才能在最早首屏识别新插件包。升级前普通Host播放仍可用；升级完成后，更换作品只需选用并下次正常启动，不会为每次换片重写ASAR。原包备份、已有播放设置和用户动画库均保留。
 
 已安装时显示“恢复默认首屏并重启”；恢复后才显示“安装并重启”。“播放设置 → 高级设置”中的“重置播放设置”只重置播放选项，不改变首屏兼容的安装状态。
 

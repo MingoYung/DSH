@@ -56,14 +56,13 @@ function createSettingsPanel(form) {
     const mounted = React.useRef(true)
     const volumeEditing = React.useRef(false)
     const timeoutEditing = React.useRef(false)
-    const previewFocusFrame = React.useRef(0)
+    const previewFocusTarget = React.useRef(null)
 
     React.useEffect(() => {
       mounted.current = true
       return () => {
         mounted.current = false
-        if (previewFocusFrame.current) cancelAnimationFrame(previewFocusFrame.current)
-        previewFocusFrame.current = 0
+        previewFocusTarget.current = null
       }
     }, [])
     React.useEffect(() => {
@@ -76,6 +75,14 @@ function createSettingsPanel(form) {
     const ready = snapshot.status === 'ready' && snapshot.value !== undefined
     const editable = ready && snapshot.writable === true
     const disabled = !editable || pending || libraryBusy || previewing
+
+    React.useLayoutEffect(() => {
+      if (previewing) return
+      const target = previewFocusTarget.current
+      previewFocusTarget.current = null
+      // Run after React has committed disabled=false on the preview button.
+      if (mounted.current && target?.isConnected && !target.disabled && typeof target.focus === 'function') target.focus({ preventScroll: true })
+    }, [previewing])
 
     async function commit(operation, successText = '已保存，下次启动生效。') {
       if (busy.current || !editable) return false
@@ -143,8 +150,7 @@ function createSettingsPanel(form) {
         return
       }
       const previewTrigger = document.activeElement
-      if (previewFocusFrame.current) cancelAnimationFrame(previewFocusFrame.current)
-      previewFocusFrame.current = 0
+      previewFocusTarget.current = null
       setPreviewing(true)
       setNotice('预览可随时按 Esc 退出。')
       try {
@@ -157,13 +163,8 @@ function createSettingsPanel(form) {
         if (mounted.current) setError(`预览未能启动：${caught instanceof Error ? caught.message : '请重新打开 DSH 后再试。'}`)
       } finally {
         if (mounted.current) {
+          previewFocusTarget.current = previewTrigger
           setPreviewing(false)
-          // The runtime removes its overlay before this parent enables the
-          // triggering button. Restore keyboard focus after React commits it.
-          previewFocusFrame.current = requestAnimationFrame(() => {
-            previewFocusFrame.current = 0
-            if (mounted.current && previewTrigger?.isConnected && !previewTrigger.disabled && typeof previewTrigger.focus === 'function') previewTrigger.focus({ preventScroll: true })
-          })
         }
       }
     }

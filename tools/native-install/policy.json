@@ -4,11 +4,11 @@
   "exeSha256": "2c12759a3c3f24f2e6776dae4e511cf5984b227f5e4322fd826fea647bf503b6",
   "originalSha256": "204e1dcc32ff6a9b661200b7ab97bda1cbd449904e2eddb71c9309cf767e06b5",
   "legacySha256": "f9bb18dc0e0bc62f15de021a4ad7a058785be9be9e6781651451f1381fb35e6a",
-  "patchedSha256": "f3caf0dbb42a3c79b9c83bcbbab4929ed40a3c07d999c2643071c51a98b822d3",
+  "patchedSha256": "3c67135af1a8385f8f9dd170b6b0b08f1953dfcb8427ff99734863d94946892b",
   "files": {
     "lib/main.js": "11510899b06942d62f9fd55cc68356b994e88602501baaf112b75c7d83d7e292",
     "lib/web-document.js": "4dffeb61cda19903b61cc6aed240760ce234529d7b1da460a0e584bb74ed6c0b",
-    "lib/native-boot-carrier.mjs": "308acfffd9c2f5c2cdd8bc5834b415b0c45606c0e0c85406b10ceea2d2f18886"
+    "lib/native-boot-carrier.mjs": "9e743c80e52a77d596e5951b8647a8a05e16780ebdb1f204ee72b160285dcd7d"
   },
   "runtimeFiles": {
     "runtime/scene/brand.js": "9133132dba57f3eed887768752e41015b4286293f6f8b794cb1d49ce25a39475",
@@ -23,10 +23,12 @@
     "media/poster.png": "f32dedb8187a78c1beb82f9f2350b422b7e8b65bbf0ca62600e1af56902a43b0"
   },
   "packageVersions": [
-    "0.6.0"
+    "0.6.0",
+    "0.6.1"
   ],
   "previousManagedSha256s": [
     "3a17430a4534a4754a3ee9d1f189dc83feac268355ee9925ab7b6cd55866229a",
-    "81ce16548abef77d9d108076fe7493852f8baee4b337105999ef715d09245170"
+    "81ce16548abef77d9d108076fe7493852f8baee4b337105999ef715d09245170",
+    "f3caf0dbb42a3c79b9c83bcbbab4929ed40a3c07d999c2643071c51a98b822d3"
   ]
 }

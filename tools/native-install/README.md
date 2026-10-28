@@ -11,12 +11,20 @@ and no force-stop operation.
 No npm, Python, network access or separate Node installation is needed. The
 manual entry uses DSH's bundled Node runtime:
 
-Version 0.6 upgrades the 0.5 carrier once. The new carrier reads the saved
-animation selection and verified local MP4/WebM on each startup; changing
-the selected video does not rewrite the application archive. User videos
-remain data, never executable author code. The bundled built-in animation
-still uses its reviewed responsive Canvas. An invalid custom entry skips the
-early carrier and leaves the normal Host fallback available.
+Version 0.6.1 requires one explicit carrier update from an identified 0.5 or
+0.6 installation: choose Update and restart in the plugin's first-screen
+settings. The old 0.6 carrier accepts only the 0.6.0 plugin package; updating
+the plugin alone does not modify app.asar. Normal Host-injected playback
+remains available before this explicit carrier update.
+
+The 0.6.1 update preserves the verified original archive, saved settings and
+user animation library. Its reviewed carrier accepts plugin packages 0.6.0
+and 0.6.1 and reads the saved selection and verified local MP4/WebM on each
+startup; changing the selected video does not rewrite the application
+archive. User videos remain data, never executable author code. The bundled
+built-in animation still uses its reviewed responsive Canvas. An invalid
+custom entry skips the early carrier and leaves the normal Host fallback
+available.
 
 ```powershell
 & .\Install-FirstScreen.ps1
