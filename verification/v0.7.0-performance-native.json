@@ -1,0 +1,120 @@
+{
+  "version": "0.7.0",
+  "passed": true,
+  "checkedAt": "2026-10-30T11:17:45.530369+00:00",
+  "scope": "Performance-only native refresh: shared final runtime, two independently pinned carriers/policies/candidate archives, owned workspace package/profile/cache and archive copies with synthetic EXE and worker authorization. No production process/archive/profile access.",
+  "totalTargetedChecks": 42,
+  "builds": [
+    {
+      "desktopVersion": "2.0.19-next",
+      "policy": "tools\\native-install\\policy.json",
+      "policySha256": "79a81aaffc220dd257376fbe8dd288d14fd2863c9dfbdde4b32be361447ca669",
+      "candidateAsarSha256": "112e0967ced3eaf1ac65bfbd4bb2ce2e3e0b8b2951eefffb3dfb1696d78d9e88",
+      "previousManagedSha256s": [
+        "3a17430a4534a4754a3ee9d1f189dc83feac268355ee9925ab7b6cd55866229a",
+        "81ce16548abef77d9d108076fe7493852f8baee4b337105999ef715d09245170",
+        "f3caf0dbb42a3c79b9c83bcbbab4929ed40a3c07d999c2643071c51a98b822d3",
+        "3c67135af1a8385f8f9dd170b6b0b08f1953dfcb8427ff99734863d94946892b",
+        "bbd70ec15bdd8945e2220a1fc3d726b787b5cd6d45ffdbd651b58fc883c69f48"
+      ],
+      "originalAsarSha256": "204e1dcc32ff6a9b661200b7ab97bda1cbd449904e2eddb71c9309cf767e06b5",
+      "runtimePins": {
+        "runtime/scene/brand.js": "9133132dba57f3eed887768752e41015b4286293f6f8b794cb1d49ce25a39475",
+        "runtime/scene/animation.js": "61a55db356ce2f89e30ce1e098a66c1e1f61bc88699c617a81564e6a97c4e038",
+        "runtime/scene/morph.js": "923240333c95301d9a6f90bd72e8aca28d87b944c3f63f91138825c9b8971434",
+        "runtime/scene/desktop-composition.js": "145c4c50098b6c551bd624c34009669bb9292ec7f1d468d587afa2ef10a0e4fa",
+        "runtime/scene/responsive-composition.js": "391f25bdafd44620d5b061ffb2b8fb19b8adf80c0085f8bcc6ef68a792255ec3",
+        "runtime/scene/portrait-camera.js": "153ec0432d12c76de19bfea462352784b003b9888717c0df8d4dbc8c71c23fa4",
+        "runtime/safe-video.js": "85bcbbc541df93083e7c5d70fc7311350b4ee268730a346ccba1ab1e94107fa9",
+        "runtime/stage.js": "f0407d0293f61ea84bde9de3062cd057cf116cd509f54859fc554dd9eb2512db",
+        "runtime/bootstrap.js": "c82de55af6009153e68dfc54dee1a52060d9e3d9c927620c43e20496bc23ac03",
+        "media/builtins.json": "0c4f44e6377853defb2c052e5613552af88f37342e0f7d415e4d522e9e0c84dd",
+        "media/boot.mp4": "7cd3f3bb33afa18ee2591e10e0d52c6838bd7aa09518780c90628fac3e752849",
+        "media/poster.png": "91395701dd37dec4b3a9f7eb7daf3b5f884f6f3f5f3bb45496ea2613a0e2ff6f",
+        "media/codex.mp4": "9a3a11a7edd9ff1c2185e293f69aed75495f935c665ecb09b3df751900b306a5",
+        "media/codex-poster.png": "7729cb2116c4de284f23d6f3fe0a490437837894bcf9672f064603247c4e5851",
+        "media/claude-code.mp4": "24968a5910759fa1824efbeb6db662c97d5d22754ad4898259f2ca7ddb5787ea",
+        "media/claude-code-poster.png": "8402c9b2a467593c33170c15cbbad029a38c9400772563b60a2c3628c63cba1a"
+      },
+      "payloadPins": {
+        "lib/main.js": "11510899b06942d62f9fd55cc68356b994e88602501baaf112b75c7d83d7e292",
+        "lib/web-document.js": "4dffeb61cda19903b61cc6aed240760ce234529d7b1da460a0e584bb74ed6c0b",
+        "lib/native-boot-carrier.mjs": "e9e678417c6e54407491f9a7d9cf394107e7062321ef36117fe682b7dfa0bbe3"
+      },
+      "exactCarrierAndPinRejectionChecks": 17,
+      "previous070UpgradeRollbackChecks": 4,
+      "reportFiles": {
+        "full-carrier-report.json": {
+          "path": "work\\release-v070\\performance\\native\\desktop-2019\\full-carrier-report.json",
+          "sha256": "552f85bc6722c7192db3a1042446e7ebf35cf7c72a616469580b2cc0cfed7a1a"
+        },
+        "upgrade-report.json": {
+          "path": "work\\release-v070\\performance\\native\\desktop-2019\\upgrade-report.json",
+          "sha256": "6f02fc596696bdd98a7d30dd0453594538e5ea44448d91b22bd85b6c217e03e7"
+        }
+      }
+    },
+    {
+      "desktopVersion": "2.0.21-next",
+      "policy": "tools\\native-install\\builds\\2.0.21-next\\policy.json",
+      "policySha256": "1728181e81fd6750b7ec68415b0824961bab206a042262966c164e0927794c2f",
+      "candidateAsarSha256": "22af7dfb0d71e5f6e2031dff6b64b260f02000e0fc95f8b5dc0ba06623a6ab49",
+      "previousManagedSha256s": [
+        "904bfe68869770b8099ad1b04eb9e7f3a72dfb9c56240d0fc11a1797ed17633d"
+      ],
+      "originalAsarSha256": "16f2c62b1ccc98a968d9c7cf5edcd7af7a1e7690c2fba8cea361d1726d0db349",
+      "runtimePins": {
+        "runtime/scene/brand.js": "9133132dba57f3eed887768752e41015b4286293f6f8b794cb1d49ce25a39475",
+        "runtime/scene/animation.js": "61a55db356ce2f89e30ce1e098a66c1e1f61bc88699c617a81564e6a97c4e038",
+        "runtime/scene/morph.js": "923240333c95301d9a6f90bd72e8aca28d87b944c3f63f91138825c9b8971434",
+        "runtime/scene/desktop-composition.js": "145c4c50098b6c551bd624c34009669bb9292ec7f1d468d587afa2ef10a0e4fa",
+        "runtime/scene/responsive-composition.js": "391f25bdafd44620d5b061ffb2b8fb19b8adf80c0085f8bcc6ef68a792255ec3",
+        "runtime/scene/portrait-camera.js": "153ec0432d12c76de19bfea462352784b003b9888717c0df8d4dbc8c71c23fa4",
+        "runtime/safe-video.js": "85bcbbc541df93083e7c5d70fc7311350b4ee268730a346ccba1ab1e94107fa9",
+        "runtime/stage.js": "f0407d0293f61ea84bde9de3062cd057cf116cd509f54859fc554dd9eb2512db",
+        "runtime/bootstrap.js": "c82de55af6009153e68dfc54dee1a52060d9e3d9c927620c43e20496bc23ac03",
+        "media/builtins.json": "0c4f44e6377853defb2c052e5613552af88f37342e0f7d415e4d522e9e0c84dd",
+        "media/boot.mp4": "7cd3f3bb33afa18ee2591e10e0d52c6838bd7aa09518780c90628fac3e752849",
+        "media/poster.png": "91395701dd37dec4b3a9f7eb7daf3b5f884f6f3f5f3bb45496ea2613a0e2ff6f",
+        "media/codex.mp4": "9a3a11a7edd9ff1c2185e293f69aed75495f935c665ecb09b3df751900b306a5",
+        "media/codex-poster.png": "7729cb2116c4de284f23d6f3fe0a490437837894bcf9672f064603247c4e5851",
+        "media/claude-code.mp4": "24968a5910759fa1824efbeb6db662c97d5d22754ad4898259f2ca7ddb5787ea",
+        "media/claude-code-poster.png": "8402c9b2a467593c33170c15cbbad029a38c9400772563b60a2c3628c63cba1a"
+      },
+      "payloadPins": {
+        "lib/main.js": "635921f99a73d92e045107306dda99c0223ba21fc23e3fc13d91e25b6c69bfbd",
+        "lib/web-document.js": "4b124813e4aed4d553ce1fd9de0741770b713f8431951a3de899b2500c1c43e5",
+        "lib/native-boot-carrier.mjs": "b8d1aacfe5d35403aea586f39f17fda9ab6cbd59b9cfec2bbd3721538515be7c"
+      },
+      "exactCarrierAndPinRejectionChecks": 17,
+      "previous070UpgradeRollbackChecks": 4,
+      "reportFiles": {
+        "full-carrier-report.json": {
+          "path": "work\\release-v070\\performance\\native\\desktop-2021\\full-carrier-report.json",
+          "sha256": "b4f3a64e308a97350b01adbacbf6b02fdbe617abcca51d683793e682b6dbc032"
+        },
+        "upgrade-report.json": {
+          "path": "work\\release-v070\\performance\\native\\desktop-2021\\upgrade-report.json",
+          "sha256": "ca633c6cfb130a30b47cef479cf0a948e6229869f5c5235a226b47875fe89ad4"
+        }
+      }
+    }
+  ],
+  "preservedOldEvidence": true,
+  "performanceBackupManifest": "work\\release-v070\\performance\\latest_backup\\native\\manifest.json",
+  "previousActualDesktopEvidence": {
+    "desktopVersion": "2.0.21-next",
+    "candidateAsarSha256": "904bfe68869770b8099ad1b04eb9e7f3a72dfb9c56240d0fc11a1797ed17633d",
+    "userConfirmedDirectAnimationSoundAndMainUi": true,
+    "userReportedOccasionalPreviewFrameDrops": true,
+    "appliesTo": "Previous installed 0.7 candidate, not the refreshed performance candidate"
+  },
+  "newNativePerformanceHumanAcceptance": null,
+  "productionInstallationModified": false,
+  "sharedPlayerEvidence": "verification/v0.7.0-performance-runtime.json",
+  "limits": [
+    "Synthetic fixture upgrade and rollback verify new pin whitelists/arming and original archive preservation; they are not a new real desktop install/restart acceptance.",
+    "No claim of measured live desktop FPS or new human audio acceptance. Shared renderer UI/performance tests are recorded separately.",
+    "Unchanged desktop authentication, index/profile routing and worker logic rely on the prior scoped 0.7 records; this batch reruns only exact carrier, new-pin rejection and prior-0.7 upgrade/rollback paths."
+  ]
+}

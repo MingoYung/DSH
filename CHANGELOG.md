@@ -5,6 +5,7 @@
 - 内置三款已确认的22秒作品：DeepSeek · 鲸启、Codex · 构想成形、Claude Code · 光标唤醒，离线预览和选用，保留默认作品的历史ID。
 - DeepSeek结尾替换为本项目AI辅助制作的角色显形和欢迎语；Codex使用独立标识与薄荷主题，Claude Code使用光标唤醒小蟹及柔韧光流修订版。
 - 按作品和时间段提供安全构图数据，保护横向字标、人物面部与主要动作，窗口调整保持同一video、时间和音轨；不使用模糊或镜像补边。
+- 优化三部内置safe-camera播放：主画面改用原生video的CSS布局，跟随已解码帧更新安全区，不再逐帧复制完整画面到Canvas；画幅外补色使用有限、低频的小尺寸边缘采样，暂停/隐藏时停止持续调度。旧legacy Canvas兼容路径与原生完整画面兜底保留，性能改善不等同保证所有机器零掉帧。
 - 社区动画库增加三部入门作品，提供固定Release、精确长度与SHA256、制作来源和有范围说明的CC BY媒体许可；品牌权利单独保留，程序代码仍MIT。
 - 首屏兼容覆盖Windows DSH NEXT 2.0.19-next与2.0.21-next两种精确受核EXE/原始ASAR，后者所带内核为0.2.1-rc.4；按EXE摘要选择独立构建profile，再校验该构建的原包、受管理包与备份。未知profile不回退套用旧policy，不跨构建恢复。
 - 2.0.21-next接线保留原生boot的documentId/profile、sender复核和真实UI健康报告，动画与UI并行，不伪报healthy，不改EXE、Electron fuse或原生请求鉴权边界。

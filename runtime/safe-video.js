@@ -1,5 +1,5 @@
-/* Data-only camera framing for bundled movies. The original video remains the
-   only media clock and audio source. No remote author code is loaded. */
+/* Data-only framing. Native video owns decoding, presentation and the one audio
+   clock; only a tiny, throttled source-border sampler may use a Canvas. */
 (function(root){
  'use strict';
  const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -16,14 +16,8 @@
   if(frames[0].time!==0)return null;
   return{schemaVersion:1,mode:'safe-camera',sourceWidth:1280,sourceHeight:720,sampleBackground:value.sampleBackground===true,keyframes:frames};
  }
- class SafeVideoComposition{
-  constructor(canvas,video,presentation){
-   this.canvas=canvas;this.video=video;this.presentation=normalisePresentation(presentation);
-   if(!this.presentation)throw new TypeError('The bundled movie framing data is invalid.');
-   this.renderer={ctx:canvas.getContext('2d',{alpha:false})};
-   this.sampler=document.createElement('canvas');this.sampler.width=8;this.sampler.height=1;
-   this.sampleContext=this.sampler.getContext('2d',{willReadFrequently:true});this.sampleFailed=false;
-  }
+ class SafeVideoCamera{
+  constructor(presentation){this.presentation=normalisePresentation(presentation);if(!this.presentation)throw new TypeError('The bundled movie framing data is invalid.');}
   layout(width,height,time){
    const frames=this.presentation.keyframes;
    let a=frames[0],b=a;
@@ -37,30 +31,37 @@
    const visibleSafe={x:x+sx*scale,y:y+sy*scale,width:sw*scale,height:sh*scale};
    return{mode:'safe-camera',width,height,time,safe,scale,x,y,imageWidth,imageHeight,verticalAnchor:anchor,background:q<.5?a.background:b.background,visibleSafe,safeInside:visibleSafe.x>=-.5&&visibleSafe.y>=-.5&&visibleSafe.x+visibleSafe.width<=width+.5&&visibleSafe.y+visibleSafe.height<=height+.5};
   }
-  background(fallback,layout){
-   if(!this.presentation.sampleBackground||this.sampleFailed||this.video.readyState<2)return fallback;
+ }
+ class SourceBorderSampler{
+  constructor(enabled){this.enabled=enabled;this.canvas=null;this.context=null;this.failed=false;this.samples=0;this.skippedWithoutPadding=0;this.lastSample=-Infinity;this.lastColor=null;this.sampleTimes=[];}
+  needsPadding(layout){return layout.imageWidth<layout.width-.5||layout.imageHeight<layout.height-.5;}
+  sample(video,layout,now){
+   if(!this.needsPadding(layout)){this.skippedWithoutPadding++;return null;}
+   if(!this.enabled||this.failed||video.readyState<2||now-this.lastSample<250)return null;
    try{
-    const w=this.video.videoWidth,h=this.video.videoHeight;if(!w||!h)return fallback;
-    const left=clamp(-layout.x/layout.scale,0,w-1),right=clamp((layout.width-layout.x)/layout.scale,0,w-1);
-    const edge=layout.y>0?0:layout.y+layout.imageHeight<layout.height?h-1:0;
-    const points=Array.from({length:8},(_,i)=>[mix(left,right,(i+.5)/8),edge]);
-    points.forEach(([x,y],i)=>this.sampleContext.drawImage(this.video,Math.floor(x),Math.floor(y),1,1,i,0,1,1));
-    const data=this.sampleContext.getImageData(0,0,8,1).data,colors=[];
+    const w=video.videoWidth,h=video.videoHeight;if(!w||!h)return null;
+    if(!this.canvas){this.canvas=document.createElement('canvas');this.canvas.width=8;this.canvas.height=1;this.context=this.canvas.getContext('2d',{alpha:false,willReadFrequently:true});if(!this.context)throw Error('Border sampling unavailable');}
+    const left=clamp(-layout.x/layout.scale,0,w-1),right=clamp((layout.width-layout.x)/layout.scale,0,w-1),edge=layout.y>0?0:layout.y+layout.imageHeight<layout.height?h-1:0;
+    for(let i=0;i<8;i++)this.context.drawImage(video,Math.floor(mix(left,right,(i+.5)/8)),edge,1,1,i,0,1,1);
+    const data=this.context.getImageData(0,0,8,1).data,colors=[];
     for(let i=0;i<8;i++)colors.push([data[i*4],data[i*4+1],data[i*4+2]]);
     const median=[0,1,2].map(channel=>{const values=colors.map(c=>c[channel]).sort((a,b)=>a-b);return Math.round((values[3]+values[4])/2);});
-    return`rgb(${median.join(',')})`;
-   }catch{this.sampleFailed=true;return fallback;}
+    this.lastColor=`rgb(${median.join(',')})`;this.lastSample=now;this.samples++;this.sampleTimes.push(now);if(this.sampleTimes.length>96)this.sampleTimes.shift();return this.lastColor;
+   }catch{this.failed=true;return null;}
   }
+  diagnostics(){return{samples:this.samples,lastSample:this.lastSample,sampleTimes:[...this.sampleTimes],maximumHz:4,canvas:this.canvas?{width:8,height:1}:null,failed:this.failed,skippedWithoutPadding:this.skippedWithoutPadding};}
+  dispose(){if(this.canvas){this.canvas.width=0;this.canvas.height=0;}this.canvas=null;this.context=null;}
+ }
+ // Retained for consumers of the older Canvas helper. Bundled safe-camera
+ // playback uses SafeVideoCamera + native CSS through stage.js instead.
+ class SafeVideoComposition extends SafeVideoCamera{
+  constructor(canvas,video,presentation){super(presentation);this.canvas=canvas;this.video=video;this.renderer={ctx:canvas.getContext('2d',{alpha:false})};this.sampler=new SourceBorderSampler(this.presentation.sampleBackground);}
   render(time,width=this.canvas.width,height=this.canvas.height){
-   width=Math.max(1,Math.round(width));height=Math.max(1,Math.round(height));
-   if(this.canvas.width!==width)this.canvas.width=width;if(this.canvas.height!==height)this.canvas.height=height;
+   width=Math.max(1,Math.round(width));height=Math.max(1,Math.round(height));if(this.canvas.width!==width)this.canvas.width=width;if(this.canvas.height!==height)this.canvas.height=height;
    const ctx=this.renderer.ctx,layout=this.layout(width,height,Number(time)||0);this.lastLayout=layout;
-   ctx.setTransform(1,0,0,1,0,0);ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';ctx.shadowBlur=0;
-   ctx.fillStyle=this.background(layout.background,layout);ctx.fillRect(0,0,width,height);
-   if(this.video.readyState<2)return false;
-   if(this.video.videoWidth!==1280||this.video.videoHeight!==720)throw new Error('The bundled movie dimensions do not match its framing data.');
-   ctx.drawImage(this.video,layout.x,layout.y,layout.imageWidth,layout.imageHeight);return true;
+   ctx.setTransform(1,0,0,1,0,0);ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';ctx.shadowBlur=0;ctx.fillStyle=this.sampler.sample(this.video,layout,performance.now())||this.sampler.lastColor||layout.background;ctx.fillRect(0,0,width,height);
+   if(this.video.readyState<2)return false;if(this.video.videoWidth!==1280||this.video.videoHeight!==720)throw Error('The bundled movie dimensions do not match its framing data.');ctx.drawImage(this.video,layout.x,layout.y,layout.imageWidth,layout.imageHeight);return true;
   }
  }
- root.DSHSafeVideo={normalisePresentation,SafeVideoComposition};
+ root.DSHSafeVideo={normalisePresentation,SafeVideoCamera,SourceBorderSampler,SafeVideoComposition};
 })(window);

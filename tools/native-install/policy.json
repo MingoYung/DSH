@@ -4,11 +4,11 @@
   "exeSha256": "2c12759a3c3f24f2e6776dae4e511cf5984b227f5e4322fd826fea647bf503b6",
   "originalSha256": "204e1dcc32ff6a9b661200b7ab97bda1cbd449904e2eddb71c9309cf767e06b5",
   "legacySha256": "f9bb18dc0e0bc62f15de021a4ad7a058785be9be9e6781651451f1381fb35e6a",
-  "patchedSha256": "bbd70ec15bdd8945e2220a1fc3d726b787b5cd6d45ffdbd651b58fc883c69f48",
+  "patchedSha256": "112e0967ced3eaf1ac65bfbd4bb2ce2e3e0b8b2951eefffb3dfb1696d78d9e88",
   "files": {
     "lib/main.js": "11510899b06942d62f9fd55cc68356b994e88602501baaf112b75c7d83d7e292",
     "lib/web-document.js": "4dffeb61cda19903b61cc6aed240760ce234529d7b1da460a0e584bb74ed6c0b",
-    "lib/native-boot-carrier.mjs": "9b18bdb5360721a807a69ce3f82bee98bb2cc91dbdb91eabeb9817db77464c7d"
+    "lib/native-boot-carrier.mjs": "e9e678417c6e54407491f9a7d9cf394107e7062321ef36117fe682b7dfa0bbe3"
   },
   "runtimeFiles": {
     "runtime/scene/brand.js": "9133132dba57f3eed887768752e41015b4286293f6f8b794cb1d49ce25a39475",
@@ -17,8 +17,8 @@
     "runtime/scene/desktop-composition.js": "145c4c50098b6c551bd624c34009669bb9292ec7f1d468d587afa2ef10a0e4fa",
     "runtime/scene/responsive-composition.js": "391f25bdafd44620d5b061ffb2b8fb19b8adf80c0085f8bcc6ef68a792255ec3",
     "runtime/scene/portrait-camera.js": "153ec0432d12c76de19bfea462352784b003b9888717c0df8d4dbc8c71c23fa4",
-    "runtime/safe-video.js": "d7e37ada9aae4697cc0d1f5e21187f8070e3c6d16661c0f8509107f3ab42e09b",
-    "runtime/stage.js": "443a5ff1307ac6a2cd9e1c013897fba6a58079b4966386a5be4c1499f6149ef1",
+    "runtime/safe-video.js": "85bcbbc541df93083e7c5d70fc7311350b4ee268730a346ccba1ab1e94107fa9",
+    "runtime/stage.js": "f0407d0293f61ea84bde9de3062cd057cf116cd509f54859fc554dd9eb2512db",
     "runtime/bootstrap.js": "c82de55af6009153e68dfc54dee1a52060d9e3d9c927620c43e20496bc23ac03",
     "media/builtins.json": "0c4f44e6377853defb2c052e5613552af88f37342e0f7d415e4d522e9e0c84dd",
     "media/boot.mp4": "7cd3f3bb33afa18ee2591e10e0d52c6838bd7aa09518780c90628fac3e752849",
@@ -35,6 +35,7 @@
     "3a17430a4534a4754a3ee9d1f189dc83feac268355ee9925ab7b6cd55866229a",
     "81ce16548abef77d9d108076fe7493852f8baee4b337105999ef715d09245170",
     "f3caf0dbb42a3c79b9c83bcbbab4929ed40a3c07d999c2643071c51a98b822d3",
-    "3c67135af1a8385f8f9dd170b6b0b08f1953dfcb8427ff99734863d94946892b"
+    "3c67135af1a8385f8f9dd170b6b0b08f1953dfcb8427ff99734863d94946892b",
+    "bbd70ec15bdd8945e2220a1fc3d726b787b5cd6d45ffdbd651b58fc883c69f48"
   ]
 }

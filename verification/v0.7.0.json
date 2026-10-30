@@ -1,8 +1,8 @@
 {
   "version": "0.7.0",
-  "checkedAt": "2026-10-30T10:25:45.052406+00:00",
+  "checkedAt": "2026-10-30T11:19:20.998313+00:00",
   "automatedPassed": true,
-  "scope": "Final compiled plugin, local real-browser/HTTP playback and settings fixtures; exact published community media; original desktop archive copies with synthetic EXE/authorization in isolated installer lifecycle checks. Not a production restart or human listening claim. The installed desktop was updated during preparation. A separate exact 2.0.21-next / core 0.2.1-rc.4 profile was subsequently adapted and checked; old-build evidence is not relabeled as new-build acceptance.",
+  "scope": "Final compiled plugin, local real-browser/HTTP playback and settings fixtures; exact published community media; original desktop archive copies with synthetic EXE/authorization in isolated installer lifecycle checks. Not a production restart or human listening claim. The installed desktop was updated during preparation. A separate exact 2.0.21-next / core 0.2.1-rc.4 profile was subsequently adapted and checked; old-build evidence is not relabeled as new-build acceptance. A later playback-performance revision replaces only the bundled safe-camera presentation path. The original native/browser records remain evidence for the earlier candidate; the performance records below describe the current bytes.",
   "checks": {
     "compiledClientBrowserGroups": 30,
     "standalonePreviewGroups": 5,
@@ -56,12 +56,13 @@
     "desktopVersion": "2.0.19-next",
     "exeSha256": "2c12759a3c3f24f2e6776dae4e511cf5984b227f5e4322fd826fea647bf503b6",
     "originalAsarSha256": "204e1dcc32ff6a9b661200b7ab97bda1cbd449904e2eddb71c9309cf767e06b5",
-    "targetAsarSha256": "bbd70ec15bdd8945e2220a1fc3d726b787b5cd6d45ffdbd651b58fc883c69f48",
+    "targetAsarSha256": "112e0967ced3eaf1ac65bfbd4bb2ce2e3e0b8b2951eefffb3dfb1696d78d9e88",
     "previousManagedSha256s": [
       "3a17430a4534a4754a3ee9d1f189dc83feac268355ee9925ab7b6cd55866229a",
       "81ce16548abef77d9d108076fe7493852f8baee4b337105999ef715d09245170",
       "f3caf0dbb42a3c79b9c83bcbbab4929ed40a3c07d999c2643071c51a98b822d3",
-      "3c67135af1a8385f8f9dd170b6b0b08f1953dfcb8427ff99734863d94946892b"
+      "3c67135af1a8385f8f9dd170b6b0b08f1953dfcb8427ff99734863d94946892b",
+      "bbd70ec15bdd8945e2220a1fc3d726b787b5cd6d45ffdbd651b58fc883c69f48"
     ],
     "explicitUpdateAndRestartRequired": true,
     "keepsOriginalBackupAndUserMedia": true,
@@ -85,8 +86,12 @@
   "humanEvidence": {
     "threeFinalMoviesAcceptedByUser": true,
     "priorNativeInstallRestoreCycleAcceptedVersion": "0.5.0",
-    "new070InstalledDesktopRestartAccepted": false,
-    "new070HumanAudioListeningPerformedByAgent": false
+    "new070InstalledDesktopRestartAccepted": true,
+    "new070HumanAudioListeningPerformedByAgent": false,
+    "acceptedInstalledCandidateAsarSha256": "904bfe68869770b8099ad1b04eb9e7f3a72dfb9c56240d0fc11a1797ed17633d",
+    "firstCandidateDirectAnimationSoundAndMainUiNormal": true,
+    "firstCandidateOccasionalDroppedFramesReportedAcrossThreePreviews": true,
+    "performanceRevisionHumanSmoothnessAcceptanceRecordedInThisPreinstallProof": false
   },
   "limits": [
     "Browser checks use the actual code with isolated React/configForms and storage, not the production DSH session.",
@@ -98,37 +103,53 @@
     "package.json": "9119e02f940646e49fea63f96b3e3a883da791fe01ba352b9841ccae1f66bc2b",
     "package-lock.json": "b3cf6c39349e466e4ce39f0c2c0558ea138efde8d5137cbfb3e9097190cc2340",
     "lib/index.js": "a544b488cadc1e06a0c3d4e9e52865bc7d4842068d076b5d79688c3a459579cc",
-    "lib/client.js": "1bd2911bcbfdda8a7d25b1e4debda5c05a8f738ef64fda542a8567ae70109bd5",
+    "lib/client.js": "c313c360e8469c648b4bdcd88511f6d4c1a1334cb26e15fc840040a016f23952",
     "lib/builtins.mjs": "3c4053d7807dba2b5e683f3655af8deb1161843e660cfae0fbd13d9c1784ee4c",
     "lib/animation-library.mjs": "aa2929cc8e4589a01c4183b41b3406d5614e17c94c9312fe7475e42771d9958b",
     "runtime/bootstrap.js": "c82de55af6009153e68dfc54dee1a52060d9e3d9c927620c43e20496bc23ac03",
-    "runtime/safe-video.js": "d7e37ada9aae4697cc0d1f5e21187f8070e3c6d16661c0f8509107f3ab42e09b",
+    "runtime/safe-video.js": "85bcbbc541df93083e7c5d70fc7311350b4ee268730a346ccba1ab1e94107fa9",
     "media/builtins.json": "0c4f44e6377853defb2c052e5613552af88f37342e0f7d415e4d522e9e0c84dd",
-    "tools/native-install/policy.json": "d2e0c82fb92d3f8802faa1bf2a37646584371152ac9c034dcd75636adbca4157",
+    "tools/native-install/policy.json": "79a81aaffc220dd257376fbe8dd288d14fd2863c9dfbdde4b32be361447ca669",
     "CREDITS.md": "d5d0e282013637029665ae70dc4afe0dadf396afc7efcc98636d0ca30bebf8fc",
     "scripts/verify.mjs": "74238d05fd761f743221dcd2306e3cd47c1759d589050f71e7ed024b597680a2",
     ".gitattributes": "2e5f0fc30146079c5aee84d4835827822b0d0a369cbb090580b6a4523c8a45bb",
     "tools/native-install/index.mjs": "721986d7a170fea1f1260d9332a5bf472c730b8c01b49d19905454f463d0c1f6",
     "tools/native-install/profiles.mjs": "f0451338c12e2cb6c32ff65c59b06fba0d32a7e2675160c93b384f804126e7b2",
     "tools/native-install/Install-FirstScreen.ps1": "3126db3ed89842f7dafad65c23fd0b3d0c78e2ffa72d387b295f824540259a3a",
-    "tools/native-install/builds/2.0.21-next/policy.json": "4d817305c918e4af800a7d1c49aed3d9d890a116b21ea906f1e45abb846fc512",
-    "verification/v0.7.0-rc4-host.json": "3398c2305671b44313e97faa7687744b6028be147bf73afc06677c550e3b8756"
+    "tools/native-install/builds/2.0.21-next/policy.json": "1728181e81fd6750b7ec68415b0824961bab206a042262966c164e0927794c2f",
+    "verification/v0.7.0-rc4-host.json": "3398c2305671b44313e97faa7687744b6028be147bf73afc06677c550e3b8756",
+    "runtime/stage.js": "f0407d0293f61ea84bde9de3062cd057cf116cd509f54859fc554dd9eb2512db",
+    "README.md": "c9955a2d5bc4ea5a16db042c5bf18662404f9b9e8e05fa83e1dbd60056a1f30a",
+    "COMPATIBILITY.md": "4b682144cfd9e3227e6b9cbce9e2ed8f4173c779cf239a67ff6160a0f334c75e",
+    "CHANGELOG.md": "c0fd625df52a9dd051105aa6f45c9698d08cb616ed33de7a651fb12a39fc9106",
+    "verification/v0.7.0-performance-runtime.json": "6d680352b84a4d3ad0767a39c34df26cabe53ad425462819dbec34ab700908bc",
+    "verification/v0.7.0-performance-native.json": "ef9c0922d1a74539b3f4438f6377ee2a6578d1b415d690d7d6e5f0970bdad371"
   },
   "nativeBuilds": [
     {
       "desktopVersion": "2.0.19-next",
       "exeSha256": "2c12759a3c3f24f2e6776dae4e511cf5984b227f5e4322fd826fea647bf503b6",
       "originalAsarSha256": "204e1dcc32ff6a9b661200b7ab97bda1cbd449904e2eddb71c9309cf767e06b5",
-      "candidateAsarSha256": "bbd70ec15bdd8945e2220a1fc3d726b787b5cd6d45ffdbd651b58fc883c69f48",
+      "candidateAsarSha256": "112e0967ced3eaf1ac65bfbd4bb2ce2e3e0b8b2951eefffb3dfb1696d78d9e88",
       "runtimePins": 16,
+      "previousManagedSha256s": [
+        "3a17430a4534a4754a3ee9d1f189dc83feac268355ee9925ab7b6cd55866229a",
+        "81ce16548abef77d9d108076fe7493852f8baee4b337105999ef715d09245170",
+        "f3caf0dbb42a3c79b9c83bcbbab4929ed40a3c07d999c2643071c51a98b822d3",
+        "3c67135af1a8385f8f9dd170b6b0b08f1953dfcb8427ff99734863d94946892b",
+        "bbd70ec15bdd8945e2220a1fc3d726b787b5cd6d45ffdbd651b58fc883c69f48"
+      ],
       "policyFile": "tools/native-install/policy.json"
     },
     {
       "desktopVersion": "2.0.21-next",
       "exeSha256": "423feb86156366aa2bc3374933f579027aef44bcc439c5743b72231d480afc00",
       "originalAsarSha256": "16f2c62b1ccc98a968d9c7cf5edcd7af7a1e7690c2fba8cea361d1726d0db349",
-      "candidateAsarSha256": "904bfe68869770b8099ad1b04eb9e7f3a72dfb9c56240d0fc11a1797ed17633d",
+      "candidateAsarSha256": "22af7dfb0d71e5f6e2031dff6b64b260f02000e0fc95f8b5dc0ba06623a6ab49",
       "runtimePins": 16,
+      "previousManagedSha256s": [
+        "904bfe68869770b8099ad1b04eb9e7f3a72dfb9c56240d0fc11a1797ed17633d"
+      ],
       "policyFile": "tools/native-install/builds/2.0.21-next/policy.json"
     }
   ],
@@ -152,5 +173,18 @@
     ],
     "runAsNodeFuse": "Observed enabled on the exact new EXE; no fuse/EXE change",
     "realReadonlyInspector": "Manual CLI on the actual new executable selected the new profile and reported pristine, supported and sourceEligible before installation."
+  },
+  "performanceRevision": {
+    "runtimeRecord": "verification/v0.7.0-performance-runtime.json",
+    "nativeRecord": "verification/v0.7.0-performance-native.json",
+    "safeFramingDataAndThreeMoviesUnchanged": true,
+    "sameSingleNativeVideoAndAudio": true,
+    "fullViewportCanvasCopiesForSafeCamera": 0,
+    "borderSamplingMaximumHz": 4,
+    "rc4ActualRuntimeContractsRerunAfterClientBuild": 10,
+    "rc4PerformanceFixtureClientSha256": "c313c360e8469c648b4bdcd88511f6d4c1a1334cb26e15fc840040a016f23952",
+    "headlessMetricsDoNotGuaranteeAllDeviceSmoothness": true,
+    "actualCompiledUiHttpGroups": 30,
+    "actualStandalonePreviewGroups": 5
   }
 }

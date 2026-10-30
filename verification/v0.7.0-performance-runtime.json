@@ -1,0 +1,126 @@
+{
+  "version": "0.7.0",
+  "passed": true,
+  "checks": 70,
+  "scope": "Existing isolated same-Edge direct-stage evidence only: three bundled works, four viewports, two times, requestVideoFrameCallback and RAF fallback; pause, seek, resize, skip, end cleanup and controlled visibility. No tests were rerun when preparing this summary.",
+  "coverage": {
+    "works": 3,
+    "viewportSizes": [
+      [
+        1280,
+        800
+      ],
+      [
+        540,
+        960
+      ],
+      [
+        400,
+        800
+      ],
+      [
+        960,
+        540
+      ]
+    ],
+    "timesSeconds": [
+      5.5,
+      19
+    ],
+    "nativeAndRafFallbackFramingCases": 48,
+    "originalCameraLayoutComparisons": 108,
+    "singleVideoClock": true,
+    "fullViewportCanvasOnNativePath": false,
+    "backgroundSampling": "Only when padding exists; 8x1 Canvas, at least 250 ms between samples, scheduled off the frame callback through idle/timer tasks.",
+    "legacyProceduralCanvasRetained": true
+  },
+  "sourceHashes": {
+    "stage.js": "f0407d0293f61ea84bde9de3062cd057cf116cd509f54859fc554dd9eb2512db",
+    "safe-video.js": "85bcbbc541df93083e7c5d70fc7311350b4ee268730a346ccba1ab1e94107fa9"
+  },
+  "benchmarks": [
+    {
+      "mode": "previous-canvas",
+      "viewport": [
+        960,
+        540
+      ],
+      "animationId": "builtin:claude-code",
+      "elapsedMs": 3249.0999999940395,
+      "drawImage": 828,
+      "fullFrameCopies": 92,
+      "readbacks": 92,
+      "rafCallbacks": 194,
+      "videoFrameCallbacks": 0,
+      "totalFrames": 94,
+      "droppedFrames": 0,
+      "longTaskCount": 0,
+      "longestTaskMs": 0
+    },
+    {
+      "mode": "previous-canvas",
+      "viewport": [
+        540,
+        960
+      ],
+      "animationId": "builtin:claude-code",
+      "elapsedMs": 3255.5,
+      "drawImage": 819,
+      "fullFrameCopies": 91,
+      "readbacks": 91,
+      "rafCallbacks": 194,
+      "videoFrameCallbacks": 0,
+      "totalFrames": 95,
+      "droppedFrames": 0,
+      "longTaskCount": 0,
+      "longestTaskMs": 0
+    },
+    {
+      "mode": "native-video",
+      "viewport": [
+        960,
+        540
+      ],
+      "animationId": "builtin:claude-code",
+      "elapsedMs": 3247.4000000059605,
+      "drawImage": 0,
+      "fullFrameCopies": 0,
+      "readbacks": 0,
+      "rafCallbacks": 0,
+      "videoFrameCallbacks": 95,
+      "totalFrames": 96,
+      "droppedFrames": 0,
+      "longTaskCount": 0,
+      "longestTaskMs": 0
+    },
+    {
+      "mode": "native-video",
+      "viewport": [
+        540,
+        960
+      ],
+      "animationId": "builtin:claude-code",
+      "elapsedMs": 3246.6000000089407,
+      "drawImage": 96,
+      "fullFrameCopies": 0,
+      "readbacks": 12,
+      "rafCallbacks": 0,
+      "videoFrameCallbacks": 95,
+      "totalFrames": 96,
+      "droppedFrames": 0,
+      "longTaskCount": 0,
+      "longestTaskMs": 0
+    }
+  ],
+  "interpretation": "In the recorded approximately 3.25-second samples, full-frame Canvas copies fell from 91/92 to zero. Landscape readbacks fell from 92 to zero; portrait readbacks fell from 91 to 12. These are measured workload reductions, not proof of one exclusive stutter cause or a universal smoothness guarantee.",
+  "limitations": [
+    "Headless Edge playback-quality and callback timing are local observations, not a guarantee for every GPU or system load.",
+    "Visibility is tested via a controlled document.hidden getter and real visibilitychange handler, not an OS minimize operation.",
+    "Legacy preservation test uses a minimal procedural composition; its existing rendering algorithm was not changed.",
+    "Both old and new samples reported zero dropped frames in this headless Edge run; those counters do not demonstrate that the user-reported intermittent drops have been eliminated.",
+    "This direct-stage report does not cover the later compiled-client rebuild, production DSH restart or whole-system GPU scheduling; those are separate validation steps."
+  ],
+  "evidenceReport": "work/release-v070/performance/performance-qa-report.json",
+  "backupManifest": "work/release-v070/performance/latest_backup/manifest.json",
+  "userProfileOrInstalledFilesModified": false
+}
