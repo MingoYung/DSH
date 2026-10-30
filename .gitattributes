@@ -3,3 +3,5 @@
 runtime/** -text
 tools/native-install/payload/** -text
 media/** -text
+
+tools/native-install/builds/**/payload/** -text

@@ -1,0 +1,79 @@
+{
+  "version": "0.7.0",
+  "passed": true,
+  "targetDesktopVersion": "2.0.21-next",
+  "kernelVersion": "0.2.1-rc.4",
+  "scope": "Offline workspace original/archive/module copies and synthetic executable/worker fixtures only; no installed DSH process, production archive or live profile touched.",
+  "newExeSha256": "423feb86156366aa2bc3374933f579027aef44bcc439c5743b72231d480afc00",
+  "newOriginalAsarSha256": "16f2c62b1ccc98a968d9c7cf5edcd7af7a1e7690c2fba8cea361d1726d0db349",
+  "newCandidateAsarSha256": "904bfe68869770b8099ad1b04eb9e7f3a72dfb9c56240d0fc11a1797ed17633d",
+  "oldDesktopPreserved": {
+    "version": "2.0.19-next",
+    "exeSha256": "2c12759a3c3f24f2e6776dae4e511cf5984b227f5e4322fd826fea647bf503b6",
+    "originalAsarSha256": "204e1dcc32ff6a9b661200b7ab97bda1cbd449904e2eddb71c9309cf767e06b5",
+    "candidateAsarSha256": "bbd70ec15bdd8945e2220a1fc3d726b787b5cd6d45ffdbd651b58fc883c69f48",
+    "priorRegression": "verification/v0.7.0-native.json",
+    "priorChecks": 69
+  },
+  "profileSelection": "Fixed packaged profiles selected by exact EXE SHA256, then independent exact ASAR/runtime/payload whitelists. Unknown executable has no default-policy fallback.",
+  "defaultPolicy": "tools\\native-install\\policy.json",
+  "newPolicy": "tools\\native-install\\builds\\2.0.21-next\\policy.json",
+  "sourceAdaptation": {
+    "mainChange": "One serveWebDocument call gains authoritative home/selected-profile/safe/recovery context; all other upstream main bytes preserved.",
+    "newIpcBootDocumentIdProfileAndRendererHealthContractPreserved": true,
+    "upstreamWebDocumentParityExceptHashedContractImport": true,
+    "nativeOwnerOriginFrameMarkerAndForwardingPolicyPreserved": true,
+    "unchangedArchiveEntries": 24482
+  },
+  "workerAndLauncherIdenticalAcrossBuilds": true,
+  "engineUnchanged": true,
+  "tests": {
+    "structural-report.json": 37,
+    "full-carrier-report.json": 15,
+    "lifecycle-report.json": 2,
+    "profile-test-report.json": 7,
+    "web-test-report.json": 4
+  },
+  "totalNewChecks": 65,
+  "powershellEntryAstParsed": true,
+  "nativeBuildsCanRollbackOnlyToTheirOwnVerifiedOriginal": true,
+  "files": {
+    "tools\\native-install\\profiles.mjs": "f0451338c12e2cb6c32ff65c59b06fba0d32a7e2675160c93b384f804126e7b2",
+    "tools\\native-install\\index.mjs": "721986d7a170fea1f1260d9332a5bf472c730b8c01b49d19905454f463d0c1f6",
+    "tools\\native-install\\Install-FirstScreen.ps1": "3126db3ed89842f7dafad65c23fd0b3d0c78e2ffa72d387b295f824540259a3a",
+    "tools\\native-install\\builds\\2.0.21-next\\policy.json": "4d817305c918e4af800a7d1c49aed3d9d890a116b21ea906f1e45abb846fc512"
+  },
+  "reports": {
+    "build-report.json": {
+      "path": "work\\release-v070\\desktop-2021\\build-report.json",
+      "sha256": "0255970a8b9e680cdf71d8b202894a2362f7ecaddad939f51f7af863eecd6734"
+    },
+    "structural-report.json": {
+      "path": "work\\release-v070\\desktop-2021\\structural-report.json",
+      "sha256": "5760d82cf1b9434a1000de199ede414e0b9d8dfecb04d2a8acc17a2cf3b55577"
+    },
+    "full-carrier-report.json": {
+      "path": "work\\release-v070\\desktop-2021\\full-carrier-report.json",
+      "sha256": "1402cc1578d5ee634bee4505818de797d1f07249c23049e923d0f79f2ca289ed"
+    },
+    "lifecycle-report.json": {
+      "path": "work\\release-v070\\desktop-2021\\lifecycle-report.json",
+      "sha256": "de771706eabd1a13529dad94122b823dbe734134530637142b048de82b209ea7"
+    },
+    "profile-test-report.json": {
+      "path": "work\\release-v070\\desktop-2021\\profile-test-report.json",
+      "sha256": "15250faae14f74a9784f8e29204de99c3f43511a3acd32269cf941004fa427a9"
+    },
+    "web-test-report.json": {
+      "path": "work\\release-v070\\desktop-2021\\web-test-report.json",
+      "sha256": "615558fa2e2c2353bd8c69733df2e1e05601041e4fb7800c1508f66e8b278b4c"
+    }
+  },
+  "productionInstallationModified": false,
+  "limits": [
+    "Synthetic worker lifecycle does not claim a new human desktop quit/relaunch acceptance.",
+    "Static main byte preservation plus pure Web functions do not constitute a complete Electron/Host authentication audit.",
+    "REA startup analysis is scoped to selected modules; its unselected modules, truncated graph and dynamic IPC limitations remain.",
+    "Manual PowerShell syntax and fixed-profile hash selection were checked without launching the installed executable."
+  ]
+}

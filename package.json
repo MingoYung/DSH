@@ -1,7 +1,7 @@
 {
   "name": "dsh-awakening",
-  "version": "0.6.1",
-  "description": "鲸启启动动画：可更换作品、本地导入与社区动画库，支持预览、声音设置和可选首屏兼容。",
+  "version": "0.7.0",
+  "description": "鲸启启动动画：内置 DeepSeek、Codex、Claude Code 三款有声作品，支持自适应构图、本地导入与插件内社区动画库。",
   "type": "module",
   "main": "lib/index.js",
   "exports": {
@@ -65,7 +65,8 @@
     }
   },
   "scripts": {
-    "build": "node scripts/build.mjs"
+    "build": "node scripts/build.mjs",
+    "verify": "node scripts/verify.mjs"
   },
   "devDependencies": {
     "esbuild": "0.25.12"

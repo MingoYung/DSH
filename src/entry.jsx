@@ -4,6 +4,7 @@ import '../runtime/scene/morph.js';
 import '../runtime/scene/desktop-composition.js';
 import '../runtime/scene/responsive-composition.js';
 import '../runtime/scene/portrait-camera.js';
+import '../runtime/safe-video.js';
 import '../runtime/stage.js';
 import '../runtime/bootstrap.js';
 import * as panel from './client.jsx';

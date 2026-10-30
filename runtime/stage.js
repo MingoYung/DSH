@@ -9,7 +9,7 @@
   const MAX_RASTER = 2560;
   let nextCompositionId = 0;
 
-  function mount({ video, container = video?.parentElement } = {}) {
+  function mount({ video, container = video?.parentElement, presentation = null } = {}) {
     if (!video || !container || !video.parentNode) throw new TypeError('A mounted video and its stage container are required.');
     if (mounts.has(video)) return mounts.get(video);
     const surface = typeof container.getBoundingClientRect === 'function' ? container : container.host;
@@ -25,8 +25,8 @@
     function style(key, value) { video.style[key] = value; applied[key] = video.style[key]; }
     style('position', 'absolute'); style('left', '0px'); style('top', '0px');
     style('right', '0px'); style('bottom', '0px'); style('width', '100%'); style('height', '100%');
-    style('maxWidth', 'none'); style('maxHeight', 'none'); style('objectFit', 'cover');
-    style('background', '#000207'); style('zIndex', '1'); style('pointerEvents', 'none');
+    style('maxWidth', 'none'); style('maxHeight', 'none'); style('objectFit', presentation ? 'contain' : 'cover');
+    style('background', presentation?.keyframes?.[0]?.background || '#000207'); style('zIndex', '1'); style('pointerEvents', 'none');
 
     let disposed = false, canvas = null, composition = null, frame = 0;
     let drawn = 0, failures = 0, compositionBuilds = 0, lastPaint = -Infinity;
@@ -80,12 +80,12 @@
           const raster = geometry.raster;
           // render() is synchronous and reads currentTime. renderAt() is an
           // offline seeking helper and is never used by the live stage.
-          composition.render(lastTime, raster.width, raster.height);
+          const rendered = composition.render(lastTime, raster.width, raster.height);
           lastLayout = composition.lastLayout;
           lastPaint = now;
           drawn++;
-          pending = false;
-          style('opacity', '0');
+          pending = rendered === false;
+          if (rendered !== false) style('opacity', '0');
         } catch (error) {
           fallback(error);
           return;
@@ -112,9 +112,10 @@
       canvas.setAttribute('aria-hidden', 'true');
       canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;background:#000207;';
       if (!canvas.getContext('2d', { alpha: false })) throw new Error('The adaptive Canvas 2D context is unavailable.');
-      const Composition = root.DSHPortraitTrackStudy?.PortraitTrackStudy;
+      canvas.style.background = presentation?.keyframes?.[0]?.background || '#000207';
+      const Composition = presentation ? root.DSHSafeVideo?.SafeVideoComposition : root.DSHPortraitTrackStudy?.PortraitTrackStudy;
       if (typeof Composition !== 'function') throw new Error('The adaptive scene modules are unavailable.');
-      composition = new Composition(canvas, video);
+      composition = new Composition(canvas, video, presentation);
       composition.focusStart = 500;
       if (!composition.renderer?.ctx) throw new Error('The source composition Canvas 2D context is unavailable.');
       compositionBuilds++;
@@ -132,7 +133,7 @@
     const api = {
       refresh,
       diagnostics: () => ({
-        disposed, drawn, failures, compositionBuilds, compositionId,
+        disposed, drawn, failures, compositionBuilds, compositionId, presentationMode: presentation?.mode || 'legacy-scene',
         fallbackActive, fallbackFailed: fallbackActive, fallbackReason,
         hidden: document.hidden, framePending: !!frame, pending,
         lastTime, lastLayout, geometry,

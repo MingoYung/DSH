@@ -1,57 +1,46 @@
 # DSH NEXT 启动阶段与兼容边界
 
-核对日期：2026-10-28。目标：Windows DSH NEXT 2.0.19-next，内核 0.2.1-rc.2。
+核对日期：2026-10-30。目标为 Windows DSH NEXT 的两种精确构建：2.0.19-next（保留既有内核0.2.1-rc.2记录）与2.0.21-next（从应用包核对内核0.2.1-rc.4）。构建 profile 是工具内的宿主白名单，不等同 DSH 用户 Profile。
 
-## 为什么先出现默认加载页
+## Host 注入与最早首屏
 
-本机安装包的主进程在 `runtime.start()` 后立即 `openMain()`，两个过程并行。`dsh-app://app/` 的初始 HTML 由桌面安装包提供，前端构造入口时先创建默认 `HARNESS / Loading plugins…` 卡片，然后调用 `dshDesktopBoot.ready()`。
+本机 NEXT 主进程启动 runtime 和主窗口并行。初始 `dsh-app://app/` 文档先由桌面安装包提供，Host 的注入表要等内核 startup 完成。因此普通插件的 `placement: head` 仍在 Host 就绪后执行。普通插件不会自动覆盖桌面最早的 HARNESS / Loading plugins 卡片。
 
-该 bridge 请求的主进程处理器先等待 `runtime.startup`，再返回 `runtime.injections()`。因此当前第三方插件的 head 注入表只能在 Host 启动之后进入已存在的文档；`placement: head` 在这里不等于初始 HTML 的解析时机。
+可选首屏兼容层接入经过核验的初始文档，从本地资源播放，随后由 Host 复用同一播放器、进度和声音。它需用户明确安装/更新及重启；不宣称所有 DSH 版本安装普通插件即可接管最早首帧。
 
-上游源码对应入口：
+仅白名单中的 Windows NEXT 2.0.19-next / 2.0.21-next EXE、各自原始 ASAR 和已识别的受管理兼容包可处理。工具先按 EXE 的精确 SHA256 选择构建 profile，再核对对应原包、受管理包及资源范围；未知 profile 或无法匹配的原包直接拒绝，不回退使用2.0.19-next的默认 policy。EXE、Electron fuse、快捷方式和账户配置不改。
 
-- [NEXT web-document.ts](https://github.com/anywhere-labs/dsh-desktop/blob/master/dsh-desktop-next/src/web-document.ts)
-- [NEXT preload-app.ts](https://github.com/anywhere-labs/dsh-desktop/blob/master/dsh-desktop-next/src/preload-app.ts)
-- [NEXT main.ts](https://github.com/anywhere-labs/dsh-desktop/blob/master/dsh-desktop-next/src/main.ts)
+| 构建 | EXE SHA256 | 原始 ASAR SHA256 | policy |
+| --- | --- | --- | --- |
+| Windows NEXT 2.0.19-next | `2c12759a3c3f24f2e6776dae4e511cf5984b227f5e4322fd826fea647bf503b6` | `204e1dcc32ff6a9b661200b7ab97bda1cbd449904e2eddb71c9309cf767e06b5` | `tools/native-install/policy.json` |
+| Windows NEXT 2.0.21-next | `423feb86156366aa2bc3374933f579027aef44bcc439c5743b72231d480afc00` | `16f2c62b1ccc98a968d9c7cf5edcd7af7a1e7690c2fba8cea361d1726d0db349` | `tools/native-install/builds/2.0.21-next/policy.json` |
 
-本地编译产物与上游分支不保证逐行相同。上述时序以本机安装包的提取副本为直接证据，没有为检查修改安装包。
+各构建的受管理补丁摘要及历史升级范围由对应 policy 单独记录；版本字符串不是放行依据。不能把公开 Setup.exe / Portable.zip 的压缩分发摘要当作安装后 EXE / ASAR 散件摘要。
 
-## 开源项目对照
+2.0.21-next 的 `dshDesktopBoot.ready()` 返回包含 `documentId` / `profile` 的原生 boot 对象，主进程会在异步取得 injections 后再次检查 sender 与文档世代。兼容层保持该对象及真实 UI mount 健康报告，动画与正常 UI 并行，不伪报 healthy；跳过、失败与重载不把旧文档报告送到新文档。原生 request guard 的 owner/frame/origin/token 边界保留，不修改 EXE 或 fuse。
 
-查阅了 [dsh-550c-boot](https://github.com/yannicksong0106/dsh-550c-boot)、[dsh-video-skin](https://github.com/Something11235/dsh-video-skin)、[dsh-boot-animation](https://github.com/lxj5820/dsh-boot-animation) 的 Host 实现。它们均通过 `webserver/index-inject` 接入，无法跨越当前 NEXT 的 Host 就绪等待。
+## 0.7.0 三作品与升级
 
-本版采用同类项目中可借鉴的接入方式：`inject=[]`，同步注册文档监听，再按可用服务注册资源路由和设置。这样降低服务依赖造成的额外等待，并保留有界退出；它不是 pre-Host 首屏能力。
+普通 Host 与首屏载体读取同一份 `media/builtins.json`：`builtin:awakening` 对应新 DeepSeek，另有 `builtin:codex`、`builtin:claude-code`。作品摘要、长度、媒体路径与安全构图数据随包提供；载体核对受审核的完整资源清单，不从社区加载程序。
 
-## 0.6.1可选首屏兼容层与作品切换
+从0.5/0.6已识别兼容包升级时，在首屏管理中明确选择“更新并重启”。工具基于已核验的原始备份重建，等全部DSH进程正常退出后再次核对并原子替换、重开；取消、失败或超时不强杀进程。普通插件更新不会自动改ASAR。0.7.0载体升级后，切换作品只改变保存的选择，下次启动读取所选作品，不为每次换片重写应用包。
 
-首屏兼容层把已验证播放器接入初始HTML，使用原生静态媒体端点，不等待Host。Host随后复用同一个API、video、Canvas及播放时间。账号、会话、Host token和其它插件配置不进入首屏HTML或资源缓存。
+原始备份在 `resources/.dsh-awakening-backup/app.asar`，只用于当前所选构建 profile，且必须匹配该构建的原始摘要。恢复前再次检查当前 EXE、原包备份及受管理包；不同构建的备份不能互换，不能把2.0.19-next原包写入2.0.21-next应用。宿主升级或旧备份消失时先核验新原包，再为当前构建建立可校验备份，不能凭旧 marker 或文件名放行。导入视频和播放设置独立保留；恢复默认首屏使用同一受保护的流程。
 
-目前支持Windows DSH NEXT 2.0.19-next的已核验EXE与ASAR构建。完整性白名单和精确文件范围在`tools/native-install/policy.json`；显示版本相同而构建不同也会拒绝。已识别的原包、前一版本机兼容包及本版受管理兼容包可检测，未知修改保留原状。
+首屏读取配置时只接受可静态判定的结构。禁用、卸载、安全/恢复模式、未审核包或资源校验失败时保守回到默认启动。账号、会话、Host token和其他插件配置不进入首屏资源。工具API继续要求本机私有请求策略、同源JSON和当前Host动作令牌，没有npm安装期副作用。
 
-用户从设置页明确确认后，安装器先完成准备、备份和独立脚本握手，客户端才调用桌面公开退出接口。脚本等待所有DSH进程结束，双重检查当前状态后原子替换并重新打开。退出取消或超时不强杀进程；准备或握手失败不让客户端继续退出。恢复默认首屏使用同一套受检查的流程。
+## 画面、音轨和窗口变化
 
-原始ASAR备份为安装目录`resources/.dsh-awakening-backup/app.asar`。EXE、系统安全开关、快捷方式和用户Profile不由工具改写。DSH升级后必须重新核验，不自动复用旧补丁。
+0.7.0三部内置作品为新的1280×720完整视频。它们由单一原生video提供画面时钟和音轨，Canvas按同一媒体时间读取安全构图关键帧，平滑调整取景与背景。同一播放器贯穿Host接管、窗口resize和预览；不使用旧13.6秒鲸鱼程序场景去重画这些新14秒衔接视频。
 
-兼容层每次初始页面读取当前已保存的7个设置（包含animationId与videoFit）；关闭、禁用、卸载、未审查播放器字节、安全/恢复模式均回到默认启动。只支持静态可判定的配置结构，遇到可能影响本插件的动态表达式、未知控制行或复杂覆盖时保守跳过。资源按已审查字节进入原生固定缓存，活动revision受保护，历史有界。
+Claude Code横向标识与三部人物尾段使用各自安全区，窄窗和竖窗优先保留文字、人脸、口型与主要动作。有限源画幅之外使用同作品颜色环境，不模糊、不镜像、不用透明人物边缘遮接缝；外围暗区可以裁切。极端比例不保证保留源画面全部边缘。
 
-0.5和0.6的已识别兼容包可以从原始备份升级到0.6.1；需在首屏管理明确“更新并重启”一次。0.6.0首屏层只接受0.6.0插件包，单独更新普通插件不会自动改写ASAR；更新前普通Host播放仍可用。新版首屏层接受受核验的0.6.0/0.6.1包，动画播放器与媒体字节保持不变。此后启动从用户动画库读取所选MP4/WebM，核对固定内容文件名、长度、SHA256、容器头和路径后缓存为不可变媒体，不执行作者代码或请求社区网络。普通视频不挂内置鲸鱼Canvas，Host接管保留同一个video及音轨。原始文件或索引异常时提前层跳过，Host后续提示并回退内置鲸启。内置作品启动不依赖动画库索引健康。
+普通本地导入/社区视频仍使用用户选择的cover或contain，不自动继承内置安全区。视频本身不含可执行作者代码。下载只在用户明确操作后发生，按长度与SHA256检查；正常开机只用本地文件。
 
-`.gitattributes`固定了运行时与原生payload的字节，避免源码clone时的自动换行破坏完整性校验；预构建包与GitHub源码归档包含同样的受核字节。
+尺寸变化不seek、不重播、不另建音轨。绘制限制DPR、最长栅格和帧率；Canvas失败时回到原生视频并保留退出。Esc/点击跳过、媒体失败、宿主加载失败和超时均可让出界面。有声自动播放被阻止时提示操作，避免静音口型。
 
-普通Web环境只能使用动画与预览，不能触发本机安装/退出。工具API要求原生私有请求标记、同源JSON及当前Host动作令牌；安装没有npm生命周期脚本，不会在添加插件时悄悄执行。
+## 验证口径
 
-## 画面适配
+源码构建、真实模块加载、独立浏览器播放/resize、资源路由及隔离ASAR副本的安装/升级/恢复检查分别记录，见 `verification/`。包内 `preview.html` 使用同一播放器，但不能将浏览器/合成Profile检查称为真实DSH冷启动人工验收。两种构建的离线检查和实机结果分别记录；2.0.21-next增加脚本编译缓存与窗口状态恢复，冷启动、热启动及记忆窗口状态应单独核对。
 
-0.4.0替换了0.3.0的方形补边与尾段边缘透明度方案。前段由源几何实时绘制，画布铺满窗口实际客户区，按宽高连续调整构图；不依赖固定比例文件。竖窗在归流阶段跟随左侧光带，人物轮廓形成时回到面部。右侧光带改为从右上向左下描出。
-
-尾段使用认可版1920×1080母版，按焦点满幅取景。没有周边模糊、镜像或尾段透明度遮挡；人物外围发梢和尾鳍在窄窗会出画。有限源画幅无法在任意比例下同时完整保留所有边缘：常见横屏、方窗与竖窗以脸、口型和主要动作可读为目标，极端长条窗不承诺完整构图。
-
-声音和时间由同一个video提供。ResizeObserver与窗口resize只更新画布几何，不重新创建播放器、不seek、不重播。输出DPR上限1.5、栅格最长边上限2560、绘制上限30fps；隐藏页暂停绘制，恢复后追随当前媒体时间。Canvas异常时恢复原生video的cover显示，并保留退出机制。
-
-包内preview.html运行与插件相同的播放器代码，适合验证尺寸和声音；独立浏览器检查不能替代实际DSH启动确认。版本对应的验证范围见更新记录。
-
-## Stable与NEXT差异
-
-公开[Stable main.ts](https://github.com/anywhere-labs/dsh-desktop/blob/master/dsh-plugin-desktop/src/main.ts)先等待boot，再mount主窗口；NEXT在内核启动期间已经打开窗口。因此Stable的首个有效画面可以直接呈现插件动画。参考录屏从真实点击图标开始，约0.2–0.5秒为黑窗、约1秒鲸鱼淡入，未观察到默认文字加载卡片；无法从录屏确认作者使用的桌面版本。
-
-可选直启入口也能在原生媒体窗口中先播放、同时启动NEXT，并在完成后交接。它需要处理重复播放抑制、就绪信号和窗口位置，属于附属启动入口，不等于当前插件从原NEXT入口已支持pre-Host。当前代码没有自动替换用户快捷方式。
+早期排查参考了 [DSH Desktop NEXT](https://github.com/anywhere-labs/dsh-desktop/tree/master/dsh-desktop-next) 的主进程、preload和web-document源码，以及社区dsh-550c-boot、dsh-video-skin和dsh-boot-animation。构建时序结论以本机原始产物为直接证据，不保证上游移动分支逐行一致。

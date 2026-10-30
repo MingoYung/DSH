@@ -1,8 +1,7 @@
 [
-  "screenshots/ui-current.png",
   "screenshots/library-desktop.png",
-  "screenshots/library-portrait.png",
-  "screenshots/ui-settings.png",
-  "screenshots/preview-whale-desktop.png",
-  "screenshots/preview-welcome-desktop.png"
+  "media/poster.png",
+  "media/codex-poster.png",
+  "media/claude-code-poster.png",
+  "screenshots/claude-code-portrait.png"
 ]

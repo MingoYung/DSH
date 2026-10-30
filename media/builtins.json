@@ -1,0 +1,359 @@
+{
+  "schemaVersion": 1,
+  "entries": [
+    {
+      "id": "builtin:awakening",
+      "title": "DeepSeek · 鲸启",
+      "description": "DeepSeek 标志与星光归流，衔接本项目制作的有声深海角色结尾。",
+      "author": "MingoYung",
+      "license": "CC-BY-4.0",
+      "licenseScope": "Project-owned animation and generated original media only; product names and brand artwork retain their owners’ rights.",
+      "kind": "video",
+      "builtin": true,
+      "removable": false,
+      "durationSeconds": 22,
+      "sha256": "7cd3f3bb33afa18ee2591e10e0d52c6838bd7aa09518780c90628fac3e752849",
+      "bytes": 8170415,
+      "catalogId": "mingoyung.deepseek-awakening",
+      "sourceUrl": "/dsh-awakening/media/boot.mp4?v=0.7.0",
+      "posterUrl": "/dsh-awakening/media/poster.png?v=0.7.0",
+      "thumbnailUrl": "/dsh-awakening/media/poster.png?v=0.7.0",
+      "sourcePage": "https://github.com/MingoYung/dsh-awakening/blob/v0.7.0/CREDITS.md",
+      "licenseUrl": "https://github.com/MingoYung/dsh-awakening/blob/v0.7.0/licenses/ORIGINAL-ANIMATIONS-CC-BY-4.0.md",
+      "fit": "safe",
+      "presentation": {
+        "schemaVersion": 1,
+        "mode": "safe-camera",
+        "sourceWidth": 1280,
+        "sourceHeight": 720,
+        "sampleBackground": true,
+        "keyframes": [
+          {
+            "time": 0,
+            "safe": [
+              420,
+              110,
+              440,
+              460
+            ],
+            "background": "#000207",
+            "verticalAnchor": 0.5
+          },
+          {
+            "time": 7.6,
+            "safe": [
+              420,
+              110,
+              440,
+              460
+            ],
+            "background": "#000207",
+            "verticalAnchor": 0.5
+          },
+          {
+            "time": 9.7,
+            "safe": [
+              270,
+              100,
+              740,
+              510
+            ],
+            "background": "#000207",
+            "verticalAnchor": 0.5
+          },
+          {
+            "time": 12,
+            "safe": [
+              0,
+              290,
+              720,
+              430
+            ],
+            "background": "#000207",
+            "verticalAnchor": 0.5
+          },
+          {
+            "time": 14,
+            "safe": [
+              330,
+              0,
+              620,
+              720
+            ],
+            "background": "#000207",
+            "verticalAnchor": 0.5
+          },
+          {
+            "time": 16.2,
+            "safe": [
+              330,
+              0,
+              620,
+              720
+            ],
+            "background": "#000207",
+            "verticalAnchor": 0.5
+          },
+          {
+            "time": 18,
+            "safe": [
+              450,
+              0,
+              360,
+              720
+            ],
+            "background": "#000207",
+            "verticalAnchor": 0
+          },
+          {
+            "time": 22,
+            "safe": [
+              450,
+              0,
+              360,
+              720
+            ],
+            "background": "#000207",
+            "verticalAnchor": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "builtin:codex",
+      "title": "Codex · 构想成形",
+      "description": "铂金与薄荷色标识动效，衔接本项目制作的有声 Codex 角色结尾。",
+      "author": "MingoYung",
+      "license": "CC-BY-4.0",
+      "licenseScope": "Project-owned animation and generated original media only; product names and brand artwork retain their owners’ rights.",
+      "kind": "video",
+      "builtin": true,
+      "removable": false,
+      "durationSeconds": 22,
+      "sha256": "9a3a11a7edd9ff1c2185e293f69aed75495f935c665ecb09b3df751900b306a5",
+      "bytes": 5920928,
+      "catalogId": "mingoyung.codex-awakening",
+      "sourceUrl": "/dsh-awakening/media/codex.mp4?v=0.7.0",
+      "posterUrl": "/dsh-awakening/media/codex-poster.png?v=0.7.0",
+      "thumbnailUrl": "/dsh-awakening/media/codex-poster.png?v=0.7.0",
+      "sourcePage": "https://github.com/MingoYung/dsh-awakening/blob/v0.7.0/CREDITS.md",
+      "licenseUrl": "https://github.com/MingoYung/dsh-awakening/blob/v0.7.0/licenses/ORIGINAL-ANIMATIONS-CC-BY-4.0.md",
+      "fit": "safe",
+      "presentation": {
+        "schemaVersion": 1,
+        "mode": "safe-camera",
+        "sourceWidth": 1280,
+        "sourceHeight": 720,
+        "sampleBackground": true,
+        "keyframes": [
+          {
+            "time": 0,
+            "safe": [
+              420,
+              110,
+              440,
+              470
+            ],
+            "background": "#030807",
+            "verticalAnchor": 0.5
+          },
+          {
+            "time": 7.6,
+            "safe": [
+              420,
+              110,
+              440,
+              470
+            ],
+            "background": "#030807",
+            "verticalAnchor": 0.5
+          },
+          {
+            "time": 9.7,
+            "safe": [
+              270,
+              100,
+              740,
+              510
+            ],
+            "background": "#030807",
+            "verticalAnchor": 0.5
+          },
+          {
+            "time": 12,
+            "safe": [
+              0,
+              290,
+              720,
+              430
+            ],
+            "background": "#030807",
+            "verticalAnchor": 0.5
+          },
+          {
+            "time": 14,
+            "safe": [
+              330,
+              0,
+              620,
+              720
+            ],
+            "background": "#030807",
+            "verticalAnchor": 0.5
+          },
+          {
+            "time": 16.2,
+            "safe": [
+              330,
+              0,
+              620,
+              720
+            ],
+            "background": "#030807",
+            "verticalAnchor": 0.5
+          },
+          {
+            "time": 18,
+            "safe": [
+              400,
+              60,
+              480,
+              660
+            ],
+            "background": "#030807",
+            "verticalAnchor": 1
+          },
+          {
+            "time": 22,
+            "safe": [
+              400,
+              60,
+              480,
+              660
+            ],
+            "background": "#030807",
+            "verticalAnchor": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "builtin:claude-code",
+      "title": "Claude Code · 光标唤醒",
+      "description": "终端光标唤醒像素小蟹，柔韧光流衔接本项目制作的有声角色结尾。",
+      "author": "MingoYung",
+      "license": "CC-BY-4.0",
+      "licenseScope": "Project-owned animation and generated original media only; product names and brand artwork retain their owners’ rights.",
+      "kind": "video",
+      "builtin": true,
+      "removable": false,
+      "durationSeconds": 22,
+      "sha256": "24968a5910759fa1824efbeb6db662c97d5d22754ad4898259f2ca7ddb5787ea",
+      "bytes": 4207749,
+      "catalogId": "mingoyung.claude-code-awakening",
+      "sourceUrl": "/dsh-awakening/media/claude-code.mp4?v=0.7.0",
+      "posterUrl": "/dsh-awakening/media/claude-code-poster.png?v=0.7.0",
+      "thumbnailUrl": "/dsh-awakening/media/claude-code-poster.png?v=0.7.0",
+      "sourcePage": "https://github.com/MingoYung/dsh-awakening/blob/v0.7.0/CREDITS.md",
+      "licenseUrl": "https://github.com/MingoYung/dsh-awakening/blob/v0.7.0/licenses/ORIGINAL-ANIMATIONS-CC-BY-4.0.md",
+      "fit": "safe",
+      "presentation": {
+        "schemaVersion": 1,
+        "mode": "safe-camera",
+        "sourceWidth": 1280,
+        "sourceHeight": 720,
+        "sampleBackground": true,
+        "keyframes": [
+          {
+            "time": 0,
+            "safe": [
+              250,
+              250,
+              770,
+              230
+            ],
+            "background": "#0c0806",
+            "verticalAnchor": 0.5
+          },
+          {
+            "time": 7.6,
+            "safe": [
+              250,
+              250,
+              770,
+              230
+            ],
+            "background": "#0c0806",
+            "verticalAnchor": 0.5
+          },
+          {
+            "time": 9.7,
+            "safe": [
+              250,
+              250,
+              770,
+              230
+            ],
+            "background": "#0c0806",
+            "verticalAnchor": 0.5
+          },
+          {
+            "time": 12,
+            "safe": [
+              0,
+              290,
+              720,
+              430
+            ],
+            "background": "#0c0806",
+            "verticalAnchor": 0.5
+          },
+          {
+            "time": 14,
+            "safe": [
+              330,
+              0,
+              620,
+              720
+            ],
+            "background": "#0c0806",
+            "verticalAnchor": 0.5
+          },
+          {
+            "time": 16.2,
+            "safe": [
+              330,
+              0,
+              620,
+              720
+            ],
+            "background": "#0c0806",
+            "verticalAnchor": 0.5
+          },
+          {
+            "time": 18,
+            "safe": [
+              400,
+              120,
+              480,
+              600
+            ],
+            "background": "#0c0806",
+            "verticalAnchor": 1
+          },
+          {
+            "time": 22,
+            "safe": [
+              400,
+              120,
+              480,
+              600
+            ],
+            "background": "#0c0806",
+            "verticalAnchor": 1
+          }
+        ]
+      }
+    }
+  ]
+}

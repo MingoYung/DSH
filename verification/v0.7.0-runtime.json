@@ -1,0 +1,117 @@
+{
+  "version": "0.7.0",
+  "passed": true,
+  "scope": "Plugin code/media integration and isolated actual browser consumers; does not assert a production DSH restart, installed state, or human audio listening",
+  "builtinIds": [
+    "builtin:awakening",
+    "builtin:codex",
+    "builtin:claude-code"
+  ],
+  "offlineMedia": [
+    {
+      "id": "builtin:awakening",
+      "sourceUrl": "/dsh-awakening/media/boot.mp4?v=0.7.0",
+      "sha256": "7cd3f3bb33afa18ee2591e10e0d52c6838bd7aa09518780c90628fac3e752849",
+      "bytes": 8170415,
+      "license": "CC-BY-4.0"
+    },
+    {
+      "id": "builtin:codex",
+      "sourceUrl": "/dsh-awakening/media/codex.mp4?v=0.7.0",
+      "sha256": "9a3a11a7edd9ff1c2185e293f69aed75495f935c665ecb09b3df751900b306a5",
+      "bytes": 5920928,
+      "license": "CC-BY-4.0"
+    },
+    {
+      "id": "builtin:claude-code",
+      "sourceUrl": "/dsh-awakening/media/claude-code.mp4?v=0.7.0",
+      "sha256": "24968a5910759fa1824efbeb6db662c97d5d22754ad4898259f2ca7ddb5787ea",
+      "bytes": 4207749,
+      "license": "CC-BY-4.0"
+    }
+  ],
+  "browserChecks": {
+    "passed": true,
+    "cases": 30,
+    "compiledFactoryContract": true,
+    "sourceSnapshot": "Isolated byte-for-byte copies, actual compiled client and local video files",
+    "viewportSizes": [
+      [
+        1280,
+        800
+      ],
+      [
+        540,
+        960
+      ],
+      [
+        400,
+        800
+      ],
+      [
+        960,
+        540
+      ]
+    ],
+    "timesSeconds": [
+      5.5,
+      19
+    ],
+    "singleVideoClock": true,
+    "resizeDoesNotRestart": true,
+    "safeRegionsInside": true,
+    "protectedBuiltinRemoval": true,
+    "threeDistinctPosterImagesLoaded": true,
+    "legacyCatalogEntryDoesNotDuplicateOrOverrideCcBy": true,
+    "offlineCatalogFailurePreservesBuiltins": true,
+    "pageErrors": []
+  },
+  "standalonePreview": {
+    "passed": true,
+    "cases": [
+      "three local selectors, sound 85 and manual start",
+      "same-player-http-builtin:awakening",
+      "same-player-http-builtin:codex",
+      "same-player-http-builtin:claude-code",
+      "explicit-file-scheme-guidance-no-silent-failure"
+    ],
+    "pageErrors": [],
+    "productionModified": false
+  },
+  "actualVisualReview": {
+    "screenshotsViewed": [
+      "library-three-builtins.png",
+      "builtin-claude-code-5.5-400x800.png",
+      "builtin-claude-code-19-400x800.png",
+      "builtin-awakening-19-400x800.png",
+      "builtin-codex-19-540x960.png"
+    ],
+    "observations": "Claude Code horizontal title remains complete in portrait; welcome face and hands remain inside composition. Pure-color environment uses the visible source border median; no blurred/mirrored background or old scene geometry is used."
+  },
+  "limitations": [
+    "Video appearance is fixed media; safe regions and framing cannot synthesize unseen image content.",
+    "Automated audio evidence is the retained single media stream and playback state, not human hearing.",
+    "Production DSH installation and the native compatibility carrier are validated separately."
+  ],
+  "sourceSha256": {
+    "lib/animation-library.mjs": "aa2929cc8e4589a01c4183b41b3406d5614e17c94c9312fe7475e42771d9958b",
+    "lib/builtins.mjs": "3c4053d7807dba2b5e683f3655af8deb1161843e660cfae0fbd13d9c1784ee4c",
+    "lib/index.js": "a544b488cadc1e06a0c3d4e9e52865bc7d4842068d076b5d79688c3a459579cc",
+    "lib/client.js": "1bd2911bcbfdda8a7d25b1e4debda5c05a8f738ef64fda542a8567ae70109bd5",
+    "runtime/safe-video.js": "d7e37ada9aae4697cc0d1f5e21187f8070e3c6d16661c0f8509107f3ab42e09b",
+    "runtime/stage.js": "443a5ff1307ac6a2cd9e1c013897fba6a58079b4966386a5be4c1499f6149ef1",
+    "runtime/bootstrap.js": "c82de55af6009153e68dfc54dee1a52060d9e3d9c927620c43e20496bc23ac03",
+    "src/client.jsx": "f5dbeb5288db1a6052c530255671f13cccdac765d0f57ffff1da2fd5d46995a1",
+    "src/library-settings.jsx": "6660ecceedc71a67e161684497e6abb4c3e1b6dead7df13b478a2c99b3138586",
+    "src/entry.jsx": "6251066b98a65b989a0656da33d598482d262dee44eb031d0775c1ae8fc8d68f",
+    "media/builtins.json": "0c4f44e6377853defb2c052e5613552af88f37342e0f7d415e4d522e9e0c84dd",
+    "media/boot.mp4": "7cd3f3bb33afa18ee2591e10e0d52c6838bd7aa09518780c90628fac3e752849",
+    "media/codex.mp4": "9a3a11a7edd9ff1c2185e293f69aed75495f935c665ecb09b3df751900b306a5",
+    "media/claude-code.mp4": "24968a5910759fa1824efbeb6db662c97d5d22754ad4898259f2ca7ddb5787ea",
+    "media/poster.png": "91395701dd37dec4b3a9f7eb7daf3b5f884f6f3f5f3bb45496ea2613a0e2ff6f",
+    "media/codex-poster.png": "7729cb2116c4de284f23d6f3fe0a490437837894bcf9672f064603247c4e5851",
+    "media/claude-code-poster.png": "8402c9b2a467593c33170c15cbbad029a38c9400772563b60a2c3628c63cba1a",
+    "preview.html": "1a5d8e1cc9d9bd02700522010c8b6bc23ba6883198512e514f72f2ced8081f9a"
+  },
+  "backupManifest": "latest_backup/manifests/plugin-v070-integration.json"
+}

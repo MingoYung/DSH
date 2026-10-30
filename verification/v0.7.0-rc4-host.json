@@ -1,0 +1,183 @@
+{
+  "version": "0.7.0",
+  "passed": true,
+  "scope": "Ordinary Host/client ABI compatibility for the actual DSH NEXT 2.0.21-next ASAR / core 0.2.1-rc.4. This is not a full user-profile boot assertion.",
+  "artifact": {
+    "path": "work/release-v070/desktop-2021/original/app.asar",
+    "bytes": 190247659,
+    "sha256": "16f2c62b1ccc98a968d9c7cf5edcd7af7a1e7690c2fba8cea361d1726d0db349",
+    "identitySource": "The read-only workspace copy supplied by root and native verification; modules were extracted without launching the application"
+  },
+  "actualModuleVersions": {
+    "@deepseek-ai/dsh": "0.2.1-rc.4",
+    "@deepseek-ai/dsh-web": "0.2.1-rc.4",
+    "@deepseek-ai/dsh-web-frontend": "0.2.1-rc.4",
+    "@deepseek-ai/dsh-client-modules": "0.2.1-rc.4",
+    "@deepseek-ai/dsh-client-ui-settings": "0.2.1-rc.4",
+    "@deepseek-ai/dsh-client-ui-slots": "0.2.1-rc.4",
+    "@deepseek-ai/dsh-settings": "0.2.1-rc.4",
+    "@deepseek-ai/cordis": "4.0.5",
+    "@deepseek-ai/schemastery": "3.18.5",
+    "@deepseek-ai/dsh-cordis-client-runner": "0.2.1-rc.4",
+    "@deepseek-ai/dsh-cordis-host-runner": "0.2.1-rc.4",
+    "@deepseek-ai/dsh-app-boot": "0.2.1-rc.4"
+  },
+  "executedWith": {
+    "nodeVersion": "v24.21.0",
+    "nodePath": "C:/Users/Administrator/AppData/Local/Programs/DSH NEXT/resources/runtime/x64/primary-runtime/dependencies/node/bin/node.exe",
+    "reactVersion": "18.3.1"
+  },
+  "checks": [
+    {
+      "name": "actual-rc4-module-bootstrap-materializes-with-zero-externals",
+      "passed": true
+    },
+    {
+      "name": "actual-rc4-dsh-client-manifest-parser-accepts-release-declaration",
+      "passed": true
+    },
+    {
+      "name": "actual-rc4-loader-registers-and-memoizes-release-factory-with-shipped-react-18",
+      "passed": true
+    },
+    {
+      "name": "actual-rc4-configforms-get-snapshot-ready-writable-and-value",
+      "passed": true
+    },
+    {
+      "name": "actual-rc4-configforms-subscribe-set-mutate-boolean-contract",
+      "passed": true
+    },
+    {
+      "name": "actual-rc4-configforms-rejected-write-recovers-with-false",
+      "passed": true
+    },
+    {
+      "name": "actual-rc4-slot-registry-registers-release-settings-panel",
+      "passed": true
+    },
+    {
+      "name": "actual-rc4-cordis-index-inject-event-delivery",
+      "passed": true
+    },
+    {
+      "name": "actual-rc4-host-index-row-renderer-keeps-head-global-script-protocol",
+      "passed": true
+    },
+    {
+      "name": "actual-next21-browser-policy-is-compatible-with-plugin-native-request-guard-and-negative-controls",
+      "passed": true
+    }
+  ],
+  "contractMatrix": {
+    "webServer.permits": {
+      "status": "compatible",
+      "evidenceType": "Actual policy function execution plus the shipped NextWebServer wrapper source",
+      "observation": "Request shape remains {headers,url}; native marker negative controls and synthetic 43-character capability work with the plugin guard"
+    },
+    "webserver/index-inject": {
+      "status": "compatible",
+      "evidenceType": "Actual rc4 Cordis event dispatch and verbatim shipped Host injection-renderer region execution",
+      "observation": "Head script/global rows and the boot-ready tail remain accepted"
+    },
+    "settings.configure": {
+      "status": "compatible-static",
+      "evidenceType": "Actual rc4 SettingsForms source, with existing plugin call-site inspection",
+      "observation": "configure(presentation,owner=this.ctx.fiber) still returns a disposer; the plugin explicitly passes ctx.fiber"
+    },
+    "client.configForms": {
+      "status": "compatible",
+      "evidenceType": "Actual shipped rc4 settings client factory executed on isolated RPC/store boundaries",
+      "observation": "get/getSnapshot/subscribe/set/mutate preserve ready/value/writable and Promise<boolean>; rejected write returns false and recovers"
+    },
+    "client.moduleLoaderReact": {
+      "status": "compatible",
+      "evidenceType": "Actual rc4 ClientModuleSystem materializes actual release lib/client.js using ASAR React 18.3.1",
+      "observation": "Lazy registered factories, seed-word require, queue-to-live conversion and materialization caching work"
+    },
+    "client.slots": {
+      "status": "compatible",
+      "evidenceType": "Actual rc4 SlotRegistry/SlotCore execute and register the release settings panel",
+      "observation": "settings.section lifecycle injection and the existing register(options,Panel) form work"
+    },
+    "native.quit": {
+      "status": "compatible-static-plus-native-agent",
+      "evidenceType": "Shipped desktop main IPC/quit source and separate native-agent verification",
+      "observation": "desktopNext.command({type:quit}) remains the plugin command form; this fixture never issues a real quit"
+    }
+  },
+  "staticSources": {
+    "nextPermits": {
+      "archiveMember": "lib/webserver.js",
+      "sha256": "d41443e65b7c46b149f7e4a5298903f15a770d9739c8839203028d3011b32e7e",
+      "lineNumbers": [
+        22,
+        43,
+        123
+      ]
+    },
+    "settingsConfigure": {
+      "archiveMember": "node_modules/@deepseek-ai/dsh-settings/lib/index.js",
+      "sha256": "9432b872597b7a31473072eb38a55979ab23375c76bd1d86d751388a692a0136",
+      "lineNumbers": [
+        370
+      ]
+    },
+    "moduleQueue": {
+      "archiveMember": "node_modules/@deepseek-ai/dsh-client-modules/lib/index.js",
+      "sha256": "eca79f7d86c33c863192fb2eb72e7728b66dc491fc544ad4b2a75c89be0c5cd4",
+      "lineNumbers": [
+        463
+      ]
+    },
+    "configFormSet": {
+      "archiveMember": "node_modules/@deepseek-ai/dsh-client-ui-settings/lib/client.js",
+      "sha256": "0555eec2df1ca392a1167e637f287ac9963dbd2b0a230089c2a41be079c490e3",
+      "lineNumbers": [
+        1140
+      ]
+    },
+    "slotInjection": {
+      "archiveMember": "node_modules/@deepseek-ai/dsh-client-ui-renderer/lib/client.js",
+      "sha256": "dbdb3f26bfbc1d143bc8a0eed5982a2507c4f0cf8027e7c170f3bed3604be356",
+      "lineNumbers": [
+        1368
+      ]
+    }
+  },
+  "executedSourceSha256": {
+    "node_modules/@deepseek-ai/dsh-client-modules/lib/client.js": "426084f8672c26a469566a3f43c91a9b0d1dd73d0834028e553a6d0fa9cffa44",
+    "node_modules/@deepseek-ai/dsh-client-ui-settings/lib/client.js": "0555eec2df1ca392a1167e637f287ac9963dbd2b0a230089c2a41be079c490e3",
+    "node_modules/@deepseek-ai/dsh-client-ui-renderer/lib/client.js": "dbdb3f26bfbc1d143bc8a0eed5982a2507c4f0cf8027e7c170f3bed3604be356",
+    "plugin/lib/client.js": "1bd2911bcbfdda8a7d25b1e4debda5c05a8f738ef64fda542a8567ae70109bd5",
+    "node_modules/@deepseek-ai/dsh-host-webserver/lib/index.js": "08907285802f0edd3aeb68c91fb443be2804879ab3d41104c4600424be06f3ab"
+  },
+  "fixtureBoundaries": [
+    "Actual shipped rc4 ClientModuleSystem, ConfigForms controller, SlotRegistry, Cordis and React were executed; remote RPC and snapshot-store transport primitives are isolated fixtures",
+    "React DOM renderer is not mounted; DOM exports are inert fixture boundaries, no real app/provider graph is booted",
+    "Host index-rendering function region is evaluated verbatim from shipped module, without starting its HTTP server",
+    "Native policy receives a synthetic capability string; real credentials/configuration were not read",
+    "Real DSH profile boot and native installation remain root validation tasks"
+  ],
+  "additionalLimitations": [
+    "settings.configure was inspected against rc4 source, not a fully booted configuration-editor service",
+    "The request-policy wrapper was inspected statically; its actual pure decision function and plugin guard were executed with synthetic data",
+    "The actual new client factories were not mounted through React DOM; DOM exports were inert fixture boundaries, so existing UI screenshots are not presented as rc4 live-application screenshots"
+  ],
+  "pathIdentityWarning": "Both bundled runtime node_modules directories are placeholders; the user runtime metadata was stale 2.0.19, and parent profiles/node_modules links point to old DSH Desktop. Those paths were not used as rc4 module evidence.",
+  "requirementsDecision": {
+    "peerDependenciesChangeRequired": false,
+    "enginesChangeRequired": false,
+    "reason": "The shipped schemastery 3.18.5 satisfies the existing ^3.18.5 peer, and core rc.4 satisfies the existing >=0.2.1-rc.2 engine. This fixture used the new desktop bundled Node 24.21.0."
+  },
+  "newApplicationSourceChanges": false,
+  "pluginSourceChanges": false,
+  "userProfileStarted": false,
+  "realCredentialsRead": false,
+  "installedFilesChanged": false,
+  "localReports": [
+    "work/release-v070/rc4-host/minimal-fixture-report.json",
+    "work/release-v070/rc4-host/inventory.json",
+    "work/release-v070/public-upstream-021/rc4-slots-evidence.json"
+  ]
+}

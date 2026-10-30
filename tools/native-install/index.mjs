@@ -1,7 +1,10 @@
 import {readFileSync} from 'node:fs';
-import {createInstaller} from './engine.mjs';
-const policy=JSON.parse(readFileSync(new URL('./policy.json',import.meta.url),'utf8'));
-const installer=createInstaller({policy});
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {createProfileInstaller} from './profiles.mjs';
+const root=path.dirname(fileURLToPath(import.meta.url));
+const profiles=['policy.json','builds/2.0.21-next/policy.json'].map(name=>{const file=path.join(root,name);return{policy:JSON.parse(readFileSync(file,'utf8')),toolRoot:path.dirname(file)};});
+const installer=createProfileInstaller({profiles,packageRoot:path.resolve(root,'../..')});
 export const inspect=installer.inspect;
 export const prepare=installer.prepare;
 export const cancel=installer.cancel;

@@ -1,9 +1,43 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>鲸启 · 插件播放器预览</title><style>
-html,body{margin:0;min-height:100%;background:#080d16;color:#dbe7f8;font-family:Segoe UI,Microsoft YaHei UI,sans-serif}main{max-width:600px;margin:12vh auto;padding:28px}h1{font-size:25px;letter-spacing:.15em;font-weight:500}p{font-size:13px;line-height:1.9;color:#91a5c2}button{font:14px inherit;border:1px solid #b9cef4;border-radius:24px;padding:12px 24px;background:#dce9ff;color:#182a45;cursor:pointer}button:disabled{opacity:.5}a{color:#9dbbfa;text-underline-offset:3px}#status{min-height:24px;margin-top:18px}
-</style></head><body><main><h1>鲸启</h1><p>完整22秒，保留原声。画面按当前窗口宽高自适应，可在播放中自由调整窗口；按 Esc 或点“跳过”退出。</p><button id="play">完整预览</button><p id="status" role="status"></p><p>尾段角色影像与原声来自 dsh-boot-animation（MIT）。<br><a href="CREDITS.md" target="_blank" rel="noreferrer">查看来源、作者与许可</a></p></main>
-<script src="runtime/scene/brand.js"></script><script src="runtime/scene/animation.js"></script><script src="runtime/scene/morph.js"></script><script src="runtime/scene/desktop-composition.js"></script><script src="runtime/scene/responsive-composition.js"></script><script src="runtime/scene/portrait-camera.js"></script><script src="runtime/stage.js"></script><script src="runtime/bootstrap.js"></script><script>
-const settings={enabled:true,sound:true,volume:80,frequency:'startup',timeoutSeconds:45};
-const api=window.__DSH_AWAKENING_INSTALL__({settings,sourceUrl:'media/boot.mp4',posterUrl:'media/poster.png',autostart:false});
-document.getElementById('play').onclick=async function(){this.disabled=true;document.getElementById('status').textContent='';try{const result=await api.preview(settings);document.getElementById('status').textContent=result.reason==='complete'?'预览结束。':'已退出预览。';}catch{document.getElementById('status').textContent='预览未能完成，请检查媒体文件。';}finally{this.disabled=false;this.textContent='重新预览';}};
-window.addEventListener('pagehide',()=>api.dispose(),{once:true});
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>鲸启 · 内置作品预览</title>
+<style>
+:root{color-scheme:light dark;font-family:system-ui,"Microsoft YaHei UI",sans-serif}*{box-sizing:border-box}body{margin:0;background:Canvas;color:CanvasText}main{max-width:680px;margin:8vh auto;padding:28px}h1{font-size:25px;font-weight:600;margin-bottom:10px}p{font-size:14px;line-height:1.8;opacity:.78}label{display:block;font-size:14px;margin:20px 0 8px}select,button,input{font:inherit}select{width:100%;padding:11px 12px;border:1px solid GrayText;border-radius:9px;background:Canvas;color:CanvasText}button{border:1px solid GrayText;border-radius:9px;padding:11px 18px;background:ButtonFace;color:ButtonText;cursor:pointer}button:disabled{opacity:.5;cursor:default}.sound{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin:18px 0}.sound label{display:flex;align-items:center;gap:8px;margin:0}.sound input[type=range]{width:140px}a{color:LinkText;text-underline-offset:3px}#status{min-height:26px}#status[data-error=true]{color:#c9574e;opacity:1}.small{font-size:12px}code{font-family:ui-monospace,Consolas,monospace}
+</style></head><body><main>
+<h1>鲸启 · 内置作品预览</h1>
+<p>同一插件播放器，完整 22 秒。可以在播放中调整窗口，按 Esc 或点“跳过”退出；缩放不会重播或切换音轨。</p>
+<label for="animation">选择作品</label><select id="animation" disabled aria-label="选择内置作品"><option>正在读取作品…</option></select>
+<div class="sound"><label><input id="sound" type="checkbox" checked>播放作品声音</label><label for="volume">音量 <input id="volume" type="range" min="0" max="100" step="1" value="85"><output id="volume-value">85%</output></label></div>
+<button id="play" disabled>完整预览</button><p id="status" role="status" aria-live="polite"></p>
+<p class="small">三部内置动画由本项目制作。项目有权部分按 CC BY 4.0 许可；模型名称与品牌图形由各自权利人保留。<a href="CREDITS.md" target="_blank" rel="noreferrer">查看来源、生成记录与许可范围</a>。</p>
+<p class="small">这是独立预览，不代表已验证 DSH 实机启动。请通过本地 HTTP 服务器打开本页；直接双击文件时浏览器可能禁止读取作品目录。</p>
+</main>
+<script src="runtime/safe-video.js"></script><script src="runtime/stage.js"></script><script src="runtime/bootstrap.js"></script>
+<script>
+'use strict';
+const selector=document.getElementById('animation'),button=document.getElementById('play'),status=document.getElementById('status'),sound=document.getElementById('sound'),volume=document.getElementById('volume');
+const files={'builtin:awakening':['boot.mp4','poster.png'],'builtin:codex':['codex.mp4','codex-poster.png'],'builtin:claude-code':['claude-code.mp4','claude-code-poster.png']};
+let animations=[],api=null,playing=false;
+function message(text,error=false){status.textContent=text;status.dataset.error=String(error);status.setAttribute('role',error?'alert':'status');}
+volume.oninput=()=>{document.getElementById('volume-value').textContent=volume.value+'%';};
+function settings(){return{enabled:true,sound:sound.checked,volume:Number(volume.value),frequency:'startup',timeoutSeconds:45,animationId:selector.value,videoFit:'contain'};}
+async function ready(){
+ if(location.protocol==='file:'){message('当前是 file:// 页面，浏览器不能可靠读取作品目录。请在插件目录启动本地 HTTP 服务器后打开 preview.html，例如运行 python -m http.server 8080，再访问 http://localhost:8080/preview.html。',true);return;}
+ try{
+  const response=await fetch('media/builtins.json',{cache:'no-store'});if(!response.ok)throw Error('作品目录读取失败（HTTP '+response.status+'）');
+  const data=await response.json();if(data.schemaVersion!==1||!Array.isArray(data.entries)||data.entries.length!==3)throw Error('内置作品目录格式不受支持');
+  animations=data.entries.map(entry=>{const pair=files[entry.id],presentation=window.DSHSafeVideo?.normalisePresentation(entry.presentation);if(!pair||!presentation||entry.builtin!==true||entry.kind!=='video')throw Error('内置作品或安全构图数据无效');return{...entry,presentation,sourceUrl:new URL('media/'+pair[0],location.href).href,posterUrl:new URL('media/'+pair[1],location.href).href};});
+  selector.replaceChildren(...animations.map(entry=>{const option=document.createElement('option');option.value=entry.id;option.textContent=entry.title;return option;}));
+  const requested=new URL(location.href).searchParams.get('animation');if(animations.some(entry=>entry.id===requested))selector.value=requested;
+  api=window.__DSH_AWAKENING_INSTALL__({settings:settings(),animation:animations[0],autostart:false});selector.disabled=false;button.disabled=false;
+  window.awakeningPreview={ready:true,animations,api,settings};message('已读取 3 部本地作品。点击预览后才会播放。');
+ }catch(error){message('预览准备失败：'+(error instanceof Error?error.message:String(error))+'。请确认完整插件目录通过本地 HTTP 服务提供。',true);}
+}
+button.onclick=async()=>{
+ if(playing||!api)return;const descriptor=animations.find(entry=>entry.id===selector.value);if(!descriptor){message('请选择一部有效的内置作品。',true);return;}
+ playing=true;button.disabled=true;selector.disabled=true;message('');
+ try{const result=await api.preview(settings(),descriptor);message(result.reason==='complete'?'预览结束。':result.reason==='skip'?'已退出预览。':'播放未完成：'+result.reason,result.reason!=='complete'&&result.reason!=='skip');}
+ catch(error){message('预览失败：'+(error instanceof Error?error.message:String(error)),true);}
+ finally{playing=false;button.disabled=false;selector.disabled=false;button.textContent='重新预览';}
+};
+window.addEventListener('pagehide',()=>api?.dispose(),{once:true});ready();
 </script></body></html>

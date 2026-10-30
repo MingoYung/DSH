@@ -1,7 +1,7 @@
 # Native first-screen compatibility installer
 
-This optional tool manages the earliest startup page for the specifically
-verified Windows DSH NEXT 2.0.19-next build. The normal animation plugin works
+This optional tool manages the earliest startup page for the independently
+verified Windows DSH NEXT 2.0.19-next and 2.0.21-next builds. The normal animation plugin works
 without it. The UI action prepares all files, starts an independent helper,
 waits for its ready/armed handshake, then asks the native desktop to quit.
 The helper waits for every DSH NEXT process to exit before atomically changing
@@ -11,19 +11,30 @@ and no force-stop operation.
 No npm, Python, network access or separate Node installation is needed. The
 manual entry uses DSH's bundled Node runtime:
 
-Version 0.6.1 requires one explicit carrier update from an identified 0.5 or
-0.6 installation: choose Update and restart in the plugin's first-screen
-settings. The old 0.6 carrier accepts only the 0.6.0 plugin package; updating
-the plugin alone does not modify app.asar. Normal Host-injected playback
-remains available before this explicit carrier update.
+Version 0.7.0 requires one explicit carrier update from an identified 0.5,
+0.6 or 0.6.1 installation: choose Update and restart in the plugin's
+first-screen settings. Older carriers do not recognize the 0.7.0 package;
+updating the plugin alone does not modify app.asar. Normal Host-injected
+playback remains available before this explicit carrier update.
 
-The 0.6.1 update preserves the verified original archive, saved settings and
-user animation library. Its reviewed carrier accepts plugin packages 0.6.0
-and 0.6.1 and reads the saved selection and verified local MP4/WebM on each
-startup; changing the selected video does not rewrite the application
-archive. User videos remain data, never executable author code. The bundled
-built-in animation still uses its reviewed responsive Canvas. An invalid
-custom entry skips the early carrier and leaves the normal Host fallback
+Each desktop build has a separate fixed profile, selected by its exact EXE
+SHA256 before any installer worker is started. Its original ASAR, candidate
+ASAR and three payload files are independently pinned. An unknown build does
+not fall back to the old profile. Desktop updates may replace app.asar; use
+Install or Update again after an explicitly supported desktop update.
+The 2.0.21-next patch preserves the new documentId/profile boot contract and
+renderer health reporting. Only the early static document gains the local
+animation carrier; native request and forwarding guards remain in place.
+
+The update preserves the verified original archive, saved settings and user
+animation library. Its reviewed carrier accepts the pinned 0.7.0 package and
+reads the saved selection and verified local MP4/WebM on each startup.
+Changing the selected work does not rewrite the application archive.
+DeepSeek, Codex and Claude Code share media/builtins.json with normal Host
+playback, including the same safe-camera descriptor and single video clock
+for composition and sound. The historical builtin:awakening ID still selects
+DeepSeek. Creator videos remain data, never executable author code; an
+invalid custom entry skips the early carrier and leaves Host fallback
 available.
 
 ```powershell
@@ -39,7 +50,7 @@ quit from DSH's own menu/tray when prompted. An external script cannot safely
 substitute a main-window close for the app's real quit operation. The plugin
 settings button can call the authenticated native quit API automatically.
 
-The installer checks EXE, archive, payload and the ten animation assets before
+The installer checks EXE, archive, payload and the sixteen runtime/media files before
 arming. Unsupported versions or changed files stop without changing the app.
 The original archive is preserved at
 `resources/.dsh-awakening-backup/app.asar`; a previous managed patch is upgraded

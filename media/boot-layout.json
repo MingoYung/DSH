@@ -1,24 +1,9 @@
 {
-  "version": 2,
-  "kind": "responsive-canvas",
+  "version": 3,
+  "kind": "data-driven-safe-video",
   "durationSeconds": 22,
-  "sourceVideo": {
-    "width": 1920,
-    "height": 1080,
-    "fps": 30,
-    "role": "Single media clock, sound and approved welcome frames"
-  },
-  "canvas": {
-    "size": "Actual client area, recomputed on resize",
-    "maxDpr": 1.5,
-    "maxRasterDimension": 2560,
-    "maxFramesPerSecond": 30
-  },
-  "fixedAspectVariants": false,
-  "portrait": {
-    "intro": "Medium shot preserving logo and kinetic text",
-    "bridge": "Follow left light stream then return to face",
-    "welcome": "Full-frame focal close-up"
-  },
-  "rightStreamDirection": "Top down until fully formed; completed path and tail unchanged"
+  "manifest": "builtins.json",
+  "mediaClock": "one native video per playback; original audio retained",
+  "resize": "continuous geometry; no restart, audio swap, blurred or mirrored edges",
+  "sceneHandoffSeconds": 14
 }

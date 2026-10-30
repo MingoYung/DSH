@@ -1,0 +1,117 @@
+{
+  "version": "0.7.0",
+  "passed": true,
+  "scope": "Offline isolated workspace snapshots, pinned media, verified archive copies and synthetic executable/worker authorization. No installed DSH, live profile, production ASAR or process access.",
+  "targetDesktopVersion": "2.0.19-next",
+  "candidateAsarSha256": "bbd70ec15bdd8945e2220a1fc3d726b787b5cd6d45ffdbd651b58fc883c69f48",
+  "originalAsarSha256": "204e1dcc32ff6a9b661200b7ab97bda1cbd449904e2eddb71c9309cf767e06b5",
+  "previousManagedSha256s": [
+    "3a17430a4534a4754a3ee9d1f189dc83feac268355ee9925ab7b6cd55866229a",
+    "81ce16548abef77d9d108076fe7493852f8baee4b337105999ef715d09245170",
+    "f3caf0dbb42a3c79b9c83bcbbab4929ed40a3c07d999c2643071c51a98b822d3",
+    "3c67135af1a8385f8f9dd170b6b0b08f1953dfcb8427ff99734863d94946892b"
+  ],
+  "reviewedPackageVersions": [
+    "0.7.0"
+  ],
+  "runtimeFileCount": 16,
+  "payloadFileCount": 3,
+  "tests": {
+    "structural": 37,
+    "exactCarrier": 15,
+    "legacyLifecycle": 15,
+    "pristineFirstInstall": 2
+  },
+  "totalChecks": 69,
+  "threeBuiltinDescriptorsIdenticalExceptNativeResourceUrls": true,
+  "historicalBuiltinAwakeningIdPreserved": true,
+  "settingsSchemaAndSelectedLocalVideoPreserved": true,
+  "verifiedSourceDeletionAndCacheTamperHandling": true,
+  "oldArchiveUpgradeVersions": [
+    "0.5",
+    "0.6",
+    "0.6.1"
+  ],
+  "rollbackWithMissingSourcePlugin": true,
+  "immutableOriginalBackupCheckedBeforeAfter": true,
+  "unchangedInstallerProtectionFiles": {
+    "engine.mjs": {
+      "sha256": "0520a15558a576e034a31e0e958360501f8c0edf8bb3289af3063cc9b58f5a0a",
+      "contentUnchangedFromCommitted061IgnoringCrlf": true
+    },
+    "worker.ps1": {
+      "sha256": "5c202751c4f8384e72ffc9145b8f9990556de5d749ee5c785efae071c06eef5c",
+      "contentUnchangedFromCommitted061IgnoringCrlf": true
+    },
+    "launcher.ps1": {
+      "sha256": "7a80fded36f57a60d5c21b29234ee94317d6acd4fa3fe6a1d28edc98bdc8afe4",
+      "contentUnchangedFromCommitted061IgnoringCrlf": true
+    },
+    "asar.mjs": {
+      "sha256": "00fc9df78f4d29c51071ab212538ba291c457468aeea099c1fb19a2c4954d13c",
+      "contentUnchangedFromCommitted061IgnoringCrlf": true
+    },
+    "index.mjs": {
+      "sha256": "c6dab9c12f17a133804907f853f6c3da53b1c88d932381e3aa0eaff66e765740",
+      "contentUnchangedFromCommitted061IgnoringCrlf": true,
+      "historicalBeforeDesktop2021Update": true,
+      "currentSha256": "721986d7a170fea1f1260d9332a5bf472c730b8c01b49d19905454f463d0c1f6"
+    },
+    "cli.mjs": {
+      "sha256": "13bc44bb267e6adf49aafc0a5ebfe1e4018b78fcd5d698b2124fa66b6d7f823d",
+      "contentUnchangedFromCommitted061IgnoringCrlf": true
+    },
+    "Install-FirstScreen.ps1": {
+      "sha256": "21fb2dcf01a1b1c8dffa4792177dd1fcf0306e8dc8d53d58bc647ab4f27d346f",
+      "contentUnchangedFromCommitted061IgnoringCrlf": true,
+      "historicalBeforeDesktop2021Update": true,
+      "currentSha256": "3126db3ed89842f7dafad65c23fd0b3d0c78e2ffa72d387b295f824540259a3a"
+    }
+  },
+  "carrierSha256": "9b18bdb5360721a807a69ce3f82bee98bb2cc91dbdb91eabeb9817db77464c7d",
+  "policySha256": "d2e0c82fb92d3f8802faa1bf2a37646584371152ac9c034dcd75636adbca4157",
+  "externalRuntimeEvidence": "verification/v0.7.0-runtime.json",
+  "reportFiles": {
+    "build-report.json": {
+      "path": "work\\release-v070\\native\\build-report.json",
+      "sha256": "901d1efbd7951d0207f613778d3d70493f98a45641ec0dad4c827e65c13eb7b0"
+    },
+    "structural-report.json": {
+      "path": "work\\release-v070\\native\\structural-report.json",
+      "sha256": "c4135916d6277129fd904db73a406972702e702ea0b68b80d2f3a3020746d7f9"
+    },
+    "full-carrier-report.json": {
+      "path": "work\\release-v070\\native\\full-carrier-report.json",
+      "sha256": "64c33a8811c24bb60adcf18aa46bb15cd86d0e6e8c2b3af8517119022dba5c7f"
+    },
+    "lifecycle-report.json": {
+      "path": "work\\release-v070\\native\\lifecycle-report.json",
+      "sha256": "20ffcbcd5e4e6b06e154e4a6005307970efb75fe1cde0b683e3dd122bf69e73f"
+    },
+    "fresh-install-report.json": {
+      "path": "work\\release-v070\\native\\fresh-install-report.json",
+      "sha256": "5ff8225e40292ac3822cb5f855470fa1a0f9c19140a2af8c2ef39322e6e53d1c"
+    }
+  },
+  "productionInstallationModified": false,
+  "productionAsarOrProfileRead": false,
+  "limits": [
+    "Synthetic worker lifecycle verifies prepare/arming/configuration and fixture replacement; it is not a new human desktop quit/relaunch acceptance.",
+    "Windows PowerShell worker/launcher and authorization protection content is unchanged from committed 0.6.1; comparison normalizes CRLF for Git text files.",
+    "Carrier media tests cover local MP4/WebM selections and exact served bytes. Separate runtime evidence covers settings/preview/resize/skip and shared clock, with no fresh human audio acceptance claimed.",
+    "This native report does not claim an actual remote community transfer or browser file-picker interaction."
+  ],
+  "testHarnessCorrections": [
+    "Marked the original active carrier revision protected while cycling three selections, matching activeRevisions.",
+    "Backup tampering is asserted against prepare(), which refreshes identity before mutation, rather than a reused inspect() identity cache."
+  ],
+  "subsequentDesktop2021Update": {
+    "verification": "verification/v0.7.0-desktop-2021.json",
+    "selectorFilesChanged": [
+      "index.mjs",
+      "Install-FirstScreen.ps1",
+      "profiles.mjs"
+    ],
+    "oldBuildPolicyPayloadAndEngineUnchanged": true
+  }
+}

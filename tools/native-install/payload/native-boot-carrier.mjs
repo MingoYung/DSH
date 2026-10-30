@@ -7,23 +7,30 @@ import {resolve,join,isAbsolute,sep,relative,dirname} from 'node:path';
 import {createHash,randomUUID} from 'node:crypto';
 import {parseDocument} from 'yaml';
 
-const ID='dsh-awakening',VERSION='0.6.1';
-const PACKAGE_VERSIONS=new Set(['0.6.0','0.6.1']);
+const ID='dsh-awakening',VERSION='0.7.0';
+const PACKAGE_VERSIONS=new Set(['0.7.0']);
 const DEFAULTS={enabled:true,sound:true,volume:85,frequency:'startup',timeoutSeconds:45,animationId:'builtin:awakening',videoFit:'cover'};
 const KEYS=Object.keys(DEFAULTS);
-const SCRIPT_FILES=['runtime/scene/brand.js','runtime/scene/animation.js','runtime/scene/morph.js','runtime/scene/desktop-composition.js','runtime/scene/responsive-composition.js','runtime/scene/portrait-camera.js','runtime/stage.js','runtime/bootstrap.js'];
-const MEDIA={'boot.mp4':['media/boot.mp4','video/mp4'],'poster.png':['media/poster.png','image/png']};
+const SCRIPT_FILES=['runtime/scene/brand.js','runtime/scene/animation.js','runtime/scene/morph.js','runtime/scene/desktop-composition.js','runtime/scene/responsive-composition.js','runtime/scene/portrait-camera.js','runtime/safe-video.js','runtime/stage.js','runtime/bootstrap.js'];
+const BUILTIN_FILES=Object.freeze({'builtin:awakening':['boot.mp4','poster.png'],'builtin:codex':['codex.mp4','codex-poster.png'],'builtin:claude-code':['claude-code.mp4','claude-code-poster.png']});
+const MEDIA=Object.fromEntries(Object.values(BUILTIN_FILES).flat().map(name=>[name,['media/'+name,name.endsWith('.mp4')?'video/mp4':'image/png']]));
 const INTEGRITY=Object.freeze({
- "runtime/scene/brand.js":"9133132dba57f3eed887768752e41015b4286293f6f8b794cb1d49ce25a39475",
- "runtime/scene/animation.js":"61a55db356ce2f89e30ce1e098a66c1e1f61bc88699c617a81564e6a97c4e038",
- "runtime/scene/morph.js":"923240333c95301d9a6f90bd72e8aca28d87b944c3f63f91138825c9b8971434",
- "runtime/scene/desktop-composition.js":"145c4c50098b6c551bd624c34009669bb9292ec7f1d468d587afa2ef10a0e4fa",
- "runtime/scene/responsive-composition.js":"391f25bdafd44620d5b061ffb2b8fb19b8adf80c0085f8bcc6ef68a792255ec3",
- "runtime/scene/portrait-camera.js":"153ec0432d12c76de19bfea462352784b003b9888717c0df8d4dbc8c71c23fa4",
- "runtime/stage.js":"dcb2d68a276ada26fcfe9573c435e245df42d9a37f6b4e3188ad2b7728391e17",
- "runtime/bootstrap.js":"d6bb3f3bb37f347394e39d29c22ead0a1ddd932a3f340146e1fd4bbd54528a01",
- "media/boot.mp4":"fac040bbdad7580cdd626403edd4aa34116c38070e5271c5315f710a40cf189c",
- "media/poster.png":"f32dedb8187a78c1beb82f9f2350b422b7e8b65bbf0ca62600e1af56902a43b0"
+ "runtime/scene/brand.js": "9133132dba57f3eed887768752e41015b4286293f6f8b794cb1d49ce25a39475",
+ "runtime/scene/animation.js": "61a55db356ce2f89e30ce1e098a66c1e1f61bc88699c617a81564e6a97c4e038",
+ "runtime/scene/morph.js": "923240333c95301d9a6f90bd72e8aca28d87b944c3f63f91138825c9b8971434",
+ "runtime/scene/desktop-composition.js": "145c4c50098b6c551bd624c34009669bb9292ec7f1d468d587afa2ef10a0e4fa",
+ "runtime/scene/responsive-composition.js": "391f25bdafd44620d5b061ffb2b8fb19b8adf80c0085f8bcc6ef68a792255ec3",
+ "runtime/scene/portrait-camera.js": "153ec0432d12c76de19bfea462352784b003b9888717c0df8d4dbc8c71c23fa4",
+ "runtime/safe-video.js": "d7e37ada9aae4697cc0d1f5e21187f8070e3c6d16661c0f8509107f3ab42e09b",
+ "runtime/stage.js": "443a5ff1307ac6a2cd9e1c013897fba6a58079b4966386a5be4c1499f6149ef1",
+ "runtime/bootstrap.js": "c82de55af6009153e68dfc54dee1a52060d9e3d9c927620c43e20496bc23ac03",
+ "media/builtins.json": "0c4f44e6377853defb2c052e5613552af88f37342e0f7d415e4d522e9e0c84dd",
+ "media/boot.mp4": "7cd3f3bb33afa18ee2591e10e0d52c6838bd7aa09518780c90628fac3e752849",
+ "media/poster.png": "91395701dd37dec4b3a9f7eb7daf3b5f884f6f3f5f3bb45496ea2613a0e2ff6f",
+ "media/codex.mp4": "9a3a11a7edd9ff1c2185e293f69aed75495f935c665ecb09b3df751900b306a5",
+ "media/codex-poster.png": "7729cb2116c4de284f23d6f3fe0a490437837894bcf9672f064603247c4e5851",
+ "media/claude-code.mp4": "24968a5910759fa1824efbeb6db662c97d5d22754ad4898259f2ca7ddb5787ea",
+ "media/claude-code-poster.png": "8402c9b2a467593c33170c15cbbad029a38c9400772563b60a2c3628c63cba1a"
 });
 const FILES=Object.keys(INTEGRITY),REVISION=/^[a-f0-9]{24}$/;
 const MAX_VIDEO_BYTES=120*1024*1024,MAX_LIBRARY_BYTES=1024*1024;
@@ -40,7 +47,7 @@ async function bounded(file,limit,missing=false){
  try{const info=await lstat(file);if(!info.isFile()||info.isSymbolicLink()||info.size>limit)throw new Error('invalid-file');const data=await readFile(file);if(data.length>limit)throw new Error('invalid-file');return data;}
  catch(error){if(missing&&error.code==='ENOENT')return null;throw error;}
 }
-function validateSettings(settings){return typeof settings.enabled==='boolean'&&typeof settings.sound==='boolean'&&Number.isInteger(settings.volume)&&settings.volume>=0&&settings.volume<=100&&['startup','daily'].includes(settings.frequency)&&Number.isInteger(settings.timeoutSeconds)&&settings.timeoutSeconds>=25&&settings.timeoutSeconds<=60&&(settings.animationId==='builtin:awakening'||VIDEO_ID.test(settings.animationId))&&['cover','contain'].includes(settings.videoFit);}
+function validateSettings(settings){return typeof settings.enabled==='boolean'&&typeof settings.sound==='boolean'&&Number.isInteger(settings.volume)&&settings.volume>=0&&settings.volume<=100&&['startup','daily'].includes(settings.frequency)&&Number.isInteger(settings.timeoutSeconds)&&settings.timeoutSeconds>=25&&settings.timeoutSeconds<=60&&(owns(BUILTIN_FILES,settings.animationId)||VIDEO_ID.test(settings.animationId))&&['cover','contain'].includes(settings.videoFit);}
 function ownNested(value,depth=0){
  if(depth>40)throw new Error('patch-too-deep');
  if(!value||typeof value!=='object')return false;
@@ -117,7 +124,7 @@ async function packageBytes(packageRoot){
  for(const file of FILES){
   const original=join(packageRoot,file),target=await realpath(original);
   if(!within(packageRoot,target))throw new Error('asset-outside-package');
-  const payload=await bounded(target,file.endsWith('.mp4')?20*1024*1024:file.endsWith('.png')?4*1024*1024:512*1024);
+  const payload=await bounded(target,file.endsWith('.mp4')?MAX_VIDEO_BYTES:file.endsWith('.png')?4*1024*1024:512*1024);
   if(sha(payload)!==INTEGRITY[file])throw new Error('asset-integrity-mismatch');
   bytes.set(file,payload);
  }
@@ -130,7 +137,7 @@ function videoEntry(value){
 function videoHeader(bytes,format){return format==='mp4'?bytes.length>=12&&bytes.toString('ascii',4,8)==='ftyp':format==='webm'&&bytes.length>=4&&bytes[0]===0x1a&&bytes[1]===0x45&&bytes[2]===0xdf&&bytes[3]===0xa3;}
 /** Never load a creator script, evaluate metadata, or fetch a remote asset here. */
 async function selectedVideo(selected){
- if(selected.settings.animationId==='builtin:awakening')return null;
+ if(owns(BUILTIN_FILES,selected.settings.animationId))return null;
  const library=join(selected.home,'awakening-library'),info=await lstat(library);
  if(!info.isDirectory()||info.isSymbolicLink()||await realpath(library)!==library)throw new Error('invalid-library-directory');
  const manifest=JSON.parse((await bounded(join(library,'manifest.json'),MAX_LIBRARY_BYTES)).toString('utf8'));
@@ -142,6 +149,31 @@ async function selectedVideo(selected){
  const target=join(library,entry.file),payload=await bounded(target,MAX_VIDEO_BYTES);
  if(payload.length!==entry.bytes||sha(payload)!==entry.sha256||!videoHeader(payload,entry.format))throw new Error('selected-video-invalid');
  return{entry,payload,file:'media/selected.'+entry.format,route:'selected.'+entry.format,mime:entry.format==='mp4'?'video/mp4':'video/webm'};
+}
+
+// Consume the very same pinned descriptor document as Host. Only resource URLs
+// change to this document's immutable native route; fit and camera clock remain
+// with the shared video runtime. No creator code is loaded from metadata.
+function presentation(value,duration){
+ if(!plain(value)||value.schemaVersion!==1||value.mode!=='safe-camera'||value.sourceWidth!==1280||value.sourceHeight!==720||value.sampleBackground!==true||!Array.isArray(value.keyframes)||value.keyframes.length<2||value.keyframes.length>32)return false;
+ let previous=-1;
+ for(const frame of value.keyframes){
+  if(!plain(frame)||!Number.isFinite(frame.time)||frame.time<0||frame.time>duration||frame.time<=previous||!Array.isArray(frame.safe)||frame.safe.length!==4||!frame.safe.every(Number.isFinite)||!/^#[a-f0-9]{6}$/i.test(frame.background)||!Number.isFinite(frame.verticalAnchor)||frame.verticalAnchor<0||frame.verticalAnchor>1)return false;
+  const[x,y,w,h]=frame.safe;if(x<0||y<0||w<=0||h<=0||x+w>1280||y+h>720)return false;previous=frame.time;
+ }
+ return value.keyframes[0].time===0&&previous===duration;
+}
+function selectedBuiltin(source,id,prefix){
+ const manifest=JSON.parse(source.get('media/builtins.json').toString('utf8'));
+ if(!plain(manifest)||manifest.schemaVersion!==1||!Array.isArray(manifest.entries)||manifest.entries.length!==3)throw new Error('invalid-builtin-manifest');
+ const ids=new Set();
+ for(const entry of manifest.entries){
+  if(!plain(entry)||!owns(BUILTIN_FILES,entry.id)||ids.has(entry.id)||entry.kind!=='video'||entry.builtin!==true||entry.removable!==false||entry.fit!=='safe'||entry.durationSeconds!==22||!label(entry.title)||!label(entry.author)||!LICENSES.has(entry.license)||!presentation(entry.presentation,entry.durationSeconds))throw new Error('invalid-builtin-descriptor');
+  ids.add(entry.id);const[video,poster]=BUILTIN_FILES[entry.id];
+  if(entry.sourceUrl!=='/dsh-awakening/media/'+video+'?v='+VERSION||entry.posterUrl!=='/dsh-awakening/media/'+poster+'?v='+VERSION||entry.thumbnailUrl!==entry.posterUrl||entry.sha256!==INTEGRITY['media/'+video]||entry.bytes!==source.get('media/'+video).length)throw new Error('builtin-media-mismatch');
+ }
+ const entry=manifest.entries.find(value=>value.id===id);if(!entry)throw new Error('selected-builtin-missing');
+ const[video,poster]=BUILTIN_FILES[id];return{...entry,sourceUrl:prefix+video,posterUrl:prefix+poster,thumbnailUrl:prefix+poster};
 }
 async function realDirectory(parent,name){
  const target=join(parent,name);
@@ -213,7 +245,7 @@ export async function loadCarrier(context,{onWarning=()=>{},activeRevisions=[]}=
   const revision=sha(JSON.stringify([VERSION,selected.profile,selected.settings,integrity])).slice(0,24);
   const cached=await cache(selected,source,integrity,revision,activeRevisions);
   const prefix='/assets/dsh-awakening-native/'+revision+'/';
-  const animation=video?{id:video.entry.id,title:video.entry.title,kind:'video',durationSeconds:video.entry.durationSeconds,sourceUrl:prefix+video.route,fit:selected.settings.videoFit}:{id:'builtin:awakening',title:'鲸启 · Awakening',kind:'adaptive',durationSeconds:22,sourceUrl:prefix+'boot.mp4',posterUrl:prefix+'poster.png',fit:'cover'};
+  const animation=video?{id:video.entry.id,title:video.entry.title,kind:'video',durationSeconds:video.entry.durationSeconds,sourceUrl:prefix+video.route,fit:selected.settings.videoFit}:selectedBuiltin(source,selected.settings.animationId,prefix);
   const options={version:VERSION,settings:selected.settings,animation,sourceUrl:animation.sourceUrl,...animation.posterUrl?{posterUrl:animation.posterUrl}:{},autostart:true};
   const code=SCRIPT_FILES.map(file=>cached.bytes.get(file).toString('utf8')).join('\n')+'\nwindow.__DSH_AWAKENING_INSTALL__('+inlineJSON(options)+');';
   const assets=new Map();

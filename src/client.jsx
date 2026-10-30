@@ -27,7 +27,7 @@ function resolveValues(value) {
     volume: Number.isInteger(input.volume) && input.volume >= 0 && input.volume <= 100 ? input.volume : DEFAULTS.volume,
     frequency: input.frequency === 'daily' ? 'daily' : DEFAULTS.frequency,
     timeoutSeconds: Number.isInteger(input.timeoutSeconds) && input.timeoutSeconds >= 25 && input.timeoutSeconds <= 60 ? input.timeoutSeconds : DEFAULTS.timeoutSeconds,
-    animationId: typeof input.animationId === 'string' && /^(builtin:awakening|video:[a-f0-9]{24})$/.test(input.animationId) ? input.animationId : DEFAULTS.animationId,
+    animationId: typeof input.animationId === 'string' && /^(builtin:(?:awakening|codex|claude-code)|video:[a-f0-9]{24})$/.test(input.animationId) ? input.animationId : DEFAULTS.animationId,
     videoFit: input.videoFit === 'contain' ? 'contain' : DEFAULTS.videoFit,
   }
 }
@@ -231,7 +231,7 @@ function createSettingsPanel(form) {
               </select>
             </div>
             <div className="awa-row awa-row--fit">
-              <div className="awa-copy"><p className="awa-heading" id={`${prefix}-fit-label`}>视频显示</p><p className="awa-muted">用于导入和社区视频；内置鲸启保持动态构图。</p></div>
+              <div className="awa-copy"><p className="awa-heading" id={`${prefix}-fit-label`}>视频显示</p><p className="awa-muted">用于导入和社区视频；三部内置作品自动保留关键构图。</p></div>
               <div className="awa-choice" role="group" aria-labelledby={`${prefix}-fit-label`}>
                 <button type="button" aria-pressed={values.videoFit === 'cover'} disabled={disabled} onClick={() => write('videoFit', 'cover')}>填满窗口</button>
                 <button type="button" aria-pressed={values.videoFit === 'contain'} disabled={disabled} onClick={() => write('videoFit', 'contain')}>完整画面</button>
@@ -242,7 +242,7 @@ function createSettingsPanel(form) {
           <section className="awa-settings-group" aria-labelledby={`${prefix}-audio-title`}>
             <h3 id={`${prefix}-audio-title`}>声音</h3>
             <div className="awa-row" style={{ borderBottom: 0 }}>
-              <div className="awa-copy"><label className="awa-heading" htmlFor="awa-sound">播放作品音轨</label><p className="awa-muted">内置鲸启含音效和原声欢迎语。</p></div>
+              <div className="awa-copy"><label className="awa-heading" htmlFor="awa-sound">播放作品音轨</label><p className="awa-muted">内置作品保留各自的音效和角色欢迎语。</p></div>
               <input className="awa-switch" id="awa-sound" type="checkbox" role="switch" checked={values.sound} disabled={disabled} onChange={event => write('sound', event.target.checked)} />
             </div>
             <div className="awa-volume">
@@ -276,7 +276,7 @@ function createSettingsPanel(form) {
           </details>
           <details className="awa-disclosure" style={{ marginTop: 0 }}>
             <summary><span>关于与素材署名</span><Icon name="chevronDown" size={16} /></summary>
-            <div className="awa-disclosure-body"><p className="awa-muted">鲸启是 DSH 社区插件。内置作品的角色影像与原声来自 dsh-boot-animation，保留上游 MIT 许可。</p><p className="awa-muted" style={{ marginTop: 8 }}><a href="https://github.com/MingoYung/dsh-awakening/blob/main/CREDITS.md" target="_blank" rel="noreferrer">查看完整素材来源与许可</a></p></div>
+            <div className="awa-disclosure-body"><p className="awa-muted">鲸启是 DSH 社区插件。三部内置动画由本项目制作，使用 CC BY 4.0 许可的项目有权部分；模型名称与品牌图形的权利归各自权利人。</p><p className="awa-muted" style={{ marginTop: 8 }}><a href="https://github.com/MingoYung/dsh-awakening/blob/main/CREDITS.md" target="_blank" rel="noreferrer">查看完整素材来源与许可</a></p></div>
           </details>
         </div>}
       </div>

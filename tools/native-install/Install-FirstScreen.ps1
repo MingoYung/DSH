@@ -13,8 +13,13 @@ $plainRoot=[IO.Path]::GetDirectoryName($Executable);$plainCursor=$Executable
 while($plainCursor){$plainItem=Get-Item -LiteralPath $plainCursor -Force;if(($plainItem.Attributes-band[IO.FileAttributes]::ReparsePoint)-ne 0){throw 'Linked desktop paths are not supported. Nothing was started.'};if($plainCursor-eq$plainRoot){break};$plainCursor=[IO.Path]::GetDirectoryName($plainCursor)}
 $binaryStream=[IO.File]::OpenRead($Executable);$algorithm=[Security.Cryptography.SHA256]::Create()
 try{$binaryHash=[BitConverter]::ToString($algorithm.ComputeHash($binaryStream)).Replace('-','').ToLowerInvariant()}finally{$binaryStream.Dispose();$algorithm.Dispose()}
-$binaryPolicy=[IO.File]::ReadAllText((Join-Path $PSScriptRoot 'policy.json'),[Text.Encoding]::UTF8)|ConvertFrom-Json
-if($binaryHash-ne$binaryPolicy.exeSha256){throw 'This desktop build has not been verified. Nothing was started or modified.'}
+$binaryPolicy=$null
+# Fixed build profiles only. Each EXE selects its own original/payload whitelist.
+foreach($policyName in @('policy.json','builds\2.0.21-next\policy.json')){
+ $candidatePolicy=[IO.File]::ReadAllText((Join-Path $PSScriptRoot $policyName),[Text.Encoding]::UTF8)|ConvertFrom-Json
+ if($binaryHash-eq$candidatePolicy.exeSha256){if($null-ne$binaryPolicy){throw 'Ambiguous desktop build policy. Nothing was started.'};$binaryPolicy=$candidatePolicy}
+}
+if($null-eq$binaryPolicy){throw 'This desktop build has not been verified. Nothing was started or modified.'}
 $cli=Join-Path $PSScriptRoot 'cli.mjs'
 function InvokeNative([string]$Operation,[string]$JobId=''){
  if($Operation-notin@('inspect','install','rollback','cancel')-or($JobId-and$JobId-notmatch'^[a-f0-9-]{36}$')){throw 'Invalid installer operation.'}
